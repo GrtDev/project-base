@@ -1,0 +1,12 @@
+@import "compass";
+/*@import "compass/reset";
+@import "scss-mixins";
+@import "typography";*/
+
+div {
+  background-image: image-url("indonesia.jpg");
+  width: image-width("indonesia.jpg");
+  height: image-height("indonesia.jpg");
+  border: hidden;
+  color: pink;
+}
