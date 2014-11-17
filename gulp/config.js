@@ -9,6 +9,7 @@
 
 var source          = 'source';
 var sourceAssetsDir = source + '/assets';
+var sourceMarkup    = source + '/markup';
 
 var build           = 'www';
 var buildAssetsDir  = build + '/inc';
@@ -78,10 +79,10 @@ module.exports = {
 
         options: {
             assets:     buildAssetsDir,
-            helpers:    source + '/markup/helpers/*.js',
-            data:       source + '/markup/data/*.json',
-            layoutdir:  source + '/markup/layouts',
-            partials:   source + '/markup/partials/*.hbs'
+            data:       sourceMarkup + '/data/*.json',
+            partials:   [sourceMarkup + '/partials/**/*.hbs', sourceMarkup + '/common/partials/**/*.hbs'],
+            helpers:    [sourceMarkup + '/helpers/**/*.js', sourceMarkup + '/common/helpers/**/*.js'],
+            layoutdir:  sourceMarkup + '/common/layouts'
         },
         project: {
 
@@ -92,7 +93,7 @@ module.exports = {
             files: [{
                 expand: true,
                 cwd:    source + '/markup/pages',
-                src:    ['*.hbs'],
+                src:    ['*.hbs', '!_*'],
                 dest:   build
             }]
         }
