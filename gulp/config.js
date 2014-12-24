@@ -53,7 +53,7 @@ module.exports = {
     },
 
     sass: {
-        src: source + "/sass/*.{sass,scss}",
+        source: source + "/sass/*.{sass,scss}",
         dest: buildAssetsDir + '/css',
         settings: {
             // Required if you want to use SASS syntax
@@ -66,7 +66,7 @@ module.exports = {
 
 
     _sass: {
-        src:    source + '/sass/*.scss',
+        source:    source + '/sass/*.scss',
         args : {
             config_file:  'config.rb',              // as seen from project root (gulpfile.js location)
             sass:         source + '/sass',         // location fo scss files
@@ -75,47 +75,31 @@ module.exports = {
     },
 
     images: {
-        src:    sourceAssetsDir + '/images/**',
+        source:    sourceAssetsDir + '/images/**',
         dest:   buildAssetsDir + '/images'
     },
 
-    markup: {
-        src:    source + '/markup/**/*.html',
-        dest:   build
-    },
-
     prettify: {
-        src:    build,
+        source:    build,
         dest:   build
     },
 
-    gulpGrunt: {
-        verbose: false
-    },
-
-    assemble: {
-
+    handlebars :{
+        source: sourceMarkup + '/pages/*.hbs',
+        dest: build,
+        templateData: {title:'Template title'},
         options: {
-            assets:     buildAssetsDir,
-            data:       sourceMarkup + '/data/*.json',
-            partials:   [sourceMarkup + '/partials/**/*.hbs', sourceMarkup + '/common/partials/**/*.hbs'],
-            helpers:    [sourceMarkup + '/helpers/**/*.js', sourceMarkup + '/common/helpers/**/*.js'],
-            layoutdir:  sourceMarkup + '/common/layouts'
-        },
-        project: {
-
-            options: {
-                layout: 'default.hbs'
-            },
-
-            files: [{
-                expand: true,
-                cwd:    source + '/markup/pages',
-                src:    ['*.hbs', '!_*'],
-                dest:   build
-            }]
+            ignorePartials: false,
+            partials : {},
+            batch : [sourceMarkup + '/partials', sourceMarkup + '/common/partials'],
+            helpers : {
+                capitals : function(str){
+                    return str.toUpperCase();
+                }
+            }
         }
     }
+
 
 };
 

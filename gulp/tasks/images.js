@@ -7,7 +7,7 @@ var config     = require('../config').images;
 
 gulp.task('images', function() {
 
-  return gulp.src(config.src)
+  return gulp.source(config.source)
     .pipe(changed(config.dest))     // Ignore unchanged files
     .pipe(imagemin())               // Optimize
     .pipe(gulp.dest(config.dest));  // Export

@@ -6,7 +6,7 @@ var prettify = require('gulp-prettify');
 var config = require('../config.js').prettify;
 
 gulp.task('prettify', function() {
-    gulp.src(config.src + '/*.html')
+    gulp.source(config.source + '/*.html')
         .pipe(prettify({indent_size: 2, brace_style:'collapse'}))
         .pipe(gulp.dest(config.dest))
 });

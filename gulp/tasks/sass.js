@@ -9,7 +9,7 @@ var config       = require('../config').sass;
 var autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('sass', ['images'], function () {
-    return gulp.src(config.src)
+    return gulp.source(config.source)
         .pipe(sourcemaps.init())
         .pipe(sass(config.settings))
         .on('error', handleErrors)
