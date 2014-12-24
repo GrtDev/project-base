@@ -1,12 +1,7 @@
-@import "compass";
-/*@import "compass/reset";
-@import "scss-mixins";
-@import "typography";*/
+/**
+ * @author Geert Fokke - geert@sector22.com
+ * @link www.sector22.com
+ */
 
-div {
-  background-image: image-url("indonesia.jpg");
-  width: image-width("indonesia.jpg");
-  height: image-height("indonesia.jpg");
-  border: hidden;
-  color: pink;
-}
+@import "compass";
+@import "compass/reset";

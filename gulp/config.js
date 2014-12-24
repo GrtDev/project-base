@@ -1,7 +1,8 @@
 /**
- *  Author: Geert Fokke
+ * @author Geert Fokke - geert@sector22.com
+ * @link www.sector22.com
  *
- *  Based on the Gulp-starter project of Daniel Tello
+ * Based on the Gulp-starter project of Daniel Tello
  *  ~ https://github.com/greypants/gulp-starter
  */
 
