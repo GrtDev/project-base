@@ -75,6 +75,10 @@ module.exports = {
         dest:   build
     },
 
+    gulpGrunt: {
+        verbose: false
+    },
+
     assemble: {
 
         options: {
