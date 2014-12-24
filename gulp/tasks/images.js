@@ -13,5 +13,3 @@ gulp.task('images', function() {
     .pipe(gulp.dest(config.dest));  // Export
 
 });
-
-// @formatter:on

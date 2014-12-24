@@ -8,7 +8,7 @@ var handlebars  = require('gulp-compile-handlebars');
 var rename      = require('gulp-rename');
 var config      = require('../config').handlebars;
 
-gulp.task('compile-handlebars', function () {
+gulp.task('handlebars', function () {
     return gulp.source(config.source)
         .pipe(handlebars(config.templateData, config.options))
         .pipe(rename(function (path) {

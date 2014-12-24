@@ -24,9 +24,5 @@ requireDir('./gulp/tasks', { recurse: false });
 // specifies the default set of tasks to run when you run `gulp`.
 gulp.task('default', ['watch'])
 
-//gulp.task('build', ['browserify', 'sass', 'images', 'markup']);
-gulp.task('build', ['browserify', 'markup']);
+gulp.task('build', ['browserify', 'sass', 'images', 'handlebars']);
 
-gulp.task('assemble', function(callback) {
-  runSequence('gulp-grunt-assemble', 'prettify', callback);
-});

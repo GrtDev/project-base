@@ -3,7 +3,7 @@
  * @link www.sector22.com
  *
  * Based on the Gulp-starter project of Daniel Tello
- *  ~ https://github.com/greypants/gulp-starter
+ * @link: github.com/greypants/gulp-starter
  */
 
 // @formatter:off
@@ -38,11 +38,9 @@ module.exports = {
     },
 
     browserSync: {
-
         // Use server variable instead of proxy when running local copy without a pre-setup virtual host.
         //server: { baseDir: dest },
         proxy: projectName + '.dev',
-
 
         // file changes to trigger a browser refresh
         files: [
@@ -62,16 +60,6 @@ module.exports = {
             imagePath: '/inc/images' // Used by the image-url helper
         },
         autoprefixer: { browsers: ['last 2 version'] }
-    },
-
-
-    _sass: {
-        source:    source + '/sass/*.scss',
-        args : {
-            config_file:  'config.rb',              // as seen from project root (gulpfile.js location)
-            sass:         source + '/sass',         // location fo scss files
-            css:          buildAssetsDir + '/css'   // destination of css files
-        }
     },
 
     images: {
