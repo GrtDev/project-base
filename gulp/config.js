@@ -53,6 +53,19 @@ module.exports = {
     },
 
     sass: {
+        src: source + "/sass/*.{sass,scss}",
+        dest: buildAssetsDir + '/css',
+        settings: {
+            // Required if you want to use SASS syntax
+            // See https://github.com/dlmanning/gulp-sass/issues/81
+            sourceComments: 'map',
+            imagePath: '/inc/images' // Used by the image-url helper
+        },
+        autoprefixer: { browsers: ['last 2 version'] }
+    },
+
+
+    _sass: {
         src:    source + '/sass/*.scss',
         args : {
             config_file:  'config.rb',              // as seen from project root (gulpfile.js location)

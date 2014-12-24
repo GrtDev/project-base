@@ -3,5 +3,8 @@
  * @link www.sector22.com
  */
 
-@import "compass";
-@import "compass/reset";
+$font-size: 12px;
+body{
+  font-size: $font-size;
+}
+
