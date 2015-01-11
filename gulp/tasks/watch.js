@@ -8,7 +8,7 @@ var config  = require('../config');
 
 // runs setWatch & browserSync before executing the task.
 gulp.task('watch', ['setWatch', 'browserSync'], function() {
-  gulp.watch(config.sass.source,   ['sass']);
+  gulp.watch(config.sass.source,   ['sass', browserSync.reload]);
   gulp.watch(config.images.src, ['images']);
-  gulp.watch(config.handlebars.source, ['handlebars']);
+  gulp.watch(config.handlebars.source, ['handlebars', browserSync.reload]);
 });

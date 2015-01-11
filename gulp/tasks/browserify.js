@@ -11,16 +11,23 @@
 // @formatter:off
 
 var gulp            = require('gulp');
-var config          = require('../config').browserify;
+var config          = require('../config');
+var browserConfig   = config.browserify;
+var uglifyConfig    = config.uglify;
 var source          = require('vinyl-source-stream');
 var browserify      = require('browserify');
 var watchify        = require('watchify');
 var bundleLogger    = require('../util/bundleLogger');
 var handleErrors    = require('../util/handleErrors');
+var buffer          = require('vinyl-buffer');
+var uglify          = require('gulp-uglify');
+var gulpif          = require('gulp-if');
+
+// @formatter:on
 
 gulp.task('browserify', function (callback) {
 
-    var bundleQueue = config.bundleConfigs.length;
+    var bundleQueue = browserConfig.bundleConfigs.length;
 
 
     //TODO: Add https://www.npmjs.org/package/factor-bundle to generate a common.js between the multiple entries
@@ -33,9 +40,9 @@ gulp.task('browserify', function (callback) {
             // Specify the entry point of your app
             entries: bundleConfig.entries,
             // Add file extentions to make optional in your requires
-            extensions: config.extensions,
+            extensions: browserConfig.extensions,
             // Enable source maps!
-            debug: config.debug
+            debug: browserConfig.debug
         });
 
         var bundle = function () {
@@ -50,12 +57,24 @@ gulp.task('browserify', function (callback) {
                 // stream gulp compatible. Specify the
                 // desired output filename here.
                 .pipe(source(bundleConfig.outputName))
+                // convert from streaming to buffer object for uglify
+                .pipe(gulpif(checkMinify(), buffer()))
+                .pipe(gulpif(browserConfig.minify, uglify(uglifyConfig)))
+                //.pipe(gulpif(browserConfig.minify, test()))
                 // Specify the output destination
                 .pipe(gulp.dest(bundleConfig.dest))
                 .on('end', reportFinished);
         };
 
-        if (global.isWatching) {
+        function checkMinify() {
+            if(browserConfig.minify) {
+                bundleLogger.min(bundleConfig.outputName);
+                return true;
+            }
+            return false;
+        }
+
+        if(global.isWatching) {
             // Wrap with watchify and rebundle on changes
             bundler = watchify(bundler);
             // Rebundle on update
@@ -66,9 +85,9 @@ gulp.task('browserify', function (callback) {
             // Log when bundling completes
             bundleLogger.end(bundleConfig.outputName)
 
-            if (bundleQueue) {
+            if(bundleQueue) {
                 bundleQueue--;
-                if (bundleQueue <= 0) {
+                if(bundleQueue <= 0) {
                     // If queue is empty, tell gulp the task is complete.
                     // https://github.com/gulpjs/gulp/blob/master/docs/API.md#accept-a-callback
                     callback();
@@ -80,5 +99,5 @@ gulp.task('browserify', function (callback) {
     };
 
     // Start bundling with Browserify for each bundleConfig specified
-    config.bundleConfigs.forEach(browserifyThis);
+    browserConfig.bundleConfigs.forEach(browserifyThis);
 });

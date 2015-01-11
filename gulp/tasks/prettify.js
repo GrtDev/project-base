@@ -1,12 +1,14 @@
 /**
- * Created by gfokke on 14/11/14.
+ * @author Geert Fokke - geert@sector22.com
+ * @www www.sector22.com
  */
+
 var gulp = require('gulp');
 var prettify = require('gulp-prettify');
 var config = require('../config.js').prettify;
 
 gulp.task('prettify', function() {
     gulp.source(config.source + '/*.html')
-        .pipe(prettify({indent_size: 2, brace_style:'collapse'}))
+        .pipe(prettify(config.options))
         .pipe(gulp.dest(config.dest))
 });

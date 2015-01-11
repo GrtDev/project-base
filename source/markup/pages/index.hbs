@@ -3,15 +3,23 @@
 
 <head lang="en">
     <meta charset="UTF-8">
-    <title>{{title}}</title>
+    <title>{title}</title>
     <link rel="stylesheet" href="inc/css/main.css"/>
+
+    <meta name="description" content="_description_here_">
+    <meta name="keywords" content="_keywords_here_">
+    <meta name="author" content="Geert Fokke">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    {{>google-analytics tracking-id='UA-00000000-0'}}
 </head>
 
 <body>
+{{>update-browser}}
 
-    {{>input-text id='name' label='first name'}}
 
-    <script src="inc/js/main.js" type="text/javascript"></script>
+
+<script src="inc/js/main.js" type="text/javascript"></script>
 
 </body>
 

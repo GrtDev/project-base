@@ -3,16 +3,24 @@
  * @link www.sector22.com
  */
 
-var gulp        = require('gulp');
-var handlebars  = require('gulp-compile-handlebars');
-var rename      = require('gulp-rename');
-var config      = require('../config').handlebars;
+// @formatter:off
+var gulp                = require('gulp');
+var handlebars          = require('gulp-compile-handlebars');
+var rename              = require('gulp-rename');
+var config              = require('../config');
+var handlebarsConfig    = config.handlebars;
+var htmlminConfig       = config.htmlmin;
+
+var htmlmin             = require('gulp-htmlmin');
+var gulpif              = require('gulp-if');
+// @formatter:on
 
 gulp.task('handlebars', function () {
-    return gulp.source(config.source)
-        .pipe(handlebars(config.templateData, config.options))
+    return gulp.src(handlebarsConfig.source)
+        .pipe(handlebars(handlebarsConfig.templateData, handlebarsConfig.options))
+        .pipe(gulpif(handlebarsConfig.minify, htmlmin(htmlminConfig)))
         .pipe(rename(function (path) {
             path.extname = '.html';
         }))
-        .pipe(gulp.dest(config.dest));
+        .pipe(gulp.dest(handlebarsConfig.dest));
 });
