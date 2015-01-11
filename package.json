@@ -1,6 +1,6 @@
 {
   "name": "project-base",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A personal project layout for developing static site documents.",
   "private": true,
   "repository": {
@@ -35,6 +35,7 @@
     "pretty-hrtime": "~0.2.1",
     "require-dir": "^0.1.0",
     "run-sequence": "^1.0.1",
+    "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "~0.1.1",
     "watchify": "~1.0.2"
   },
