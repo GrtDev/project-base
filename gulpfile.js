@@ -1,28 +1,43 @@
-/*
-  gulpfile.js
-  ===========
-  Rather than manage one giant configuration file responsible
-  for creating multiple tasks, each task has been broken out into
-  its own file in gulp/tasks. Any files in that directory get
-  automatically required below.
+//@formatter:off
 
-  To add a new task, simply add a new task file that directory.
-  gulp/tasks/default.js
-*/
+var gulp                = require('gulp');
+var runSequence         = require('run-sequence');
+var requireDir          = require('require-dir');
+var config              = require('./gulp/config');
 
-var gulp = require('gulp');
-var requireDir = require('require-dir');
-var runSequence = require('run-sequence');
+//@formatter:on
 
-// Require all tasks in gulp/tasks, including subfolders.
-requireDir('./gulp/tasks', { recurse: false });
+// Require all tasks in gulp/tasks, including subfolders
+requireDir('./gulp/tasks', { recurse: true });
 
 
 
-//--------------     T A S K    L I S T S     --------------//
+//--------------     B A S I C   T A S K    L I S T S     --------------//
 
 // specifies the default set of tasks to run when you run `gulp`.
-gulp.task('default', ['watch'])
+gulp.task('default', ['server']);
 
-gulp.task('build', ['browserify', 'sass', 'images', 'handlebars']);
+
+/**
+ *  Build the project.
+ *  Fires up a local server.
+ *  Starts watching all the used files and rebuilds on file changes.
+ *  - This will also automatically refresh your browser after something has been rebuild.
+ */
+gulp.task('server', function() {
+
+    runSequence(
+        'build',
+        'browserSync',
+        'watch'
+    );
+
+});
+
+
+/**
+ *  Builds the entire project from scratch.
+ */
+gulp.task('build', ['images', 'handlebars', 'sass', 'browserify']);
+
 

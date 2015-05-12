@@ -1,31 +1,47 @@
-// @formatter:off
-var gulp            = require('gulp');
-var browserSync     = require('browser-sync');
-var sass            = require('gulp-sass');
-var sourcemaps      = require('gulp-sourcemaps');
-var handleErrors    = require('../util/handleErrors');
-var autoprefixer    = require('gulp-autoprefixer');
-var config          = require('../config');
-var sassConfig      = config.sass;
-var cssminConfig    = config.cssmin;
-var gulpif          = require('gulp-if');
-var minifyCSS       = require('gulp-minify-css');
-// @formatter:on
+//@formatter:off
 
-gulp.task('sass', ['images'], function () {
-    return gulp.src(sassConfig.source)
+var gulp                    = require('gulp');
+var browserSync             = require('browser-sync');
+var sass                    = require('gulp-sass');
+var sourcemaps              = require('gulp-sourcemaps');
+var handleErrors            = require('../util/handleErrors');
+var config                  = require('../config');
+var autoprefixer            = require('gulp-autoprefixer');
 
-        .pipe(gulpif(sassConfig.debug, sourcemaps.init()))
-        .pipe(sass(sassConfig.settings))
+//@formatter:on
+
+
+gulp.task('sass', function () {
+
+
+    var options = {
+
+        source: config.source.css + '/*.scss',
+        dest: config.dest.css,
+        debug: config.debug,
+
+        settings: {
+            //indentedSyntax: true, // Enable .sass syntax!
+            //imagePath: 'images' // Used by the image-url helper
+        },
+
+        autoprefixer: {
+            browsers: ['last 3 versions']
+        }
+
+    };
+
+
+    return gulp.src(options.source)
         .on('error', handleErrors)
-        .pipe(gulpif(sassConfig.debug, sourcemaps.write()))
-
-        .pipe(autoprefixer(sassConfig.autoprefixer)) // run prefixer
-
-        .pipe(gulpif(sassConfig.minify, minifyCSS(cssminConfig))) // minify if needed
-
-        .pipe(gulp.dest(sassConfig.dest))
+        //
+        .pipe(gulpif(options.debug, sourcemaps.init()))
+        .pipe(sass(options.settings))
+        .pipe(gulpif(options.debug, sourcemaps.write()))
+        //
+        .pipe(autoprefixer(options.autoprefixer))
+        .pipe(gulp.dest(options.dest))
         .pipe(browserSync.reload({stream: true}));
-});
 
+});
 

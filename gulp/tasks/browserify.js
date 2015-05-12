@@ -1,103 +1,110 @@
-/** browserify task
- ---------------
- Bundle javascripty things with browserify!
-
- This task is set up to generate multiple separate bundles, from
- different sources, and to use Watchify when run from the default task.
-
- See browserify.bundleConfigs in gulp/config.js
- */
-
 // @formatter:off
 
-var gulp            = require('gulp');
-var config          = require('../config');
-var browserConfig   = config.browserify;
-var uglifyConfig    = config.uglify;
-var source          = require('vinyl-source-stream');
-var browserify      = require('browserify');
-var watchify        = require('watchify');
-var bundleLogger    = require('../util/bundleLogger');
-var handleErrors    = require('../util/handleErrors');
-var buffer          = require('vinyl-buffer');
-var uglify          = require('gulp-uglify');
-var gulpif          = require('gulp-if');
-
-// @formatter:on
-
-gulp.task('browserify', function (callback) {
-
-    var bundleQueue = browserConfig.bundleConfigs.length;
+var config              = require('../config');
+var handleErrors        = require('../util/handleErrors');
+var browserSync         = require('browser-sync');
+var gulp                = require('gulp');
+var browserify          = require('browserify');
+var source              = require('vinyl-source-stream');
+var bundleLogger        = require('../util/bundleLogger');
+var mergeStream         = require('merge-stream');
+var watchify            = require('watchify');
+var buffer              = require('vinyl-buffer');
+var uglify              = require('gulp-uglify');
+var gulpif              = require('gulp-if');
 
 
-    //TODO: Add https://www.npmjs.org/package/factor-bundle to generate a common.js between the multiple entries
+function createBundleConfigs() {
 
-    var browserifyThis = function (bundleConfig) {
-
-        var bundler = browserify({
-            // Required watchify args
-            cache: {}, packageCache: {}, fullPaths: true,
-            // Specify the entry point of your app
-            entries: bundleConfig.entries,
-            // Add file extentions to make optional in your requires
-            extensions: browserConfig.extensions,
-            // Enable source maps!
-            debug: browserConfig.debug
-        });
-
-        var bundle = function () {
-            // Log when bundling starts
-            bundleLogger.start(bundleConfig.outputName);
-
-            return bundler
-                .bundle()
-                // Report compile errors
-                .on('error', handleErrors)
-                // Use vinyl-source-stream to make the
-                // stream gulp compatible. Specify the
-                // desired output filename here.
-                .pipe(source(bundleConfig.outputName))
-                // convert from streaming to buffer object for uglify
-                .pipe(gulpif(checkMinify(), buffer()))
-                .pipe(gulpif(browserConfig.minify, uglify(uglifyConfig)))
-                //.pipe(gulpif(browserConfig.minify, test()))
-                // Specify the output destination
-                .pipe(gulp.dest(bundleConfig.dest))
-                .on('end', reportFinished);
-        };
-
-        function checkMinify() {
-            if(browserConfig.minify) {
-                bundleLogger.min(bundleConfig.outputName);
-                return true;
-            }
-            return false;
-        }
-
-        if(global.isWatching) {
-            // Wrap with watchify and rebundle on changes
-            bundler = watchify(bundler);
-            // Rebundle on update
-            bundler.on('update', bundle);
-        }
-
-        var reportFinished = function () {
-            // Log when bundling completes
-            bundleLogger.end(bundleConfig.outputName)
-
-            if(bundleQueue) {
-                bundleQueue--;
-                if(bundleQueue <= 0) {
-                    // If queue is empty, tell gulp the task is complete.
-                    // https://github.com/gulpjs/gulp/blob/master/docs/API.md#accept-a-callback
-                    callback();
-                }
-            }
-        };
-
-        return bundle();
+    var main = {}
+    main.fileName               = 'main.js';
+    main.source                 = config.source.getPath('javascript', main.fileName);
+    main.dest                   = config.dest.getPath('javascript');
+    main.browserifyOptions      = {
+        debug: config.debug // enables source maps
     };
+    main.uglifyOptions          = {
+        //
+    }
 
-    // Start bundling with Browserify for each bundleConfig specified
-    browserConfig.bundleConfigs.forEach(browserifyThis);
+    return [main];
+}
+
+//@formatter:on
+
+
+function createBundle(bundleConfig, watch) {
+
+    if(watch)
+    {
+        // A watchify require/external bug that prevents proper recompiling,
+        // so (for now) we'll ignore these options during development. Running
+        // `gulp browserify` directly will properly require and externalize.
+        // @see: https://github.com/greypants/gulp-starter/blob/master/gulp/tasks/browserify.js
+
+        delete bundleConfig.browserifyOptions['require'];
+        delete bundleConfig.browserifyOptions['external'];
+    }
+
+    var browserifyInstance = browserify(bundleConfig.source, bundleConfig.browserifyOptions);
+
+    if(watch)
+    {
+        // Wrap with watchify and rebundle on changes
+        browserifyInstance = watchify(browserifyInstance);
+        // Rebundle on update
+        browserifyInstance.on('update', bundle);
+        bundleLogger.watch(bundleConfig.fileName);
+
+    } else
+    {
+        // Sort out shared dependencies.
+        // browserifyInstance.require exposes modules externally
+        if(bundleConfig.require) browserifyInstance.require(bundleConfig.require);
+        // browserifyInstance.external excludes modules from the bundle, and expects
+        // they'll be available externally
+        if(bundleConfig.external) browserifyInstance.external(bundleConfig.external);
+
+    }
+
+    function bundle() {
+
+        bundleLogger.start(bundleConfig.fileName);
+
+        return browserifyInstance.bundle()
+            .on('error', handleErrors)
+            .pipe(source(bundleConfig.fileName))
+            //
+            .pipe(gulpif(bundleConfig.minify, bundleLogger.minify(bundleConfig.fileName)))
+            .pipe(gulpif(bundleConfig.minify, buffer())) // convert from streaming to buffer object for uglify
+            .pipe(gulpif(bundleConfig.minify, uglify(bundleConfig.uglifyOptions)))
+            //
+            .pipe(gulp.dest(bundleConfig.dest))
+            .on('end', bundleLogger.end(bundleConfig.fileName))
+            .pipe(browserSync.reload({stream: true}));
+    }
+
+    return bundle();
+}
+
+var browserifyTask = function (watch) {
+
+    var bundlesConfigs = createBundleConfigs();
+    var streams = [];
+
+    for (var i = 0, leni = bundlesConfigs.length; i < leni; i++)
+    {
+        streams.push(createBundle(bundlesConfigs[i], watch));
+    }
+
+    return mergeStream(streams);
+
+}
+
+gulp.task('browserify', function () {
+
+    return browserifyTask();
+
 });
+
+module.exports = browserifyTask;

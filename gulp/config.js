@@ -9,151 +9,101 @@
 
 // @formatter:off
 
-var DEBUG               = true;
-var MINIFY              = false;
+var gulp                = require('gulp');
+var gutil               = require('gulp-util');
+var template            = require('lodash.template');
+var packageJSON         = require('../package.json');
 
-// Define folder layout
-var source              = './source';
-var sourceAssets        = source + '/assets';
-var sourceImages        = source + '/images';
-var sourceVideos        = source + '/video';
-var sourceMarkup        = source + '/markup';
-var sourceJavaScript    = source + '/javascript';
-var sourceCSS           = source + '/sass';
 
-var build               = 'www';
-var buildMarkup         = build;
-var buildAssets         = build + '/inc';
-var buildJavaScript     = buildAssets + '/js';
-var buildCSS            = buildAssets + '/css';
-var buildImages         = buildAssets + '/images';
-var buildVideos         = buildAssets + '/videos';
+var source              = new PathConfig('./source');
+source.root             = './source';
+source.assets           = '<%= root %>/assets'
+source.markup           = '<%= root %>/markup';
+source.css              = '<%= root %>/sass';
+source.javascript       = '<%= root %>/javascript';
+source.images           = '<%= assets %>/images';
+source.fonts            = '<%= assets %>/fonts';
+source.videos           = '<%= assets %>/videos';
+source.data             = '<%= assets %>/data';
 
-var projectName         = require('../package.json').name;
+
+var dest                = new PathConfig('./www');
+dest.markup             = '<%= root %>';
+dest.assets             = '<%= root %>/inc'
+dest.css                = '<%= assets %>/sass';
+dest.javascript         = '<%= assets %>/javascript';
+dest.images             = '<%= assets %>/images';
+dest.fonts              = '<%= assets %>/fonts';
+dest.videos             = '<%= assets %>/videos';
+dest.data               = '<%= assets %>/data';
+
+
+var config              = {};
+config.name             = packageJSON.name;
+config.debug            = true;
+config.minify           = false;
+config.source           = source;
+config.dest             = dest;
+
+
+module.exports          = config;
+
 
 // @formatter:on
 
-module.exports = {
 
-    common: {
-        debug: DEBUG,
-        minify: MINIFY,
+/**
+ * Simple object containing a function to parse lodash path variables on itself.
+ * @param root {string} automatically sets the root property for the config.
+ * @constructor
+ */
+function PathConfig(root) {
 
-        projectName: projectName,
+    var _this = this;
+    _this.root = root;
 
-        source: {
-            root: source,
-            assets: sourceAssets,
-            images: sourceImages,
-            videos: sourceVideos,
-            markup: sourceMarkup,
-            javascript: sourceJavaScript,
-            css: sourceCSS
-        },
-        dest: {
-            root: build,
-            markup: buildMarkup,
-            assets: buildAssets,
-            images: buildImages,
-            videos: buildVideos,
-            css: buildCSS,
-            javascript: buildJavaScript
-        }
-    },
+    // A RegExp to test whether a string contains a lodash template.
+    // @see https://lodash.com/docs#template
+    var _loDashTemplateRegExp = /<%=\s*\w+\s*%>/
 
-    uglify: {},
-
-    htmlmin: {
-        collapseWhitespace: true,
-        removeComments: true,
-        minifyJS: true,
-        minifyCSS: true,
-        keepClosingSlash: true // can break SVG if not set to true!
-    },
-
-    cssmin: {},
-
-
-    browserify: {
-
-        debug: DEBUG, // Enable source maps
-        minify: MINIFY,
-
-        // Additional file extentions to make optional
-        // extensions: ['.coffee', '.hbs'],
-
-        // A separate bundle will be generated for each bundle config in the list below
-        bundleConfigs: [{
-            entries: sourceJavaScript + '/main.js',
-            dest: buildJavaScript,
-            outputName: 'main.js'
-        }]
-
-    },
-
-    browserSync: {
-        // Use server variable instead of proxy when running local copy without a pre-setup virtual host.
-        //server: { baseDir: dest },
-        proxy: projectName + '.dev',
-
-        // file changes to trigger a browser refresh
-        files: [
-            build + '/**.*.css', build + '/**.*.html', build + '/inc/js/main.js'
-        ],
-
-        browser: 'google chrome'
-    },
-
-    sass: {
-        debug: DEBUG,
-        minify: MINIFY,
-        source: sourceCSS + "/*.{sass,scss}",
-        dest: buildCSS,
-        settings: {
-            // Required if you want to use SASS syntax
-            // See https://github.com/dlmanning/gulp-sass/issues/81
-            sourceComments: 'map',
-            imagePath: sourceImages // Used by the image-url helper
-        },
-        autoprefixer: {browsers: ['last 3 versions']}
-    },
-
-    images: {
-        source: sourceImages + '/**',
-        dest: buildImages
-    },
-
-    prettify: {
-        // TODO reimplement prettify?
-        source: build,
-        dest: build,
-        options: {
-            indent_size: 2,
-            brace_style: 'collapse'
+    /**
+     * The path string can be a lodash template, this functions passes
+     * it through gulp-util.template to render the correct output.
+     * @function getPath
+     * @see https://github.com/gulpjs/gulp-util#templatestring-data
+     * @param name {string} name of the path required.
+     * @param opt_fileName {=string} optional file name to add to the path.
+     */
+    _this.getPath = function(name, opt_fileName) {
+        if(!_this.hasOwnProperty(name)){
+            gutil.log(gutil.colors.red('Error: Path with name: \'' + name + '\' was not found!'));
+            return '';
         }
 
-    },
+        var path = _this[name];
 
-    handlebars: {
-        minify: MINIFY,
-        watch: [sourceMarkup + '/pages/*.hbs', sourceMarkup + '/partials/*.hbs', sourceMarkup + '/common/partials/*.hbs'],
-        source: sourceMarkup + '/pages/*.hbs',
-        dest: build,
-        templateData: {title: 'Template title'},
-        options: {
-            ignorePartials: false,
-            partials: {},
-            batch: [sourceMarkup + '/partials', sourceMarkup + '/common/partials'],
-            helpers: {
-                capitals: function (str) {
-                    return str.toUpperCase();
-                }
-            }
+        var loopNum = 0, maxRecursion = 10;
+        while (_loDashTemplateRegExp.test(path) && loopNum < maxRecursion)
+        {
+            path = template(path);
+            path = path(_this);
+
+            if(loopNum++ > maxRecursion) gutil.log(gutil.colors.red('Error: Maximum recursion (' + maxRecursion + ') reached or failed to compile path template for name: \'' + name + '\'. Compiled path: \'' + path + '\''));
         }
 
+        return opt_fileName ? path + '/' + opt_fileName : path;
     }
-
-
-};
-
-
+    /**
+     * A function to log all the path variables.
+     * Usefull for checking if they're all set correctly
+     * @function dump
+     */
+    _this.dump = function () {
+        console.info('Path config dump:');
+        for (var property in _this)
+        {
+            if(!_this.hasOwnProperty(property) || typeof _this[property] !== 'string') continue;
+            console.info('\t' + property + (property.length >= 7 ? ':\t\'' : ':\t\t\'') + _this.getPath(property) + '\'');
+        }
+    }
+}

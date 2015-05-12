@@ -3,13 +3,20 @@
 var changed    = require('gulp-changed');
 var gulp       = require('gulp');
 var imagemin   = require('gulp-imagemin');
-var config     = require('../config').images;
+var config     = require('../config');
 
-gulp.task('images', function() {
+//@formatter:on
 
-  return gulp.source(config.source)
-    .pipe(changed(config.dest))     // Ignore unchanged files
-    .pipe(imagemin())               // Optimize
-    .pipe(gulp.dest(config.dest));  // Export
+gulp.task('images', function () {
 
+    var options = {
+        source: config.source.getPath('images', '**'),
+        dest: config.dest.getPath('images')
+    };
+
+
+    return gulp.source(options.source)
+        .pipe(changed(options.dest))        // Ignore unchanged files
+        .pipe(imagemin())                   // Optimize
+        .pipe(gulp.dest(options.dest));     // Export
 });
