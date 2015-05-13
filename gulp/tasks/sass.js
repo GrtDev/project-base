@@ -7,6 +7,7 @@ var sourcemaps              = require('gulp-sourcemaps');
 var handleErrors            = require('../util/handleErrors');
 var config                  = require('../config');
 var autoprefixer            = require('gulp-autoprefixer');
+var gulpif                  = require('gulp-if');
 
 //@formatter:on
 
@@ -16,8 +17,8 @@ gulp.task('sass', function () {
 
     var options = {
 
-        source: config.source.css + '/*.scss',
-        dest: config.dest.css,
+        source: config.source.getPath('css', '*.scss'),
+        dest: config.dest.getPath('css'),
         debug: config.debug,
 
         settings: {

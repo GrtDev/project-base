@@ -23,6 +23,7 @@ function createBundleConfigs() {
     main.browserifyOptions      = {
         debug: config.debug // enables source maps
     };
+    main.uglify                 = config.minify;
     main.uglifyOptions          = {
         //
     }
@@ -75,12 +76,12 @@ function createBundle(bundleConfig, watch) {
             .on('error', handleErrors)
             .pipe(source(bundleConfig.fileName))
             //
-            .pipe(gulpif(bundleConfig.minify, bundleLogger.minify(bundleConfig.fileName)))
-            .pipe(gulpif(bundleConfig.minify, buffer())) // convert from streaming to buffer object for uglify
-            .pipe(gulpif(bundleConfig.minify, uglify(bundleConfig.uglifyOptions)))
+            //.pipe(gulpif(bundleConfig.uglify, bundleLogger.minify(bundleConfig.fileName)))
+            .pipe(gulpif(bundleConfig.uglify, buffer())) // convert from streaming to buffer object for uglify
+            .pipe(gulpif(bundleConfig.uglify, uglify(bundleConfig.uglifyOptions)))
             //
             .pipe(gulp.dest(bundleConfig.dest))
-            .on('end', bundleLogger.end(bundleConfig.fileName))
+            //.on('end', bundleLogger.end(bundleConfig.fileName))
             .pipe(browserSync.reload({stream: true}));
     }
 

@@ -12,7 +12,7 @@ requireDir('./gulp/tasks', { recurse: true });
 
 
 
-//--------------     B A S I C   T A S K    L I S T S     --------------//
+//--------------     B A S I C   T A S K S    L I S T     --------------//
 
 // specifies the default set of tasks to run when you run `gulp`.
 gulp.task('default', ['server']);
@@ -34,10 +34,32 @@ gulp.task('server', function() {
 
 });
 
+/**
+ *  Deletes the olds files and builds the project from scratch.
+ */
+gulp.task('build', function() {
+
+    runSequence(
+        'clean',
+        'images',
+        'handlebars',
+        'sass',
+        'browserify'
+    );
+
+});
 
 /**
- *  Builds the entire project from scratch.
+ *  Deletes the olds files and builds the project from scratch.
  */
-gulp.task('build', ['images', 'handlebars', 'sass', 'browserify']);
+gulp.task('build:dist', function() {
 
+    config.debug    = false;
+    config.minify   = true;
+
+    runSequence(
+        'build'
+    );
+
+});
 

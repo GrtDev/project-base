@@ -16,7 +16,6 @@ var packageJSON         = require('../package.json');
 
 
 var source              = new PathConfig('./source');
-source.root             = './source';
 source.assets           = '<%= root %>/assets'
 source.markup           = '<%= root %>/markup';
 source.css              = '<%= root %>/sass';
@@ -30,8 +29,8 @@ source.data             = '<%= assets %>/data';
 var dest                = new PathConfig('./www');
 dest.markup             = '<%= root %>';
 dest.assets             = '<%= root %>/inc'
-dest.css                = '<%= assets %>/sass';
-dest.javascript         = '<%= assets %>/javascript';
+dest.css                = '<%= assets %>/css';
+dest.javascript         = '<%= assets %>/js';
 dest.images             = '<%= assets %>/images';
 dest.fonts              = '<%= assets %>/fonts';
 dest.videos             = '<%= assets %>/videos';
@@ -42,6 +41,7 @@ var config              = {};
 config.name             = packageJSON.name;
 config.debug            = true;
 config.minify           = false;
+config.verbose          = false;
 config.source           = source;
 config.dest             = dest;
 

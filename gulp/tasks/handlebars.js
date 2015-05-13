@@ -15,7 +15,7 @@ gulp.task('handlebars', function () {
 
     var options = {
 
-        source:     config.source.getPath('markup'),
+        source:     config.source.getPath('markup', '*.hbs'),
         dest:       config.dest.getPath('markup'),
         minify:     config.minify,
 
@@ -41,7 +41,7 @@ gulp.task('handlebars', function () {
             },
 
             ignorePartials: false,
-            batch: [config.source.markup] // set partials folder to the same path as the source so we can easily reference partials in different folders.
+            batch: [config.source.getPath('markup')] // set partials folder to the same path as the source so we can easily reference partials in different folders.
         },
 
         htmlmin: {
