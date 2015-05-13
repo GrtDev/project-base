@@ -13,7 +13,11 @@ var buffer              = require('vinyl-buffer');
 var uglify              = require('gulp-uglify');
 var gulpif              = require('gulp-if');
 
-
+/**
+ *  Creates a set of bundle configurations to be run with the browserify task.
+ *  Add your own configuration to the output Array.
+ * @returns [ {object} ] Array with bundle configuration objects
+ */
 function createBundleConfigs() {
 
     var main = {}
@@ -33,10 +37,15 @@ function createBundleConfigs() {
 
 //@formatter:on
 
+/**
+ * Creates a bundle for the given configuration.
+ * @param bundleConfig {object} configuration for the bundle.
+ * @param opt_watch {=boolean} whether wacify is used.
+ * @returns {stream}
+ */
+function createBundle(bundleConfig, opt_watch) {
 
-function createBundle(bundleConfig, watch) {
-
-    if(watch)
+    if(opt_watch)
     {
         // A watchify require/external bug that prevents proper recompiling,
         // so (for now) we'll ignore these options during development. Running
@@ -49,7 +58,7 @@ function createBundle(bundleConfig, watch) {
 
     var browserifyInstance = browserify(bundleConfig.source, bundleConfig.browserifyOptions);
 
-    if(watch)
+    if(opt_watch)
     {
         // Wrap with watchify and rebundle on changes
         browserifyInstance = watchify(browserifyInstance);
@@ -68,6 +77,10 @@ function createBundle(bundleConfig, watch) {
 
     }
 
+    /**
+     * Creates a bundle of the current config.
+     * @returns {stream}
+     */
     function bundle() {
 
         bundleLogger.start(bundleConfig.fileName);
@@ -88,20 +101,27 @@ function createBundle(bundleConfig, watch) {
     return bundle();
 }
 
-var browserifyTask = function (watch) {
+/**
+ * The actual function of the browserify task.
+ * Saved as a variable so we can export it for the wachify task.
+ * @param opt_watch {=boolean} defines whether or not wachify is run.
+ * @returns {stream}
+ */
+var browserifyTask = function (opt_watch) {
 
     var bundlesConfigs = createBundleConfigs();
     var streams = [];
 
     for (var i = 0, leni = bundlesConfigs.length; i < leni; i++)
     {
-        streams.push(createBundle(bundlesConfigs[i], watch));
+        streams.push(createBundle(bundlesConfigs[i], opt_watch));
     }
 
     return mergeStream(streams);
 
 }
 
+// defines the browserify task for Gulp.
 gulp.task('browserify', function () {
 
     return browserifyTask();

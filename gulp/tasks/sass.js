@@ -11,15 +11,19 @@ var gulpif                  = require('gulp-if');
 
 //@formatter:on
 
-
+/**
+ * Task for compiled SASS files back to CSS, uses lib-sass instead of ruby for faster compiling.
+ * @see https://www.npmjs.com/package/gulp-sass
+ * @see http://libsass.org/
+ */
 gulp.task('sass', function () {
 
 
     var options = {
 
-        source: config.source.getPath('css', '*.scss'),
-        dest: config.dest.getPath('css'),
-        debug: config.debug,
+        source:     config.source.getPath('css', '*.scss'),
+        dest:       config.dest.getPath('css'),
+        sourcemaps: config.debug, // only include source maps in debug mode.
 
         settings: {
             //indentedSyntax: true, // Enable .sass syntax!
@@ -36,9 +40,9 @@ gulp.task('sass', function () {
     return gulp.src(options.source)
         .on('error', handleErrors)
         //
-        .pipe(gulpif(options.debug, sourcemaps.init()))
+        .pipe(gulpif(options.sourcemaps, sourcemaps.init()))
         .pipe(sass(options.settings))
-        .pipe(gulpif(options.debug, sourcemaps.write()))
+        .pipe(gulpif(options.sourcemaps, sourcemaps.write()))
         //
         .pipe(autoprefixer(options.autoprefixer))
         .pipe(gulp.dest(options.dest))
