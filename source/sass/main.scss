@@ -1,10 +1,20 @@
-/**
- * @author Geert Fokke - geert@sector22.com
- * @link www.sector22.com
- */
+// import your fonts here
+// @import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,600,700,800);
 
-$font-size: 12px;
-body{
-  font-size: $font-size;
-}
 
+// import vendor styling here
+// @import "vendors/jquery.ui"
+
+// import all variables & settings first
+@import "settings/*";
+
+// import the basics
+@import "base/normalize";
+@import "base/base";
+@import "base/typography";
+
+// import components / modules
+@import "components/module";
+
+// import page specific styles
+@import "pages/home";
