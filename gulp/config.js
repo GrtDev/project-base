@@ -83,7 +83,7 @@ function PathConfig(root) {
         var path = _this[name];
 
         var loopNum = 0, maxRecursion = 10;
-        while (_loDashTemplateRegExp.test(path) && loopNum < maxRecursion)
+        while (_loDashTemplateRegExp.test(path) && loopNum <= maxRecursion)
         {
             path = template(path);
             path = path(_this);
