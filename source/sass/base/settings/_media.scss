@@ -1,0 +1,19 @@
+// @formatter:off
+
+//  NOTE: This file MUST NOT contain any styling! Only variables!
+//
+//  Add your media queries here...
+
+
+$breakpoint-extra-small:        	480px;
+$breakpoint-small:              	633px;
+$breakpoint-medium:             	980px;
+$breakpoint-large:              	1290px;
+$breakpoint-extra-large:        	1920px;
+
+$media-small:                   	"only screen and (max-width : #{$breakpoint-small})";
+$media-medium:                  	"only screen and (min-width : #{$breakpoint-small + 1px}) and (max-width : #{$breakpoint-medium - 1px})";
+$media-large:                   	"only screen and (min-width : #{$breakpoint-medium}) and (max-width : #{$breakpoint-large - 1px})";
+$media-extra-large:             	"only screen and (min-width : #{$breakpoint-large})";
+$media-full-hd:                 	"only screen and (min-width : #{$breakpoint-extra-large}";
+

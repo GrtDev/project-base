@@ -1,4 +1,8 @@
-@import "../settings/*";
+@import "../base/settings/*all";
+
+// import your fonts here
+// @import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,600,700,800);
+
 
 html
 {
@@ -9,22 +13,22 @@ html
 }
 
 h1 {
-    $h1-font-size;
+    font-size: $h1-font-size;
 }
-h2 {
-    $h2-font-size;
+h2  {
+    font-size: $h2-font-size;
 }
 h3 {
-    $h3-font-size;
+    font-size: $h3-font-size;
 }
 h4 {
-    $h4-font-size;
+    font-size: $h4-font-size;
 }
 h5 {
-    $h5-font-size;
+    font-size: $h5-font-size;
 }
 h6 {
-    $h6-font-size;
+    font-size: $h6-font-size;
 }
 
 h1, h2, h3, h4, h5, h6

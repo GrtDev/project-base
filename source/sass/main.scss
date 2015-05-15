@@ -1,12 +1,16 @@
-// import your fonts here
-// @import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,600,700,800);
-
-
 // import vendor styling here
 // @import "vendors/jquery.ui"
 
+.open {
+    font-size: 4px;
+}
+
+.active {
+    font-size: 100px;
+}
+
 // import all variables & settings first
-@import "base/settings/*";
+@import "base/settings/*all";
 
 // import the basics
 @import "base/normalize";

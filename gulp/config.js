@@ -40,7 +40,7 @@ dest.data               = '<%= assets %>/data';
 var config              = {};
 config.name             = packageJSON.name;
 config.debug            = true;
-config.minify           = false;
+config.minify           = true;
 config.verbose          = false;
 config.source           = source;
 config.dest             = dest;
