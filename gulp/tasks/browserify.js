@@ -1,17 +1,20 @@
 // @formatter:off
 
-var config              = require('../config');
-var handleErrors        = require('../util/handleErrors');
-var browserSync         = require('browser-sync');
-var gulp                = require('gulp');
-var browserify          = require('browserify');
-var source              = require('vinyl-source-stream');
-var bundleLogger        = require('../util/bundleLogger');
-var mergeStream         = require('merge-stream');
-var watchify            = require('watchify');
-var buffer              = require('vinyl-buffer');
-var uglify              = require('gulp-uglify');
-var gulpif              = require('gulp-if');
+var config                  = require('../config');
+var handleErrors            = require('../util/handleErrors');
+var sizeLogger              = require('../util/sizeLogger');
+
+var browserSync             = require('browser-sync');
+var gulp                    = require('gulp');
+var browserify              = require('browserify');
+var source                  = require('vinyl-source-stream');
+var bundleLogger            = require('../util/bundleLogger');
+var mergeStream             = require('merge-stream');
+var watchify                = require('watchify');
+var buffer                  = require('vinyl-buffer');
+var uglify                  = require('gulp-uglify');
+var gulpIf                  = require('gulp-if');
+var gulpSize                = require('gulp-size');
 
 /**
  *  Creates a set of bundle configurations to be run with the browserify task.
@@ -88,6 +91,11 @@ function createBundle(bundleConfig, opt_watch) {
      */
     function bundle() {
 
+        // Keep track of the file size changes
+        // @see: https://github.com/sindresorhus/gulp-size
+        var sizeBefore = gulpSize({showFiles: true});
+        var sizeAfter = gulpSize({showFiles: true});
+
         return browserifyInstance.bundle()
             .on('error', handleErrors)
             // log the start and keep track of the task process time.
@@ -99,10 +107,14 @@ function createBundle(bundleConfig, opt_watch) {
             //
             .on('end', bundleLogger.uglifying(bundleConfig.uglify, bundleConfig.fileName))
             //.pipe(gulpif(bundleConfig.uglify, bundleLogger.minify(bundleConfig.fileName)))
-            .pipe(gulpif(bundleConfig.uglify, buffer())) // convert from streaming to buffer object for uglify
-            .pipe(gulpif(bundleConfig.uglify, uglify(bundleConfig.uglifyOptions)))
+            .pipe(gulpIf(bundleConfig.uglify,   buffer())) // convert from streaming to buffer object for uglify
+            .pipe(gulpIf(bundleConfig.uglify,   sizeBefore))
+            .pipe(gulpIf(bundleConfig.uglify,   uglify(bundleConfig.uglifyOptions)))
             // Specify the output destination
             .pipe(gulp.dest(bundleConfig.dest))
+            //
+            .pipe(gulpIf(bundleConfig.uglify,   sizeAfter))
+            .on('end', sizeLogger.difference(sizeBefore, sizeAfter, bundleConfig.uglify))
             // log the end of the bundle task and calculate the task time.
             .on('end', bundleLogger.end(bundleConfig.fileName))
             .pipe(browserSync.reload({stream: true}));

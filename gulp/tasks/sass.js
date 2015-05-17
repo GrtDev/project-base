@@ -1,19 +1,18 @@
 //@formatter:off
 
-var config                  = require('../config');
-var handleErrors            = require('../util/handleErrors');
-var humanFileSize           = require('../util/humanFileSize');
+var config                      = require('../config');
+var handleErrors                = require('../util/handleErrors');
+var sizeLogger                  = require('../util/sizeLogger');
 
-var gulp                    = require('gulp');
-var gulpUtil                = require('gulp-util');
-var browserSync             = require('browser-sync');
-var sass                    = require('gulp-sass');
-var sourcemaps              = require('gulp-sourcemaps');
-var autoprefixer            = require('gulp-autoprefixer');
-var gulpIf                  = require('gulp-if');
-var gulpMinCss              = require('gulp-minify-css');
-var gulpSize                = require('gulp-size');
-var uncss                   = require('gulp-uncss');
+var gulp                        = require('gulp');
+var browserSync                 = require('browser-sync');
+var sass                        = require('gulp-sass');
+var sourcemaps                  = require('gulp-sourcemaps');
+var autoprefixer                = require('gulp-autoprefixer');
+var gulpIf                      = require('gulp-if');
+var gulpMinCss                  = require('gulp-minify-css');
+var gulpSize                    = require('gulp-size');
+var uncss                       = require('gulp-uncss');
 
 
 
@@ -96,15 +95,17 @@ gulp.task('sass', function () {
         .pipe(sass(options.sass))
         .on('error', handleErrors)
         // start optimizing...
-        .pipe(gulpIf(options.minify, sizeBefore))
+        .pipe(gulpIf(options.minify,        sizeBefore))
         .pipe(gulpIf(options.removeUnused,  uncss(options.uncss)))
-        .pipe(autoprefixer(options.autoprefixer))
         .pipe(gulpIf(options.minify,        gulpMinCss(options.cleanCSS)))
         .pipe(gulpIf(options.sourcemaps,    sourcemaps.write()))
-        .pipe(gulpIf(options.minify, sizeAfter))
+        //
+        // Important: run autoprefixer after the sourcemaps have been written. Otherwise the sourcemap will become huge!
+        .pipe(autoprefixer(options.autoprefixer))
+        .pipe(gulpIf(options.minify,        sizeAfter))
         //
         .pipe(gulp.dest(options.dest))
-        .on('end', function () { if(options.minify) gulpUtil.log('Total size: ' + sizeAfter.prettySize + ', ( saved ' + gulpUtil.colors.cyan(humanFileSize(sizeBefore.size - sizeAfter.size, true)) + ' )'); })
+        .on('end', sizeLogger.difference(sizeBefore, sizeAfter, options.minify))
         .pipe(browserSync.reload({stream: true}));
 
 });

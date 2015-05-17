@@ -67,7 +67,7 @@ module.exports = {
 
         return function () {
             var taskTime = startTime ? prettyHrtime(process.hrtime(startTime)) : null;
-            gulpUtil.log('Bundled...\t' + gulpUtil.colors.blue(fileName) + (taskTime ? ' in ' + gulpUtil.colors.magenta(taskTime) : ''));
+            gulpUtil.log('Bundled:\t' + gulpUtil.colors.blue(fileName) + (taskTime ? ' in ' + gulpUtil.colors.magenta(taskTime) : ''));
         }
 
     }
