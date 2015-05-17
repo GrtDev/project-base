@@ -10,7 +10,7 @@
 // @formatter:off
 
 var gulp                = require('gulp');
-var gutil               = require('gulp-util');
+var gulpUtil            = require('gulp-util');
 var template            = require('lodash.template');
 var packageJSON         = require('../package.json');
 
@@ -71,14 +71,15 @@ function PathConfig(root) {
      * it through gulp-util.template to render the correct output.
      * @see https://github.com/gulpjs/gulp-util#templatestring-data
      *
+     * @public
      * @function getPath
-     * @param name {string} name of the path required.
-     * @param opt_fileName {=string} optional file name to add to the path.
-     * @return {string} fully rendered (file) path.
+     * @param name {string}             name of the path required.
+     * @param opt_fileName {=string}    optional file name to add to the path.
+     * @return {string}                 fully rendered (file) path.
      */
     _this.getPath = function(name, opt_fileName) {
         if(!_this.hasOwnProperty(name)){
-            gutil.log(gutil.colors.red('Error: Path with name: \'' + name + '\' was not found!'));
+            gulpUtil.log(gulpUtil.colors.red('Error: Path with name: \'' + name + '\' was not found!'));
             return '';
         }
 
@@ -90,14 +91,15 @@ function PathConfig(root) {
             path = template(path);
             path = path(_this);
 
-            if(loopNum++ > maxRecursion) gutil.log(gutil.colors.red('Error: Maximum recursion (' + maxRecursion + ') reached or failed to compile path template for name: \'' + name + '\'. Compiled path: \'' + path + '\''));
+            if(loopNum++ > maxRecursion) gulpUtil.log(gulpUtil.colors.red('Error: Maximum recursion (' + maxRecursion + ') reached or failed to compile path template for name: \'' + name + '\'. Compiled path: \'' + path + '\''));
         }
 
         return opt_fileName ? path + '/' + opt_fileName : path;
     }
     /**
      * A function to log all the path variables.
-     * Usefull for checking if they're all set correctly
+     * Useful for checking if they're all set correctly
+     * @public
      * @function dump
      */
     _this.dump = function () {
