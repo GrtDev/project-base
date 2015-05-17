@@ -29,7 +29,7 @@ gulp.task('handlebars', function () {
             helpers:    [ config.source.getPath('markup', 'helpers/**/*.js') ],     // Helpers that are available in the templates
             partials:   [ config.source.getPath('markup', 'partials/**/*.hbs') ],   // Partials that are available in the templates
 
-            bustCache:  true,         // default false
+            bustCache:  true,           // default false
             debug:      false,          // Whether to log the helper names, partial names, and root property names for each file as they are rendered.
 
             // By default, globbed data files are merged into a object structure according to
@@ -50,6 +50,12 @@ gulp.task('handlebars', function () {
 
     // @formatter:on
 
+
+    /**
+     * Defines under what object the data from the loaded json files can be found.
+     * @param file
+     * @returns {string}
+     */
     function parseDataName(file) {
         // this.handlebars <- current handlebars instance
         // file.path       <- full system path with extension

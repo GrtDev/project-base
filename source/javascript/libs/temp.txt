@@ -1,3 +1,5 @@
 Just a file to keep the folder in git.
 
+Place your libraries / frameworks here
+
 Safe to delete.
