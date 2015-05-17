@@ -4,4 +4,41 @@
 
 %button-base {
     cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+}
+
+.button--close {
+
+    @extend %button-base;
+
+    color: $color-white;
+    position: relative;
+    padding: 5px 40px 5px 10px;
+    color: #FFFFFF;
+
+    // create cross
+    &:after, &:before{
+        position: absolute;
+        right: 10px;
+        content: ' ';
+        height: 20px;
+        width: 2px;
+        background-color: $color-white;
+        transform: rotate(45deg);
+        transition: 200ms $ease-out-quart;
+        transition-property: height, top;
+        top: 5px;
+    }
+
+    &:after{
+        transform: rotate(-45deg);
+    }
+
+    &:hover {
+        &:after, &:before{
+            height: 30px;
+            top: 0px;
+        }
+    }
 }

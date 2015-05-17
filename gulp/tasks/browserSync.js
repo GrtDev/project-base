@@ -9,6 +9,8 @@ var config          = require('../config');
 
 /**
  * Task to run BrowserSync.
+ * BrowserSync makes your tweaking and testing faster by synchronising
+ * file changes and interactions across multiple devices
  * @see http://www.browsersync.io/
  */
 gulp.task('browserSync', function () {

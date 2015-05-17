@@ -40,7 +40,7 @@ dest.data               = '<%= assets %>/data';
 var config              = {};
 config.name             = packageJSON.name;
 config.debug            = true;
-config.minify           = true;
+config.minify           = false;
 config.verbose          = false;
 config.source           = source;
 config.dest             = dest;
@@ -69,10 +69,12 @@ function PathConfig(root) {
     /**
      * The path string can be a lodash template, this functions passes
      * it through gulp-util.template to render the correct output.
-     * @function getPath
      * @see https://github.com/gulpjs/gulp-util#templatestring-data
+     *
+     * @function getPath
      * @param name {string} name of the path required.
      * @param opt_fileName {=string} optional file name to add to the path.
+     * @return {string} fully rendered (file) path.
      */
     _this.getPath = function(name, opt_fileName) {
         if(!_this.hasOwnProperty(name)){

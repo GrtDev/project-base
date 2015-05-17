@@ -43,8 +43,8 @@ gulp.task('build', function() {
         'clean',
         'images',
         'handlebars',
-        'sass',
-        'browserify'
+        'browserify',
+        'sass'
     );
 
 });

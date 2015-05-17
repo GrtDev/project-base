@@ -15,7 +15,7 @@ var gulpMinCss              = require('gulp-minify-css');
 var gulpSize                = require('gulp-size');
 var uncss                   = require('gulp-uncss');
 
-//@formatter:on
+
 
 /**
  * Task for compiled SASS files back to CSS, uses lib-sass instead of ruby for faster compiling.
@@ -31,12 +31,12 @@ gulp.task('sass', function () {
 
         source: config.source.getPath('css', '*.scss'),
         dest: config.dest.getPath('css'),
-        sourcemaps: config.debug, // only include source maps in debug mode.
+        sourcemaps: true, // always include sourcemaps
 
 
         sass: {
-            //indentedSyntax: true, // Enable .sass syntax!
-            //imagePath: 'images' // Used by the image-url helper
+            //indentedSyntax: true,     // Enable .sass syntax!
+            //imagePath: 'images'       // Used by the image-url helper
         },
 
         // Plugin to parse CSS and add vendor prefixes using values from Can I Use.
@@ -64,12 +64,24 @@ gulp.task('sass', function () {
         // @see: https://github.com/giakki/uncss
         removeUnused: true,
         uncss: {
-            html: config.dest.getPath('markup', '**/*.html'),
-            // provide a list of selectors that should not be removed by UnCSS. For example, styles added by user interaction with the page (hover, click),
-            ignore: ['.active', '.open', '.selected']
+            html: [config.dest.getPath('markup', '*.html')],
+            // Provide a list of selectors that should not be removed by UnCSS. For example, styles added by user interaction with the page (hover, click),
+            // Both literal names and regex patterns are recognized.
+            ignore: [ /\.modal.*/, /\.panel.*/, /\.popup.*/ ]
+            //timeout: 0 //  Specify how long to wait for the JS to be loaded.
         }
 
     };
+
+    // Push RegExp ignore matches here to prevent Array syntax problems
+    options.uncss.ignore.push(/.*\.active/);        // .active
+    options.uncss.ignore.push(/.*\.selected/);      // .selected
+    options.uncss.ignore.push(/.*\.open[ed]?/);     // .open OR .opened
+    options.uncss.ignore.push(/.*\.close[d]?/);     // .close OR .closed
+    options.uncss.ignore.push(/.*\.show/);          // .show
+    options.uncss.ignore.push(/.*\.hid[e|den]?/);   // .hide OR .hidden
+
+    //@formatter:on
 
     // Keep track of the file size changes
     // @see: https://github.com/sindresorhus/gulp-size
@@ -78,21 +90,21 @@ gulp.task('sass', function () {
 
     return gulp.src(options.source)
         //
-        .on('error', handleErrors)
         //
         .pipe(gulpIf(options.sourcemaps,    sourcemaps.init()))
         // sass
         .pipe(sass(options.sass))
+        .on('error', handleErrors)
         // start optimizing...
-        .pipe(sizeBefore)
+        .pipe(gulpIf(options.minify, sizeBefore))
         .pipe(gulpIf(options.removeUnused,  uncss(options.uncss)))
+        .pipe(autoprefixer(options.autoprefixer))
         .pipe(gulpIf(options.minify,        gulpMinCss(options.cleanCSS)))
         .pipe(gulpIf(options.sourcemaps,    sourcemaps.write()))
-        .pipe(sizeAfter)
+        .pipe(gulpIf(options.minify, sizeAfter))
         //
-        .pipe(autoprefixer(options.autoprefixer))
         .pipe(gulp.dest(options.dest))
-        .on('end', function () { gulpUtil.log('Total size: ' + sizeAfter.prettySize + ', ( saved ' + gulpUtil.colors.cyan(humanFileSize(sizeBefore.size - sizeAfter.size, true)) + ' )'); })
+        .on('end', function () { if(options.minify) gulpUtil.log('Total size: ' + sizeAfter.prettySize + ', ( saved ' + gulpUtil.colors.cyan(humanFileSize(sizeBefore.size - sizeAfter.size, true)) + ' )'); })
         .pipe(browserSync.reload({stream: true}));
 
 });

@@ -18,7 +18,12 @@
 @import "base/typography";
 
 // import components / modules
-@import "components/module";
+@import "components/buttons";
+@import "components/cookie-notification";
 
 // import page specific styles
 @import "pages/home";
+
+.some-module {
+    color: #000;
+}

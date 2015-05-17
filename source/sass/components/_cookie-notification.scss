@@ -1,0 +1,59 @@
+@import "../base/settings/*all";
+
+#cookie-notification
+{
+    position: fixed;
+    bottom: 0;
+    z-index: 10;
+    width: 100%;
+
+    &.show {
+        .cookie-notification__content {
+            bottom: 0;
+        }
+    }
+}
+
+.cookie-notification__content
+{
+    position: absolute;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .85);
+    text-align: center;
+    bottom: -175px;
+    transition: bottom 400ms $ease-inout-quart;
+
+    .button--close
+    {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}
+
+.cookie-notification__message
+{
+    position: relative;
+    color: $color-white;
+    display: block;
+    margin: 0 120px;
+    padding: 20px 0;
+    a
+    {
+        color: inherit;
+    }
+}
+
+@media (max-width: 560px) {
+
+    #cookie-notification .button
+    {
+        top: 25px;
+    }
+    .cookie-notification__message
+    {
+        margin: 0 20px;
+        padding: 50px 0 20px 0;
+    }
+}

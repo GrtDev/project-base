@@ -1,49 +1,44 @@
 // @formatter:off
 
-var gulp                = require('gulp');
-var handlebars          = require('gulp-compile-handlebars');
-var rename              = require('gulp-rename');
 var config              = require('../config');
 var handleErrors        = require('../util/handleErrors');
+
+var gulp                = require('gulp');
+var handlebars          = require('gulp-hb');
+var rename              = require('gulp-rename');
 var browserSync         = require('browser-sync');
 var htmlmin             = require('gulp-htmlmin');
 var gulpif              = require('gulp-if');
+var path                = require('path');
 
 
-
+/**
+ *  Gulp task responsible for compiling the handlebar templates to html.
+ *  @see: http://handlebarsjs.com/
+ *  @see: https://www.npmjs.com/package/gulp-hb
+ */
 gulp.task('handlebars', function () {
 
     var options = {
 
-        source:     config.source.getPath('markup', '*.hbs'),
+        source:     config.source.getPath('markup', 'pages/*.hbs'),
         dest:       config.dest.getPath('markup'),
-        minify:     config.minify,
 
-        data: {
-            title:  config.name
+        handlebars: {
+            data:       [ config.source.getPath('markup', 'data/**/*.json') ],      // Data that is added to the context when rendering the templates
+            helpers:    [ config.source.getPath('markup', 'helpers/**/*.js') ],     // Helpers that are available in the templates
+            partials:   [ config.source.getPath('markup', 'partials/**/*.hbs') ],   // Partials that are available in the templates
+
+            bustCache:  true,         // default false
+            debug:      false,          // Whether to log the helper names, partial names, and root property names for each file as they are rendered.
+
+            // By default, globbed data files are merged into a object structure according to
+            // the shortest unique file path without the extension, where path separators determine object nesting.
+            parseDataName: parseDataName
         },
 
-        config: {
 
-            helpers: {
-                // Block helper for repeating code sections
-                times: function (n, block)
-                {
-                    var accum = '';
-                    for (var i = 0; i < n; ++i) accum += block.fn(i);
-                    return accum;
-                },
-                // Block helper for preserving (angular) syntax
-                raw: function (options)
-                {
-                    return options.fn();
-                }
-            },
-
-            ignorePartials: false,
-            batch: [config.source.getPath('markup')] // set partials folder to the same path as the source so we can easily reference partials in different folders.
-        },
-
+        minify:                 false, //config.minify,
         htmlmin: {
             collapseWhitespace: true,
             removeComments:     true,
@@ -55,9 +50,20 @@ gulp.task('handlebars', function () {
 
     // @formatter:on
 
+    function parseDataName(file) {
+        // this.handlebars <- current handlebars instance
+        // file.path       <- full system path with extension
+        // file.shortPath  <- shortest unique path without extension
+        // file.exports    <- result of requiring the helper
+
+        // Ignore directory names
+        return path.basename(file.path);
+    };
+
     return gulp.src(options.source)
         .on('error', handleErrors)
-        .pipe(handlebars(options.data, options.config))
+        .pipe(handlebars(options.handlebars))
+
         .pipe(gulpif(options.minify, htmlmin(options.htmlmin)))
         .pipe(rename(function (path) {
             path.extname = '.html';
@@ -65,4 +71,7 @@ gulp.task('handlebars', function () {
         .pipe(gulp.dest(options.dest))
         .pipe(browserSync.reload({stream: true}));
 });
+
+
+
 

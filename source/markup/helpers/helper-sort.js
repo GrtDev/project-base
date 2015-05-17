@@ -2,7 +2,7 @@
  * Created by gfokke on 14/11/14.
  */
 
-module.exports.register = function (Handlebars, options) {
+module.exports.register = function (Handlebars) {
 
     /**
      * Sorts array by a given key

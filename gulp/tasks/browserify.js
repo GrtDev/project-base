@@ -27,9 +27,13 @@ function createBundleConfigs() {
     main.browserifyOptions      = {
         debug: config.debug // enables source maps
     };
+
+    // Minify files with UglifyJS.
+    // @see: https://www.npmjs.com/package/gulp-uglify
     main.uglify                 = config.minify;
     main.uglifyOptions          = {
-        //
+        mangle: true, // Pass false to skip mangling names.
+        preserveComments: false // 'all', 'some', {function}
     }
 
     return [main];
@@ -64,6 +68,7 @@ function createBundle(bundleConfig, opt_watch) {
         browserifyInstance = watchify(browserifyInstance);
         // Rebundle on update
         browserifyInstance.on('update', bundle);
+        // log that we are watching this bundle
         bundleLogger.watch(bundleConfig.fileName);
 
     } else
@@ -83,18 +88,23 @@ function createBundle(bundleConfig, opt_watch) {
      */
     function bundle() {
 
-        bundleLogger.start(bundleConfig.fileName);
-
         return browserifyInstance.bundle()
             .on('error', handleErrors)
+            // log the start and keep track of the task process time.
+            .on('readable', bundleLogger.start(bundleConfig.fileName))
+            // Use vinyl-source-stream to make the
+            // stream gulp compatible. Specify the
+            // desired output filename here.
             .pipe(source(bundleConfig.fileName))
             //
+            .on('end', bundleLogger.uglifying(bundleConfig.uglify, bundleConfig.fileName))
             //.pipe(gulpif(bundleConfig.uglify, bundleLogger.minify(bundleConfig.fileName)))
             .pipe(gulpif(bundleConfig.uglify, buffer())) // convert from streaming to buffer object for uglify
             .pipe(gulpif(bundleConfig.uglify, uglify(bundleConfig.uglifyOptions)))
-            //
+            // Specify the output destination
             .pipe(gulp.dest(bundleConfig.dest))
-            //.on('end', bundleLogger.end(bundleConfig.fileName))
+            // log the end of the bundle task and calculate the task time.
+            .on('end', bundleLogger.end(bundleConfig.fileName))
             .pipe(browserSync.reload({stream: true}));
     }
 
