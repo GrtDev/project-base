@@ -33,6 +33,10 @@ config.bowerDependencies = {
 
     javascript: [
         'bootstrap/dist/js/*.js'
+    ],
+
+    images: [
+        'bootstrap/dist/js/*.js'
     ]
 
 }

@@ -21,7 +21,7 @@ gulp.task('clean', function () {
 
         // define file patterns to delete here
         source: [
-            config.dest.getPath('markup', '*.html'),
+            config.dest.getPath('markup', '**/*.html'),
             config.dest.getPath('assets', '**')
             //config.dest.getPath('images',       '**'),
             //config.dest.getPath('javascript',   '**'),
