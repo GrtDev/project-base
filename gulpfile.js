@@ -6,7 +6,7 @@ var requireDir              = require('require-dir');
 var config                  = require('./gulp/config');
 var gulpDecorator           = require('./gulp/util/gulpDecorator');
 
-// Decorate gulp with extra functionality for better debugging and better error handling.
+// Decorate gulp with extra functionality for better debugging and error handling.
 gulpDecorator(gulp);
 
 // Require all tasks in gulp/tasks, including subfolders
@@ -16,11 +16,11 @@ requireDir('./gulp/tasks', { recurse: true });
 
 //---------------      B A S I C   S E T T I N G S      ----------------//
 
-// For all the default settings such as file paths and more check the actual config file.
+// For all the default settings such as file paths and more check the actual 'gulp/config.js' file.
 
 config.debug            = true;
 config.minify           = false;
-config.gulpDebug        = true;
+config.gulpDebug        = false;
 config.verbose          = false;
 
 
