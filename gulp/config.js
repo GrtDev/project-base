@@ -37,13 +37,13 @@ dest.videos             = '<%= assets %>/videos';
 dest.data               = '<%= assets %>/data';
 
 
+// create the config object and add all the default settings
 var config              = {};
-// default settings
 config.name             = packageJSON.name;
 config.debug            = true;
 config.minify           = false;
 config.gulpDebug        = false;
-
+config.verbose          = false;
 config.source           = source;
 config.dest             = dest;
 
@@ -98,6 +98,7 @@ function PathConfig(root) {
 
         return opt_fileName ? path + '/' + opt_fileName : path;
     }
+
     /**
      * A function to log all the path variables.
      * Useful for checking if they're all set correctly

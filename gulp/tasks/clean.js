@@ -1,10 +1,11 @@
 // @formatter:off
 
 var config              = require('../config');
+var log                 = require('../util/log');
+
 var gulp                = require('gulp');
 var gulpUtil            = require('gulp-util');
 var del                 = require('del');
-var notify              = require("gulp-notify");
 
 // @formatter:on
 
@@ -35,9 +36,9 @@ gulp.task('clean', function () {
 
     function handleFilesDeleted(error, deletedFiles) {
 
-        if(error) notify(error);
+        if(error) log.error(error);
 
-        if(options.verbose)
+        if(options.verbose && deletedFiles)
         {
             var filesDeletedString = '';
             var currentWorkingDirectory = process.cwd();

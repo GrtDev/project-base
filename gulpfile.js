@@ -21,6 +21,7 @@ requireDir('./gulp/tasks', { recurse: true });
 config.debug            = true;
 config.minify           = false;
 config.gulpDebug        = false;
+config.verbose          = false;
 
 
 //--------------     B A S I C   T A S K S    L I S T     --------------//
