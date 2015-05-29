@@ -1,7 +1,6 @@
 // @formatter:off
 
 var config              = require('../config');
-var handleErrors        = require('../util/handleErrors');
 
 var gulp                = require('gulp');
 var handlebars          = require('gulp-hb');
@@ -10,6 +9,7 @@ var browserSync         = require('browser-sync');
 var htmlmin             = require('gulp-htmlmin');
 var gulpif              = require('gulp-if');
 var path                = require('path');
+var frontMatter         = require('gulp-front-matter');
 
 
 /**
@@ -35,6 +35,14 @@ gulp.task('handlebars', function () {
             // By default, globbed data files are merged into a object structure according to
             // the shortest unique file path without the extension, where path separators determine object nesting.
             parseDataName: parseDataName
+            // A pre-render hook to modify the context object being passed to the handlebars template on a per-file basis.
+            // May be used to load additional file-specific data.
+            //dataEach: onDataEach
+        },
+
+        frontmatter:{
+            property: 'test', // property added to file object
+            remove: true // should we remove front-matter header?
         },
 
 
@@ -66,8 +74,23 @@ gulp.task('handlebars', function () {
         return path.basename(file.path);
     };
 
+    /**
+     * A pre-render hook to modify the context object being passed to the handlebars template on a per-file basis.
+     * May be used to load additional file-specific data.
+     * NOTE: Make sure to pass this function in the options.handlebars config.
+     * @param context {object}
+     * @param file {Vinyl}
+     * @returns {object}
+     */
+    function onDataEach(context, file) {
+        context.foo = 'bar';
+        context.meta = require(file.path.replace('.hbs', '.json'));
+        return context;
+    }
+
     return gulp.src(options.source)
-        .on('error', handleErrors)
+
+        .pipe(frontMatter())
         .pipe(handlebars(options.handlebars))
 
         .pipe(gulpif(options.minify, htmlmin(options.htmlmin)))
@@ -76,6 +99,7 @@ gulp.task('handlebars', function () {
         }))
         .pipe(gulp.dest(options.dest))
         .pipe(browserSync.reload({stream: true}));
+
 });
 
 

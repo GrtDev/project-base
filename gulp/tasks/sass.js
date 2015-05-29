@@ -1,8 +1,7 @@
 //@formatter:off
 
 var config                      = require('../config');
-var handleErrors                = require('../util/handleErrors');
-var sizeLogger                  = require('../util/sizeLogger');
+var log                         = require('../util/log');
 
 var gulp                        = require('gulp');
 var browserSync                 = require('browser-sync');
@@ -34,8 +33,10 @@ gulp.task('sass', function () {
 
 
         sass: {
-            //indentedSyntax: true,     // Enable .sass syntax!
-            //imagePath: 'images'       // Used by the image-url helper
+            // indentedSyntax: true,     // Enable .sass syntax!
+            // imagePath: 'images'       // Used by the image-url helper
+            errLogToConsole: false,
+            onError: log.error           // Also pass the error handler to Sass to catch internal errors
         },
 
         // Plugin to parse CSS and add vendor prefixes using values from Can I Use.
@@ -61,7 +62,7 @@ gulp.task('sass', function () {
         // UnCSS crawls the HTML and removes any unused CSS selectors and styling.
         // it uses PhantomJS to try to run JavaScript files.
         // @see: https://github.com/giakki/uncss
-        removeUnused: true,
+        removeUnused: false,
         uncss: {
             html: [config.dest.getPath('markup', '*.html')],
             // Provide a list of selectors that should not be removed by UnCSS. For example, styles added by user interaction with the page (hover, click),
@@ -89,11 +90,9 @@ gulp.task('sass', function () {
 
     return gulp.src(options.source)
         //
-        //
         .pipe(gulpIf(options.sourcemaps,    sourcemaps.init()))
         // sass
         .pipe(sass(options.sass))
-        .on('error', handleErrors)
         // start optimizing...
         .pipe(gulpIf(options.minify,        sizeBefore))
         .pipe(gulpIf(options.removeUnused,  uncss(options.uncss)))
@@ -105,7 +104,7 @@ gulp.task('sass', function () {
         .pipe(gulpIf(options.minify,        sizeAfter))
         //
         .pipe(gulp.dest(options.dest))
-        .on('end', sizeLogger.difference(sizeBefore, sizeAfter, options.minify))
+        .on('end', log.size.onDifference(sizeBefore, sizeAfter, options.minify))
         .pipe(browserSync.reload({stream: true}));
 
 });

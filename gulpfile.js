@@ -1,15 +1,26 @@
 //@formatter:off
 
-var gulp                = require('gulp');
-var runSequence         = require('run-sequence');
-var requireDir          = require('require-dir');
-var config              = require('./gulp/config');
+var gulp                    = require('gulp');
+var runSequence             = require('run-sequence');
+var requireDir              = require('require-dir');
+var config                  = require('./gulp/config');
+var gulpDecorator           = require('./gulp/util/gulpDecorator');
 
-//@formatter:on
+// Decorate gulp with plumber functionality and add better error handling.
+gulpDecorator.plumber(gulp);
 
 // Require all tasks in gulp/tasks, including subfolders
 requireDir('./gulp/tasks', { recurse: true });
 
+
+
+//---------------      B A S I C   S E T T I N G S      ----------------//
+
+// For all the default settings such as file paths and more check the actual config file.
+
+config.debug            = true;
+config.minify           = false;
+config.gulpDebug        = false;
 
 
 //--------------     B A S I C   T A S K S    L I S T     --------------//
@@ -37,7 +48,7 @@ gulp.task('server', function() {
 /**
  *  Deletes the olds files and builds the project from scratch.
  */
-gulp.task('build', function() {
+gulp.task('build', ['gulpDebug'], function() {
 
     runSequence(
         'clean',

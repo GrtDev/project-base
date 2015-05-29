@@ -38,10 +38,12 @@ dest.data               = '<%= assets %>/data';
 
 
 var config              = {};
+// default settings
 config.name             = packageJSON.name;
 config.debug            = true;
 config.minify           = false;
-config.verbose          = false;
+config.gulpDebug        = false;
+
 config.source           = source;
 config.dest             = dest;
 

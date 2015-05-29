@@ -1,14 +1,12 @@
 // @formatter:off
 
 var config                  = require('../config');
-var handleErrors            = require('../util/handleErrors');
-var sizeLogger              = require('../util/sizeLogger');
+var log                     = require('../util/log');
 
 var browserSync             = require('browser-sync');
 var gulp                    = require('gulp');
 var browserify              = require('browserify');
 var source                  = require('vinyl-source-stream');
-var bundleLogger            = require('../util/bundleLogger');
 var mergeStream             = require('merge-stream');
 var watchify                = require('watchify');
 var buffer                  = require('vinyl-buffer');
@@ -22,6 +20,8 @@ var gulpSize                = require('gulp-size');
  * @returns [ {object} ] Array with bundle configuration objects
  */
 function createBundleConfigs() {
+
+    // TODO automate source location to dest.
 
     var main = {}
     main.fileName               = 'main.js';
@@ -72,7 +72,7 @@ function createBundle(bundleConfig, opt_watch) {
         // Rebundle on update
         browserifyInstance.on('update', bundle);
         // log that we are watching this bundle
-        bundleLogger.watch(bundleConfig.fileName);
+        log.bundle.watch(bundleConfig.fileName);
 
     } else
     {
@@ -97,26 +97,26 @@ function createBundle(bundleConfig, opt_watch) {
         var sizeAfter = gulpSize({showFiles: true});
 
         return browserifyInstance.bundle()
-            .on('error', handleErrors)
             // log the start and keep track of the task process time.
-            .on('readable', bundleLogger.start(bundleConfig.fileName))
+            .on('readable', log.bundle.onStart(bundleConfig.fileName))
             // Use vinyl-source-stream to make the
             // stream gulp compatible. Specify the
             // desired output filename here.
             .pipe(source(bundleConfig.fileName))
             //
-            .on('end', bundleLogger.uglifying(bundleConfig.uglify, bundleConfig.fileName))
-            //.pipe(gulpif(bundleConfig.uglify, bundleLogger.minify(bundleConfig.fileName)))
-            .pipe(gulpIf(bundleConfig.uglify,   buffer())) // convert from streaming to buffer object for uglify
+            .on('end', log.bundle.onUglify(bundleConfig.uglify, bundleConfig.fileName))
+            // convert from streaming to buffer object for uglify
+            .pipe(gulpIf(bundleConfig.uglify,   buffer()))
             .pipe(gulpIf(bundleConfig.uglify,   sizeBefore))
             .pipe(gulpIf(bundleConfig.uglify,   uglify(bundleConfig.uglifyOptions)))
             // Specify the output destination
             .pipe(gulp.dest(bundleConfig.dest))
             //
             .pipe(gulpIf(bundleConfig.uglify,   sizeAfter))
-            .on('end', sizeLogger.difference(sizeBefore, sizeAfter, bundleConfig.uglify))
+            .on('end', log.size.onDifference(sizeBefore, sizeAfter, bundleConfig.uglify))
+
             // log the end of the bundle task and calculate the task time.
-            .on('end', bundleLogger.end(bundleConfig.fileName))
+            .on('end', log.bundle.onEnd(bundleConfig.fileName))
             .pipe(browserSync.reload({stream: true}));
     }
 

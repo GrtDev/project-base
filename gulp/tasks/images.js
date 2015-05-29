@@ -4,7 +4,6 @@ var changed             = require('gulp-changed');
 var gulp                = require('gulp');
 var imagemin            = require('gulp-imagemin');
 var config              = require('../config');
-var handleErrors        = require('../util/handleErrors');
 
 
 /**
@@ -28,8 +27,9 @@ gulp.task('images', function () {
     };
 
     return gulp.src(options.source)
-        .on('error', handleErrors)
+
         .pipe(changed(options.dest))        // Ignore unchanged files
         .pipe(imagemin())                   // Optimize
         .pipe(gulp.dest(options.dest));     // Export
+
 });
