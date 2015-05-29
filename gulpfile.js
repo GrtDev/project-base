@@ -23,24 +23,30 @@ config.minify           = false;
 config.gulpDebug        = false;
 config.verbose          = false;
 
+// @formatter:on
+
 /**
- * List of bower dependencies to be copied to their destination
+ * Bower Dependencies
+ * Function that returns a list of bower dependencies to be copied to their destination
  * If possible it is better to use '@import' for scss (instead of css) files
  * or 'require("path_to_file")' for javascript files.
  */
-config.bowerDependencies = [
-    {
-        files: ['bootstrap/dist/bootstrap.min.css'],
-        dest: config.dest.getPath('css', 'bootstrap/')
-    },
-    {
-        files: ['bootstrap/dist/js/*.js'],
-        dest: config.dest.getPath('javascript')
-    }
-]
+config.bowerDependencies = function () {
+    return [
+        {
+            files: ['bootstrap/dist/bootstrap.min.css'],
+            dest: config.dest.getPath('css', 'bootstrap/')
+        },
+        {
+            files: ['bootstrap/dist/js/*.js'],
+            dest: config.dest.getPath('javascript')
+        }
+    ]
+}
 
 
-//--------------     B A S I C   T A S K S    L I S T     --------------//
+
+//--------------     M A I N   T A S K S    L I S T     --------------//
 
 // Specifies the default set of tasks to run when you run `gulp`.
 gulp.task('default', ['server']);

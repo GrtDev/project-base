@@ -1,16 +1,8 @@
 // import vendor styling here
 // @import "vendors/jquery.ui"
 
-.open {
-    font-size: 4px;
-}
-
-.active {
-    font-size: 100px;
-}
-
 // import all variables & settings first
-@import "base/settings/*all";
+@import "base/settings/-all";
 
 // import the basics
 @import "base/normalize";
@@ -26,4 +18,12 @@
 
 .some-module {
     color: #000;
+}
+
+.open {
+    font-size: 4px;
+}
+
+.active {
+    font-size: 100px;
 }

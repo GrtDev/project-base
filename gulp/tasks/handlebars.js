@@ -21,13 +21,13 @@ gulp.task('handlebars', function () {
 
     var options = {
 
-        source:     config.source.getPath('markup', 'pages/*.hbs'),
+        source:     [config.source.getPath('markup', '!(_)*.hbs'), config.source.getPath('markup', '!(_)/**/!(_)*.hbs')],
         dest:       config.dest.getPath('markup'),
 
         handlebars: {
-            data:       [ config.source.getPath('markup', 'data/**/*.json') ],      // Data that is added to the context when rendering the templates
-            helpers:    [ config.source.getPath('markup', 'helpers/**/*.js') ],     // Helpers that are available in the templates
-            partials:   [ config.source.getPath('markup', 'partials/**/*.hbs') ],   // Partials that are available in the templates
+            data:       [ config.source.getPath('markup', '_data/**/*.json') ],      // Data that is added to the context when rendering the templates
+            helpers:    [ config.source.getPath('markup', '_helpers/**/*.js') ],     // Helpers that are made available in the templates
+            partials:   [ config.source.getPath('markup', '_partials/**/*.hbs') ],   // Partials that are made available in the templates
 
             bustCache:  true,           // default false
             debug:      false,          // Whether to log the helper names, partial names, and root property names for each file as they are rendered.
