@@ -16,35 +16,33 @@ requireDir('./gulp/tasks', { recurse: true });
 
 //---------------      B A S I C   S E T T I N G S      ----------------//
 
-// For all the default settings such as file paths and more check the actual 'gulp/config.js' file.
+// For ALL the default settings such as file paths and more check the actual 'gulp/config.js' file.
 
 config.debug            = true;
 config.minify           = false;
 config.gulpDebug        = false;
 config.verbose          = false;
 
-// Bower dependencies will be automatically copied to their corresponding build folder destination.
-// If possible it is better to use '@import' for scss (instead of css) files or 'require("path_to_file")' for javascript files.
-config.bowerDependencies = {
-
-    css: [
-        'bootstrap/dist/bootstrap.min.css'
-    ],
-
-    javascript: [
-        'bootstrap/dist/js/*.js'
-    ],
-
-    images: [
-        'bootstrap/dist/js/*.js'
-    ]
-
-}
+/**
+ * List of bower dependencies to be copied to their destination
+ * If possible it is better to use '@import' for scss (instead of css) files
+ * or 'require("path_to_file")' for javascript files.
+ */
+config.bowerDependencies = [
+    {
+        files: ['bootstrap/dist/bootstrap.min.css'],
+        dest: config.dest.getPath('css', 'bootstrap/')
+    },
+    {
+        files: ['bootstrap/dist/js/*.js'],
+        dest: config.dest.getPath('javascript')
+    }
+]
 
 
 //--------------     B A S I C   T A S K S    L I S T     --------------//
 
-// specifies the default set of tasks to run when you run `gulp`.
+// Specifies the default set of tasks to run when you run `gulp`.
 gulp.task('default', ['server']);
 
 
@@ -64,9 +62,8 @@ gulp.task('server', function() {
 
 });
 
-/**
- *  Deletes the olds files and builds the project from scratch.
- */
+
+// Deletes the olds files and builds the project from scratch.
 gulp.task('build', ['gulpDebug'], function() {
 
     runSequence(
@@ -79,9 +76,8 @@ gulp.task('build', ['gulpDebug'], function() {
 
 });
 
-/**
- *  Deletes the olds files and builds the project from scratch.
- */
+
+// Deletes the olds files and builds the project from scratch.
 gulp.task('build:dist', function() {
 
     config.debug    = false;

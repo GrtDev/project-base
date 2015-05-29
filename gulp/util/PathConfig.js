@@ -26,11 +26,11 @@ function PathConfig(root) {
      *
      * @public
      * @function getPath
-     * @param name {string}             name of the path required.
-     * @param opt_fileName {=string}    optional file name to add to the path.
-     * @return {string}                 fully rendered (file) path.
+     * @param name {string}                     name of the path required.
+     * @param opt_pathExtension {=string}       optional path extension to be appended to the path.
+     * @return {string}                         fully rendered (file) path.
      */
-    _this.getPath = function(name, opt_fileName) {
+    _this.getPath = function(name, opt_pathExtension) {
         if(!_this.hasOwnProperty(name)){
             gulpUtil.log(gulpUtil.colors.red('Error: Path with name: \'' + name + '\' was not found!'));
             return '';
@@ -47,7 +47,7 @@ function PathConfig(root) {
             if(loopNum++ > maxRecursion) gulpUtil.log(gulpUtil.colors.red('Error: Maximum recursion (' + maxRecursion + ') reached or failed to compile path template for name: \'' + name + '\'. Compiled path: \'' + path + '\''));
         }
 
-        return opt_fileName ? path + '/' + opt_fileName : path;
+        return opt_pathExtension ? path + '/' + opt_pathExtension : path;
     }
 
     /**
