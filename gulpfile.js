@@ -23,6 +23,20 @@ config.minify           = false;
 config.gulpDebug        = false;
 config.verbose          = false;
 
+// Bower dependencies will be automatically copied to their corresponding build folder destination.
+// If possible it is better to use '@import' for scss (instead of css) files or 'require("path_to_file")' for javascript files.
+config.bowerDependencies = {
+
+    css: [
+        'bootstrap/dist/bootstrap.min.css'
+    ],
+
+    javascript: [
+        'bootstrap/dist/js/*.js'
+    ]
+
+}
+
 
 //--------------     B A S I C   T A S K S    L I S T     --------------//
 

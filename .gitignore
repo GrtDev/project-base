@@ -1,7 +1,7 @@
-node_modules/
-.idea/
-.DS_Store
+#ignore build folder
 www/
+
+#ignore sass cache
 .sass-cache/
 
 ## Ignore Visual Studio temporary files, build results, and
@@ -250,6 +250,4 @@ build/Release
 
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
-node_modules
-
 node_modules

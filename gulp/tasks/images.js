@@ -14,7 +14,7 @@ gulp.task('images', function () {
 
     var options = {
 
-        source: config.source.getPath('images', '**/*.{jpg|jpeg|gif|svg|png}'),
+        source: config.source.getPath('images', '**/*(*.jpg|*.jpeg|*.gif|*.svg|*.png)'),
         dest: config.dest.getPath('images'),
 
         config: {
