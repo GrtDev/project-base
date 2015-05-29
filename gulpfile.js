@@ -70,7 +70,7 @@ gulp.task('server', function() {
 
 
 // Deletes the olds files and builds the project from scratch.
-gulp.task('build', ['gulpDebug'], function() {
+gulp.task('build', function() {
 
     runSequence(
         'clean',
