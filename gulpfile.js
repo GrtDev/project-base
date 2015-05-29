@@ -6,8 +6,8 @@ var requireDir              = require('require-dir');
 var config                  = require('./gulp/config');
 var gulpDecorator           = require('./gulp/util/gulpDecorator');
 
-// Decorate gulp with plumber functionality and add better error handling.
-gulpDecorator.plumber(gulp);
+// Decorate gulp with extra functionality for better debugging and better error handling.
+gulpDecorator(gulp);
 
 // Require all tasks in gulp/tasks, including subfolders
 requireDir('./gulp/tasks', { recurse: true });
@@ -20,7 +20,7 @@ requireDir('./gulp/tasks', { recurse: true });
 
 config.debug            = true;
 config.minify           = false;
-config.gulpDebug        = false;
+config.gulpDebug        = true;
 config.verbose          = false;
 
 

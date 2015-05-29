@@ -16,6 +16,7 @@ var del                 = require('del');
  */
 gulp.task('clean', function () {
 
+
     var options = {
 
         // define file patterns to delete here
@@ -31,6 +32,9 @@ gulp.task('clean', function () {
         verbose: config.verbose
 
     };
+
+
+
 
     del(options.source, handleFilesDeleted);
 
