@@ -31,11 +31,13 @@ function createBundleConfigs() {
     var options = {
 
         source: config.source.getPath('javascript', '!(' + config.ignorePrefix + ')*.js'),
-        dest: config.dest.getPath('javascript'),
+        dest:   config.dest.getPath('javascript'),
 
-        uglify: config.minify,
 
-        uglifyOptions: {
+        // Minify files with UglifyJS.
+        // @see: https://www.npmjs.com/package/gulp-uglify
+        uglify:         config.minify,
+        uglifyOptions:  {
             mangle: true, // Pass false to skip mangling names.
             preserveComments: false // 'all', 'some', {function}
         }
@@ -81,8 +83,6 @@ function createBundleConfig(fileName, filePath, options) {
         debug: true // always enable source maps
     };
 
-    // Minify files with UglifyJS.
-    // @see: https://www.npmjs.com/package/gulp-uglify
     bundleConfig.uglify = (options.uglify !== undefined) ? options.uglify : config.minify;
     bundleConfig.uglifyOptions = options.uglifyOptions || {
         mangle: true, // Pass false to skip mangling names.

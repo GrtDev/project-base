@@ -4,7 +4,7 @@ title: Hello World
 {{> base/_head }}
 
 
-{{ debug }}
+{{!--{{ debug }}--}}
 
 
 {{> modules/_some-module }}
@@ -12,6 +12,17 @@ title: Hello World
 <div>
 	{{ example.json.name }}
 	{{ example.json.description }}
+</div>
+
+
+<div>
+
+    <ul>
+		{{#times 10}}
+            <li>Some list item</li>
+		{{/times}}
+    </ul>
+
 </div>
 
 {{> common/_cookie-notification}}

@@ -1,16 +1,10 @@
 /**
- * Exports the function to register a helper function.
- * @see:    https://www.npmjs.com/package/gulp-hb
- * @param   Handlebars {Handlebars} handlebars framework
+ * Handle bar helper function - Logs the current context or value
+ * @name: debug
+ * @usage: {{debug}} or {{debug someValue}}
+ * @see: http://thinkvitamin.com/code/handlebars-js-part-3-tips-and-tricks/
  */
-module.exports.register = function (Handlebars) {
-
-    /**
-     * Handle bar helper function - Logs the current context or value
-     * usage: {{debug}} or {{debug someValue}}
-     * @see: http://thinkvitamin.com/code/handlebars-js-part-3-tips-and-tricks/
-     */
-    Handlebars.registerHelper("debug", function (optionalValue) {
+module.exports = function (optionalValue) {
         console.log("Current Context");
         console.log("====================");
         console.log(this);
@@ -21,6 +15,4 @@ module.exports.register = function (Handlebars) {
             console.log("====================");
             console.log(optionalValue);
         }
-    });
-
-}
+};
