@@ -95,10 +95,9 @@ gulp.task('sass', function () {
         .pipe(gulpIf(options.minify,        sizeBefore))
         .pipe(gulpIf(options.removeUnused,  uncss(options.uncss)))
         .pipe(gulpIf(options.minify,        gulpMinCss(options.cleanCSS)))
-        .pipe(gulpIf(options.sourcemaps,    sourcemaps.write()))
         //
-        // Important: run autoprefixer after the sourcemaps have been written. Otherwise the sourcemap will become huge!
         .pipe(autoprefixer(options.autoprefixer))
+        .pipe(gulpIf(options.sourcemaps,    sourcemaps.write('.')))
         .pipe(gulpIf(options.minify,        sizeAfter))
         //
         .pipe(gulp.dest(options.dest))

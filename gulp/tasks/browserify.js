@@ -13,6 +13,7 @@ var buffer                  = require('vinyl-buffer');
 var uglify                  = require('gulp-uglify');
 var gulpIf                  = require('gulp-if');
 var gulpSize                = require('gulp-size');
+var sourcemaps              = require('gulp-sourcemaps');
 
 /**
  *  Creates a set of bundle configurations to be run with the browserify task.
@@ -28,7 +29,7 @@ function createBundleConfigs() {
     main.source                 = config.source.getPath('javascript', main.fileName);
     main.dest                   = config.dest.getPath('javascript');
     main.browserifyOptions      = {
-        debug: config.debug // enables source maps
+        debug: true // always enable source maps
     };
 
     // Minify files with UglifyJS.
@@ -105,10 +106,14 @@ function createBundle(bundleConfig, opt_watch) {
             .pipe(source(bundleConfig.fileName))
             //
             .on('end', log.bundle.onUglify(bundleConfig.uglify, bundleConfig.fileName))
+
+            .pipe(buffer())
+            .pipe(sourcemaps.init({loadMaps: true}))
             // convert from streaming to buffer object for uglify
-            .pipe(gulpIf(bundleConfig.uglify,   buffer()))
             .pipe(gulpIf(bundleConfig.uglify,   sizeBefore))
             .pipe(gulpIf(bundleConfig.uglify,   uglify(bundleConfig.uglifyOptions)))
+
+            .pipe(sourcemaps.write('./'))
             // Specify the output destination
             .pipe(gulp.dest(bundleConfig.dest))
             //

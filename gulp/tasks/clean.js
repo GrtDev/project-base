@@ -14,14 +14,14 @@ var del                 = require('del');
  *  Deletes all files that match the patterns in the option.source
  *  @see: https://www.npmjs.com/package/del
  */
-gulp.task('clean', function () {
+gulp.task('clean', function (onEnd) {
 
 
     var options = {
 
         // define file patterns to delete here
         source: [
-            config.dest.getPath('root',         '**')
+            config.dest.getPath('root', '**')
             //config.dest.getPath('markup',       '**/*.html'),
             //config.dest.getPath('assets',       '**'),
             //config.dest.getPath('images',       '**'),
@@ -33,7 +33,6 @@ gulp.task('clean', function () {
         verbose: config.verbose
 
     };
-
 
 
 
@@ -53,8 +52,10 @@ gulp.task('clean', function () {
             filesDeletedString = filesDeletedString.replace(new RegExp(currentWorkingDirectory, 'g'), '');
 
             gulpUtil.log('Files deleted during cleanup:', gulpUtil.colors.yellow(filesDeletedString));
+
         }
 
+        onEnd();
     }
 
 

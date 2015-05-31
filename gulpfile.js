@@ -30,6 +30,13 @@ config.verbose          = false;
  * Function that returns a list of bower dependencies to be copied to their destination
  * If possible it is better to use '@import' for scss (instead of css) files
  * or 'require("path_to_file")' for javascript files.
+ * @see: https://www.npmjs.com/package/glob
+ * For each destination define a config object:
+ * {
+ *      source : [ path_to_file(s) ],
+ *      dest: path_to_destination
+ * }
+ * @return [ { source:[], dest:{string} } ]
  */
 config.bowerDependencies = function () {
     return [
@@ -58,19 +65,20 @@ gulp.task('default', ['server']);
  *  Starts watching all the used files and rebuilds on file changes.
  *  - This will also automatically refresh your browser after something has been rebuild.
  */
-gulp.task('server', function() {
+gulp.task('server', function(callback) {
 
     runSequence(
         'build',
         'browserSync',
-        'watch'
+        'watch',
+        callback
     );
 
 });
 
 
 // Deletes the olds files and builds the project from scratch.
-gulp.task('build', function() {
+gulp.task('build', function(callback) {
 
     runSequence(
         'clean',
@@ -79,20 +87,22 @@ gulp.task('build', function() {
         'images',
         'handlebars',
         'browserify',
-        'sass'
+        'sass',
+        callback
     );
 
 });
 
 
 // Deletes the olds files and builds the project from scratch.
-gulp.task('build:dist', function() {
+gulp.task('build:dist', function(callback) {
 
     config.debug    = false;
     config.minify   = true;
 
     runSequence(
-        'build'
+        'build',
+        callback
     );
 
 });
