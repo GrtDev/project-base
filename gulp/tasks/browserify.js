@@ -97,6 +97,8 @@ function createBundle(bundleConfig, opt_watch) {
         var sizeBefore = gulpSize({showFiles: true});
         var sizeAfter = gulpSize({showFiles: true});
 
+        // TODO: Fix file size logs
+
         return browserifyInstance.bundle()
             // log the start and keep track of the task process time.
             .on('readable', log.bundle.onStart(bundleConfig.fileName))
@@ -110,7 +112,7 @@ function createBundle(bundleConfig, opt_watch) {
             .pipe(buffer())
             .pipe(sourcemaps.init({loadMaps: true}))
             // convert from streaming to buffer object for uglify
-            .pipe(gulpIf(bundleConfig.uglify,   sizeBefore))
+            //.pipe(gulpIf(bundleConfig.uglify,   sizeBefore))
             .pipe(gulpIf(bundleConfig.uglify,   uglify(bundleConfig.uglifyOptions)))
 
             .pipe(sourcemaps.write('./'))
@@ -118,7 +120,7 @@ function createBundle(bundleConfig, opt_watch) {
             .pipe(gulp.dest(bundleConfig.dest))
             //
             .pipe(gulpIf(bundleConfig.uglify,   sizeAfter))
-            .on('end', log.size.onDifference(sizeBefore, sizeAfter, bundleConfig.uglify))
+            //.on('end', log.size.onDifference(sizeBefore, sizeAfter, bundleConfig.uglify))
 
             // log the end of the bundle task and calculate the task time.
             .on('end', log.bundle.onEnd(bundleConfig.fileName))

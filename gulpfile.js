@@ -13,7 +13,6 @@ gulpDecorator(gulp);
 requireDir('./gulp/tasks', { recurse: true });
 
 
-
 //---------------      B A S I C   S E T T I N G S      ----------------//
 
 // For ALL the default settings such as file paths and more check the actual 'gulp/config.js' file.

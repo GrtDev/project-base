@@ -47,7 +47,7 @@ gulp.task('sass', function () {
 
         // Clean CSS is responsible for minifying the CSS
         // @see: https://github.com/jakubpawlowicz/clean-css
-        minify: config.minify,
+        minify: true,//config.minify,
         cleanCSS: {
             aggressiveMerging: true,        // set to false to disable aggressive merging of properties.
             keepSpecialComments: 0,         // * for keeping all (default), 1 for keeping first one only, 0 for removing all
@@ -86,22 +86,24 @@ gulp.task('sass', function () {
     var sizeBefore = gulpSize({showFiles: true});
     var sizeAfter = gulpSize({showFiles: true});
 
+    // TODO: Fix file size logs.
+
     return gulp.src(options.source)
         //
         .pipe(gulpIf(options.sourcemaps,    sourcemaps.init()))
         // sass
         .pipe(sass(options.sass))
         // start optimizing...
-        .pipe(gulpIf(options.minify,        sizeBefore))
+        //.pipe(gulpIf(options.minify,        sizeBefore))
         .pipe(gulpIf(options.removeUnused,  uncss(options.uncss)))
         .pipe(gulpIf(options.minify,        gulpMinCss(options.cleanCSS)))
         //
         .pipe(autoprefixer(options.autoprefixer))
         .pipe(gulpIf(options.sourcemaps,    sourcemaps.write('.')))
-        .pipe(gulpIf(options.minify,        sizeAfter))
         //
+        .pipe(gulpIf(options.minify,        sizeAfter))
         .pipe(gulp.dest(options.dest))
-        .on('end', log.size.onDifference(sizeBefore, sizeAfter, options.minify))
+        //.on('end', log.size.onDifference(sizeBefore, sizeAfter, options.minify))
         .pipe(browserSync.reload({stream: true}));
 
 });

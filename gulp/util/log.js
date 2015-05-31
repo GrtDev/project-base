@@ -101,7 +101,7 @@ var sizeLogs = {
 
 
         return function () {
-
+            
             sizeBefore = sizeBefore.size;
             sizeAfter = sizeAfter.size;
 
