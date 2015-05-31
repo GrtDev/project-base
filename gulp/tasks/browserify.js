@@ -14,6 +14,11 @@ var uglify                  = require('gulp-uglify');
 var gulpIf                  = require('gulp-if');
 var gulpSize                = require('gulp-size');
 var sourcemaps              = require('gulp-sourcemaps');
+var glob                    = require('glob');
+var path                    = require('path');
+
+
+//@formatter:on
 
 /**
  *  Creates a set of bundle configurations to be run with the browserify task.
@@ -22,28 +27,70 @@ var sourcemaps              = require('gulp-sourcemaps');
  */
 function createBundleConfigs() {
 
-    // TODO automate source location to dest.
+    // Set your default options here
+    var options = {
 
-    var main = {}
-    main.fileName               = 'main.js';
-    main.source                 = config.source.getPath('javascript', main.fileName);
-    main.dest                   = config.dest.getPath('javascript');
-    main.browserifyOptions      = {
+        source: config.source.getPath('javascript', '!(' + config.ignorePrefix + ')*.js'),
+        dest: config.dest.getPath('javascript'),
+
+        uglify: config.minify,
+
+        uglifyOptions: {
+            mangle: true, // Pass false to skip mangling names.
+            preserveComments: false // 'all', 'some', {function}
+        }
+
+    }
+
+
+    var fileEntries = glob.sync(options.source);
+    var bundleConfigs = [];
+
+    for (var i = 0, leni = fileEntries.length; i < leni; i++)
+    {
+        var entry = fileEntries[i];
+        var name = path.basename(entry);
+        var bundleConfig = createBundleConfig(name, entry, options)
+        bundleConfigs.push(bundleConfig);
+    }
+
+    return bundleConfigs;
+}
+
+
+/**
+ * Creates a bundle config for the given file.
+ * @param fileName {string}
+ * @param filePath {string}
+ * @param options {object} bundle settings
+ * @returns {{}} bundleConfig
+ */
+function createBundleConfig(fileName, filePath, options) {
+
+    if(!fileName) return log.error({message: 'fileName can not be null!', plugin: 'browserify task'});
+    if(!filePath) return log.error({message: 'filePath can not be null!', plugin: 'browserify task'});
+
+    var bundleConfig = {}
+    options = options || {};
+
+    bundleConfig.fileName = fileName;
+    bundleConfig.source = filePath;
+    bundleConfig.dest = options.dest || config.dest.getPath('javascript');
+
+    bundleConfig.browserifyOptions = options.browserifyOptions || {
         debug: true // always enable source maps
     };
 
     // Minify files with UglifyJS.
     // @see: https://www.npmjs.com/package/gulp-uglify
-    main.uglify                 = config.minify;
-    main.uglifyOptions          = {
+    bundleConfig.uglify = (options.uglify !== undefined) ? options.uglify : config.minify;
+    bundleConfig.uglifyOptions = options.uglifyOptions || {
         mangle: true, // Pass false to skip mangling names.
         preserveComments: false // 'all', 'some', {function}
     }
 
-    return [main];
+    return bundleConfig;
 }
-
-//@formatter:on
 
 /**
  * Creates a bundle for the given configuration.
@@ -113,13 +160,13 @@ function createBundle(bundleConfig, opt_watch) {
             .pipe(sourcemaps.init({loadMaps: true}))
             // convert from streaming to buffer object for uglify
             //.pipe(gulpIf(bundleConfig.uglify,   sizeBefore))
-            .pipe(gulpIf(bundleConfig.uglify,   uglify(bundleConfig.uglifyOptions)))
+            .pipe(gulpIf(bundleConfig.uglify, uglify(bundleConfig.uglifyOptions)))
 
             .pipe(sourcemaps.write('./'))
             // Specify the output destination
             .pipe(gulp.dest(bundleConfig.dest))
             //
-            .pipe(gulpIf(bundleConfig.uglify,   sizeAfter))
+            .pipe(gulpIf(bundleConfig.uglify, sizeAfter))
             //.on('end', log.size.onDifference(sizeBefore, sizeAfter, bundleConfig.uglify))
 
             // log the end of the bundle task and calculate the task time.
