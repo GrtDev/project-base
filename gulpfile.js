@@ -34,11 +34,11 @@ config.verbose          = false;
 config.bowerDependencies = function () {
     return [
         {
-            files: ['bootstrap/dist/bootstrap.min.css'],
-            dest: config.dest.getPath('css', 'bootstrap/')
+            source: ['bootstrap/fonts/**'],
+            dest: config.dest.getPath('fonts', 'bootstrap/')
         },
         {
-            files: ['bootstrap/dist/js/*.js'],
+            source: ['jquery/dist/jquery.min.js'],
             dest: config.dest.getPath('javascript')
         }
     ]
@@ -74,6 +74,7 @@ gulp.task('build', function() {
 
     runSequence(
         'clean',
+        'copyAssets',
         'images',
         'handlebars',
         'browserify',

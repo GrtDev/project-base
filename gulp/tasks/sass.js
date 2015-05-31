@@ -13,8 +13,6 @@ var gulpMinCss                  = require('gulp-minify-css');
 var gulpSize                    = require('gulp-size');
 var uncss                       = require('gulp-uncss');
 
-
-
 /**
  * Task for compiled SASS files back to CSS, uses lib-sass instead of ruby for faster compiling.
  * Depending on the settings it will also remove unused CSS lines, add source maps and minify the output.
@@ -27,7 +25,7 @@ gulp.task('sass', function () {
 
     var options = {
 
-        source: config.source.getPath('css', '*.scss'),
+        source: config.source.getPath('css', '!(' + config.ignorePrefix + ')*.scss'),
         dest: config.dest.getPath('css'),
         sourcemaps: true, // always include sourcemaps
 

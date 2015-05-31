@@ -5,6 +5,8 @@
  * Based on the Gulp-starter project of Daniel Tello
  * @author Daniel Tello
  * @link: github.com/greypants/gulp-starter
+ *
+ * Note:    Define all path as seen from the gulpfile.js location.
  */
 
 // @formatter:off
@@ -41,6 +43,7 @@ dest.data               = '<%= assets %>/data';
 // Create the config object and add all the default settings
 var config              = {};
 config.name             = packageJSON.name;
+config.ignorePrefix     = '_';
 config.debug            = true;
 config.minify           = false;
 config.gulpDebug        = false;

@@ -1,0 +1,13 @@
+{
+  "name": "project-base",
+  "version": "0.0.0",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "*.log",
+    "node_modules"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4"
+  }
+}

@@ -11,7 +11,7 @@ var gulpif              = require('gulp-if');
 var path                = require('path');
 var frontMatter         = require('gulp-front-matter');
 
-
+//@formatter:on
 /**
  *  Gulp task responsible for compiling the handlebar templates to html.
  *  @see: http://handlebarsjs.com/
@@ -21,8 +21,11 @@ gulp.task('handlebars', function () {
 
     var options = {
 
-        source:     [config.source.getPath('markup', '!(_)*.hbs'), config.source.getPath('markup', '!(_)/**/!(_)*.hbs')],
-        dest:       config.dest.getPath('markup'),
+        source: [
+            config.source.getPath('markup', '!(' + config.ignorePrefix + ')*.hbs'),
+            config.source.getPath('markup', '!(' + config.ignorePrefix + ')/**/!(' + config.ignorePrefix + ')*.hbs')
+        ],
+        dest: config.dest.getPath('markup'),
 
         handlebars: {
             data:       [ config.source.getPath('markup', '_data/**/*.json') ],      // Data that is added to the context when rendering the templates
