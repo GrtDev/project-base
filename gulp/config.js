@@ -29,7 +29,7 @@ source.videos           = '<%= assets %>/videos';
 source.data             = '<%= assets %>/data';
 
 // Define destination folders layout
-var dest                = new PathConfig('./www');
+var dest                = new PathConfig('./build');
 dest.markup             = '<%= root %>';
 dest.assets             = '<%= root %>/inc'
 dest.css                = '<%= assets %>/css';

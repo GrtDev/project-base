@@ -1,7 +1,7 @@
 {
   "name": "project-base",
   "version": "0.2.0",
-  "description": "A personal project layout for developing static site documents.",
+  "description": "A project base for developing (static) site documents. Includes many automated (GulpJS) tasks such as compiling, bundeling and minifying JS, SASS & HTML.",
   "private": true,
   "repository": {
     "type": "git",
@@ -10,6 +10,7 @@
   "browser": {},
   "browserify": {},
   "devDependencies": {
+    "bower": "^1.4.1",
     "browser-sync": "~2.7.1",
     "browserify": "~10.1.3",
     "del": "^1.1.1",
@@ -42,5 +43,9 @@
     "vinyl-source-stream": "~1.1.0",
     "watchify": "~3.2.1"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "scripts": {
+    "gulp": "gulp",
+    "bower": "bower"
+  }
 }
