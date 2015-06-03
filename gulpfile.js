@@ -39,14 +39,14 @@ config.verbose          = false;
  */
 config.bowerDependencies = function () {
     return [
-        //{
-        //    source: ['bootstrap/fonts/**'],
-        //    dest: config.dest.getPath('fonts', 'bootstrap/')
-        //},
-        //{
-        //    source: ['jquery/dist/jquery.min.js'],
-        //    dest: config.dest.getPath('javascript')
-        //}
+        {
+            source: ['bootstrap/fonts/**'],
+            dest: config.dest.getPath('fonts', 'bootstrap/')
+        },
+        {
+            source: ['jquery/dist/jquery.min.js'],
+            dest: config.dest.getPath('javascript')
+        }
     ]
 }
 

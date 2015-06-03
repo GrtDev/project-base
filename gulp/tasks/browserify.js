@@ -11,11 +11,13 @@ var mergeStream             = require('merge-stream');
 var watchify                = require('watchify');
 var buffer                  = require('vinyl-buffer');
 var uglify                  = require('gulp-uglify');
-var gulpIf                  = require('gulp-if');
 var gulpSize                = require('gulp-size');
 var sourcemaps              = require('gulp-sourcemaps');
 var glob                    = require('glob');
 var path                    = require('path');
+var gulpDebug               = require('gulp-debug');
+var gulpPlumber             = require('gulp-plumber');
+var gulpIf                  = require('gulp-if');
 
 
 //@formatter:on
@@ -40,6 +42,15 @@ function createBundleConfigs() {
         uglifyOptions:  {
             mangle: true, // Pass false to skip mangling names.
             preserveComments: false // 'all', 'some', {function}
+        },
+
+        plumberConfig: {
+            errorHandler: log.error
+        },
+
+        debugConfig: {
+            title: 'gulp-debug:',
+            minimal: true           // By default only relative paths are shown. Turn off minimal mode to also show cwd, base, path.
         }
 
     }
@@ -149,6 +160,10 @@ function createBundle(bundleConfig, opt_watch) {
         return browserifyInstance.bundle()
             // log the start and keep track of the task process time.
             .on('readable', log.bundle.onStart(bundleConfig.fileName))
+            // Add plumber to keep the pipe going and to catch errors
+            .pipe(gulpPlumber(bundleConfig.plumberConfig))
+            // print file names if in gulp debug mode
+            .pipe(gulpIf(config.gulpDebug, gulpDebug(bundleConfig.debugConfig)))
             // Use vinyl-source-stream to make the
             // stream gulp compatible. Specify the
             // desired output filename here.

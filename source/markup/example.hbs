@@ -1,0 +1,34 @@
+---
+title: Hello world
+---
+{{> base/_head }}
+
+
+{{!--{{{ debug }}}--}}
+
+
+{{> modules/_some-module }}
+
+<div>
+	{{ example.json.name }}
+	{{ example.json.description }}
+</div>
+
+
+
+<div>
+
+    <ul>
+		{{#times 10}}
+            <li>Some list item</li>
+		{{/times}}
+    </ul>
+
+</div>
+
+{{> common/_cookie-notification}}
+
+
+{{> common/_update-browser}}
+
+{{> base/_foot }}

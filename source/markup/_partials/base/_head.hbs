@@ -13,10 +13,14 @@
 	    <meta name="author" content="Geert Fokke">
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-	    <title>{{file.title}}</title>
+	    <title>{{file.front.title}}</title>
 
 		<!-- Style sheets -->
-	    <link rel="stylesheet" href="inc/css/main.css"/>
+	    <link rel="stylesheet" href="/inc/css/main.css"/>
+
+		{{#if options.debug}}
+            <link rel="stylesheet" href="/inc/css/debug.css"/>
+		{{/if}}
 
 	</head>
 

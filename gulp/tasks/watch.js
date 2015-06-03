@@ -14,7 +14,7 @@ gulp.task('watch', ['watchify'], function (callback) {
 
     gulp.watch(config.source.getPath('images',  '**/*.{jpg|jpeg|gif|svg|png}'),     ['images']);
     gulp.watch(config.source.getPath('css',     '**/*.scss'),                       ['sass']);
-    gulp.watch(config.source.getPath('markup',  '**/*.hbs'),                        ['handlebars']);
+    gulp.watch(config.source.getPath('markup',  '**'),                              ['handlebars']);
 
 });
 

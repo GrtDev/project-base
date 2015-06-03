@@ -1,5 +1,5 @@
 ---
-title: Hello World
+title: Index overview
 ---
 {{> base/_head }}
 
@@ -7,28 +7,14 @@ title: Hello World
 {{!--{{ debug }}--}}
 
 
-{{> modules/_some-module }}
+<div class="project-link-list">
 
-<div>
-	{{ example.json.name }}
-	{{ example.json.description }}
-</div>
+    <div class="project-link-list__disclaimer">auto generated link list</div>
 
-
-<div>
-
-    <ul>
-		{{#times 10}}
-            <li>Some list item</li>
-		{{/times}}
-    </ul>
+	{{{ linkList pages }}}
 
 </div>
 
-{{> common/_cookie-notification}}
-
-
-{{> common/_update-browser}}
 
 
 {{> base/_foot }}

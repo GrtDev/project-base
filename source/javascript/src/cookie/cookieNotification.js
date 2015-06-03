@@ -6,7 +6,7 @@ var _cookieManager          = require('./CookieManager').getInstance();
 var COOKIE_ID               = 'some-cookie-id'
 
 var _notification           = document.getElementById('cookie-notification');
-var _closeButton            = _notification.getElementsByClassName('button--close')[0];
+var _closeButton            = _notification ? _notification.getElementsByClassName('button--close')[0] : null;
 var _delayId;
 
 // @formatter:on

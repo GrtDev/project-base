@@ -47,7 +47,7 @@ gulp.task('sass', function () {
 
         // Clean CSS is responsible for minifying the CSS
         // @see: https://github.com/jakubpawlowicz/clean-css
-        minify: true,//config.minify,
+        minify: config.minify,
         cleanCSS: {
             aggressiveMerging: true,        // set to false to disable aggressive merging of properties.
             keepSpecialComments: 0,         // * for keeping all (default), 1 for keeping first one only, 0 for removing all
