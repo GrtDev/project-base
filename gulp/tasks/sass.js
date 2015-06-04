@@ -100,7 +100,7 @@ gulp.task('sass', function () {
         .pipe(gulpIf(options.minify,        gulpMinCss(options.cleanCSS)))
         //
         .pipe(autoprefixer(options.autoprefixer))
-        .pipe(gulpIf(options.sourcemaps,    sourcemaps.write('.')))
+        .pipe(gulpIf(options.sourcemaps,    sourcemaps.write('./maps')))
         //
         .pipe(gulpIf(options.minify,        sizeAfter))
         .pipe(gulp.dest(options.dest))

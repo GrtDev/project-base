@@ -18,6 +18,7 @@ var path                    = require('path');
 var gulpDebug               = require('gulp-debug');
 var gulpPlumber             = require('gulp-plumber');
 var gulpIf                  = require('gulp-if');
+var gulpIgnore              = require('gulp-ignore');
 
 
 //@formatter:on
@@ -177,7 +178,7 @@ function createBundle(bundleConfig, opt_watch) {
             //.pipe(gulpIf(bundleConfig.uglify,   sizeBefore))
             .pipe(gulpIf(bundleConfig.uglify, uglify(bundleConfig.uglifyOptions)))
 
-            .pipe(sourcemaps.write('./'))
+            .pipe(sourcemaps.write('./maps'))
             // Specify the output destination
             .pipe(gulp.dest(bundleConfig.dest))
             //
@@ -186,6 +187,8 @@ function createBundle(bundleConfig, opt_watch) {
 
             // log the end of the bundle task and calculate the task time.
             .on('end', log.bundle.onEnd(bundleConfig.fileName))
+            // remove the maps from the stream because it can cause problems with browserSync
+            .pipe(gulpIgnore.exclude('*.map'))
             .pipe(browserSync.reload({stream: true}));
     }
 
