@@ -139,7 +139,7 @@ gulp.task( 'handlebars', function () {
             path.extname = '.html';
         } ) )
         .pipe( gulp.dest( options.dest ) )
-        .pipe( browserSync.reload( { stream: true } ) );
+        .pipe( browserSync.stream( {once:true}) );
 
 } );
 

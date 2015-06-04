@@ -1,29 +1,24 @@
-// import vendor styling here
-// @import "vendors/jquery.ui"
+// ------------ External libs ------------ //
+//@import "../../bower_components/susy/sass/susy";
 
-// import all variables & settings first
+
+// ------------ Vendor styles ------------ //
+
+
+// --------- Settings & Variables -------- //
 @import "base/settings/-all";
 
-// import the basics
+
+// --------------- Base ------------------ //
 @import "base/normalize";
 @import "base/base";
 @import "base/typography";
 
-// import components / modules
+
+// ---------- Modules / Components -------- //
 @import "components/buttons";
 @import "components/cookie-notification";
 
-// import page specific styles
+
+// --------------- Pages ------------------ //
 @import "pages/home";
-
-.some-module {
-    color: #000;
-}
-
-.open {
-    font-size: 4px;
-}
-
-.active {
-    font-size: 100px;
-}
