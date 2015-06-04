@@ -23,6 +23,7 @@
     "gulp-hb": "^2.5.0",
     "gulp-htmlmin": "^1.1.1",
     "gulp-if": "^1.2.5",
+    "gulp-ignore": "^1.2.1",
     "gulp-imagemin": "^2.2.1",
     "gulp-minify-css": "^1.1.1",
     "gulp-plumber": "^1.0.1",

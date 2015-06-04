@@ -12,6 +12,7 @@ var gulpIf                      = require('gulp-if');
 var gulpMinCss                  = require('gulp-minify-css');
 var gulpSize                    = require('gulp-size');
 var uncss                       = require('gulp-uncss');
+var gulpIgnore                  = require('gulp-ignore');
 
 /**
  * Task for compiled SASS files back to CSS, uses lib-sass instead of ruby for faster compiling.
@@ -103,6 +104,8 @@ gulp.task('sass', function () {
         //
         .pipe(gulpIf(options.minify,        sizeAfter))
         .pipe(gulp.dest(options.dest))
+        // exclude map files because somehow they break the browserSync flow/connection
+        .pipe(gulpIgnore.exclude('*.map'))
         //.on('end', log.size.onDifference(sizeBefore, sizeAfter, options.minify))
         .pipe(browserSync.reload({stream: true}));
 
