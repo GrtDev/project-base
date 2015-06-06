@@ -72,79 +72,77 @@ function decorate ( gulp ) {
             if( config.gulp.lazy ) {
 
                 var taskDependencies = arguments[ 1 ];
-
-                for ( var i = 0, leni = taskDependencies.length; i < leni; i++ ) {
-                    var task = taskDependencies[ i ];
-                    lazyLoadTask( task );
-                }
-            }
-
-        } else {
-
-            taskIndex = 1;
-            taskFunction = arguments[ taskIndex ];
-
-        }
-
-
-        if( config.verbose ) log.debug( {
-            sender: 'gulpDecorator',
-            message: 'Modifying gulp task ( ' + arguments[ 0 ] + ' ) for for better error handling...'
-        } );
-
-        if( typeof taskFunction === 'function' ) {
-
-            var taskParams = getParamNames( taskFunction );
-            var wrappedTaskFunction;
-
-            /**
-             *  Gulp (or maybe orchestra) checks the task parameters for a callback param.
-             *  So we need to properly give the wrapper function a 'callback' param as well.
-             *  If we don't some function might break down (runSequence for example).
-             */
-            if( !taskParams || !taskParams.length ) {
-
-                wrappedTaskFunction = function () {
-                    try {
-                        return taskFunction.apply( gulp, arguments );
-                    }
-                    catch ( error ) {
-                        log.error( error, true, true );
-                    }
-                }
-
-            } else if( taskParams.length && taskParams[ 0 ] === 'callback' ) {
-
-                wrappedTaskFunction = function ( callback ) {
-                    try {
-                        return taskFunction.apply( gulp, arguments );
-                    }
-                    catch ( error ) {
-                        log.error( error, true, true );
-                    }
-                }
+                for ( var i = 0, leni = taskDependencies.length; i < leni; i++ ) lazyLoadTask( taskDependencies[ i ] );
 
             } else {
 
-                log.error( {
-                    sender: 'gulpDecorator',
-                    message: 'Ran into unknown parameters when trying to wrap the task function: ',
-                    data: [ taskParams ]
-                } )
+                taskIndex = 1;
+                taskFunction = arguments[ taskIndex ];
 
             }
 
-            if( wrappedTaskFunction ) arguments[ taskIndex ] = wrappedTaskFunction;
 
-        } else {
+            if( config.verbose ) log.debug( {
+                sender: 'gulpDecorator',
+                message: 'Modifying gulp task ( ' + arguments[ 0 ] + ' ) for for better error handling...'
+            } );
 
-            if( config.verbose ) log.warn( 'Failed to find the task function for task: ' + arguments[ 0 ] );
+            if( typeof taskFunction === 'function' ) {
+
+                var taskParams = getParamNames( taskFunction );
+                var wrappedTaskFunction;
+
+                /**
+                 *  Gulp (or maybe orchestra) checks the task parameters for a callback param.
+                 *  So we need to properly give the wrapper function a 'callback' param as well.
+                 *  If we don't some function might break down (runSequence for example).
+                 */
+                if( !taskParams || !taskParams.length ) {
+
+                    wrappedTaskFunction = function () {
+                        try {
+                            return taskFunction.apply( gulp, arguments );
+                        }
+                        catch ( error ) {
+                            log.error( error, true, true );
+                        }
+                    }
+
+                } else if( taskParams.length && taskParams[ 0 ] === 'callback' ) {
+
+                    // wrapper needs a 'callback' param!
+                    wrappedTaskFunction = function ( callback ) {
+                        try {
+                            return taskFunction.apply( gulp, arguments );
+                        }
+                        catch ( error ) {
+                            log.error( error, true, true );
+                        }
+                    }
+
+                } else {
+
+                    log.error( {
+                        sender: 'gulpDecorator',
+                        message: 'Ran into unknown parameters when trying to wrap the task function: ',
+                        data: [ taskParams ]
+                    } )
+
+                }
+
+                if( wrappedTaskFunction ) arguments[ taskIndex ] = wrappedTaskFunction;
+
+            } else {
+
+                if( config.verbose ) log.warn( 'Failed to find the task function for task: ' + arguments[ 0 ] );
+
+            }
+
+            gulpTaskFunction.apply( gulp, arguments );
 
         }
 
-        gulpTaskFunction.apply( gulp, arguments );
-
-    }
+    };
 
 
     /**
@@ -155,7 +153,6 @@ function decorate ( gulp ) {
     if( config.gulp.lazy ) {
 
         if( config.verbose ) log.debug( { sender: 'gulpDecorator', message: 'Modifying gulp for lazy loading...' } );
-
 
         var gulpStartFunction = gulp.start;
         var gulpHasTaskFunction = gulp.hasTask;
@@ -182,6 +179,8 @@ function decorate ( gulp ) {
         }
 
         /**
+         * Some modules (runSequence) check whether the plugin has been registered before trying to run it.
+         * Therefor we need to load the task before it gets checked.
          * @see: https://github.com/orchestrator/orchestrator
          * @param taskName {string}
          */
@@ -223,6 +222,8 @@ function decorate ( gulp ) {
 
             } catch ( error ) {
 
+                // Some tasks won't be able to load if they are not in a separate file.
+                // So if it fails it is not necessarily an error.
                 if( config.verbose ) log.warn( {
                     sender: 'gulpDecorator',
                     message: 'warning: Failed to lazy load task: ' + taskName
@@ -234,20 +235,26 @@ function decorate ( gulp ) {
     }
 
 
-};
+}
 
 
 module.exports = decorate;
 
 
-// helper function
+
 var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
 var ARGUMENT_NAMES = /([^\s,]+)/g;
-function getParamNames ( func ) {
-    var fnStr = func.toString().replace( STRIP_COMMENTS, '' );
+/**
+ * Retrieves the parameter names for a given function
+ * @see: http://stackoverflow.com/questions/1007981/how-to-get-function-parameter-names-values-dynamically-from-javascript
+ * @param functionReference
+ * @returns {Array}
+ */
+function getParamNames ( functionReference ) {
+    if( !functionReference ) return null;
+    var fnStr = functionReference.toString().replace( STRIP_COMMENTS, '' );
     var result = fnStr.slice( fnStr.indexOf( '(' ) + 1, fnStr.indexOf( ')' ) ).match( ARGUMENT_NAMES );
-    if( result === null )
-        result = [];
+    if( result === null ) result = [];
     return result;
-}
+};
 
