@@ -115,7 +115,7 @@ gulp.task( 'handlebars', function () {
 
             } else {
 
-                log.error({message:'Failed to generate the list of pages', plugin: 'handlebars'})
+                log.error( { sender: 'handlebars', message: 'Failed to generate the list of pages' } )
 
             }
         }
@@ -139,7 +139,7 @@ gulp.task( 'handlebars', function () {
             path.extname = '.html';
         } ) )
         .pipe( gulp.dest( options.dest ) )
-        .pipe( browserSync.stream( {once:true}) );
+        .pipe( browserSync.stream( { once: true } ) );
 
 } );
 

@@ -15,14 +15,14 @@ var del                     = requireCachedModule('del');
  *  Deletes all files that match the patterns in the option.source
  *  @see: https://www.npmjs.com/package/del
  */
-gulp.task('clean', function (onEnd) {
+gulp.task( 'clean', function ( callback ) {
 
 
     var options = {
 
         // define file patterns to delete here
         source: [
-            config.dest.getPath('root', '**')
+            config.dest.getPath( 'root', '**' )
             //config.dest.getPath('markup',       '**/*.html'),
             //config.dest.getPath('assets',       '**'),
             //config.dest.getPath('images',       '**'),
@@ -36,28 +36,31 @@ gulp.task('clean', function (onEnd) {
     };
 
 
+    del( options.source, handleFilesDeleted );
 
-    del(options.source, handleFilesDeleted);
+    function handleFilesDeleted ( error, deletedFiles ) {
 
-    function handleFilesDeleted(error, deletedFiles) {
+        if( error ) log.error( error );
 
-        if(error) log.error(error);
+        if( options.verbose && deletedFiles ) {
 
-        if(options.verbose && deletedFiles)
-        {
             var filesDeletedString = '';
             var currentWorkingDirectory = process.cwd();
-            for (var i = 0, leni = deletedFiles.length; i < leni; i++) filesDeletedString += '\n\t\t' + deletedFiles[i];
+            for ( var i = 0, leni = deletedFiles.length; i < leni; i++ ) filesDeletedString += '\n\t\t' + deletedFiles[ i ];
 
             // remove CWD path of the file names.
-            filesDeletedString = filesDeletedString.replace(new RegExp(currentWorkingDirectory, 'g'), '');
+            filesDeletedString = filesDeletedString.replace( new RegExp( currentWorkingDirectory, 'g' ), '' );
 
-            gulpUtil.log('Files deleted during cleanup:', gulpUtil.colors.yellow(filesDeletedString));
+            log.info( {
+                sender: 'clean task',
+                message: 'Files deleted during cleanup:',
+                data: [ gulpUtil.colors.yellow( filesDeletedString ) ]
+            } );
 
         }
 
-        onEnd();
+        if( callback ) callback.call(this);
+
     }
 
-
-});
+} );

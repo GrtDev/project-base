@@ -2,22 +2,20 @@
 
 var log                     = require('./log');
 var config                  = require('../config');
-var gulpUtil                = require('gulp-util');
-//var requireCachedModule     = require('./requireCachedModule');
 
 var gulpLoadPlugins         = require('gulp-load-plugins');
 
 // @formatter:on
 
-function loadPlugins (callback, lazy, opt_global) {
+function loadPlugins ( callback, lazy, opt_global ) {
 
     opt_global = opt_global || global;
 
     if( typeof opt_global.plugins !== 'undefined' ) {
 
         log.error( {
-            message: 'Attempting to load plugins, but they have already been loaded?!',
-            sender: 'util/loadPlugins'
+            sender: 'util/loadPlugins',
+            message: 'Attempting to load plugins, but they have already been loaded?!'
         } );
 
         return;
@@ -36,24 +34,26 @@ function loadPlugins (callback, lazy, opt_global) {
         }
     };
 
-    console.log(gulpUtil.colors.blue('[loadPlugins]\tIndexing plugins...'));
+    log.debug( { sender: 'util/loadPlugins', message: '\tIndexing plugins...' } );
 
     var plugins = gulpLoadPlugins( options.load );
 
     if( options.verbose ) {
 
 
-
-        var message = gulpUtil.colors.magenta( 'Plugins loaded at runtime (lazy load: ' + options.load.lazy + '):' );
-
+        var pluginsLoaded = '';
         for ( var plugin in plugins ) {
 
             if( !plugins.hasOwnProperty( plugin ) ) continue;
-            message += gulpUtil.colors.green( '\n- ' + plugin );
+            pluginsLoaded += '\n- ' + plugin;
 
         }
 
-        console.log(  message );
+        log.info( {
+            sender: 'util/loadPlugins',
+            message: '\tPlugins loaded at runtime (lazy load: ' + options.load.lazy + '):',
+            data: [ pluginsLoaded ]
+        } );
 
     }
 
@@ -61,7 +61,7 @@ function loadPlugins (callback, lazy, opt_global) {
     // make globally accessible
     opt_global.plugins = plugins;
 
-    console.log(gulpUtil.colors.blue('[loadPlugins]\tDone.'));
+    log.debug( { sender: 'util/loadPlugins', message: '\tDone.' } );
 
     callback();
 

@@ -8,9 +8,9 @@ var config                  = require('./gulp/config');
 
 config.debug                = true;
 config.minify               = false;
-config.verbose              = false;
+config.verbose              = true;
 config.notifyErrors         = true;
-config.gulp.debug           = true;
+config.gulp.debug           = false;
 
 // ---------------------------------------------------------------------
 
@@ -25,16 +25,12 @@ function init() {
     var requireCachedModule = require('./gulp/util/requireCachedModule');
     var gulpDecorator       = require('./gulp/util/gulpDecorator');
     var log                 = require('./gulp/util/log');
-
     var gulp                = requireCachedModule('gulp');
     var runSequence         = requireCachedModule('run-sequence');
-    var prettyHrtime        = requireCachedModule('pretty-hrtime');
-    var gulpUtil            = requireCachedModule('gulp-util');
 
-    // Decorate gulp with extra functionality for better debugging and error handling.
-    gulpDecorator(gulp);
+    gulpDecorator(gulp); // Decorate gulp with extra functionality for better debugging and error handling.
 
-    log.time('gulpfile', 'init time:', process.hrtime( startTime ));
+    log.time( { sender: 'gulpfile', message: 'init time:', time: process.hrtime( startTime ) } );
 
 
 
@@ -53,8 +49,6 @@ function init() {
      */
     gulp.task( 'server', function ( callback ) {
 
-        if(checkDebugMode()) return;
-
         runSequence(
             'build',
             'browserSync',
@@ -70,8 +64,6 @@ function init() {
      *  Deletes the olds files and builds the project from scratch.
      */
     gulp.task( 'build', function ( callback ) {
-
-        if(checkDebugMode()) return;
 
         runSequence(
             'clean',
@@ -93,8 +85,6 @@ function init() {
      */
     gulp.task( 'build:dist', function ( callback ) {
 
-        if(checkDebugMode()) return;
-
         config.debug = false;
         config.minify = true;
 
@@ -104,25 +94,6 @@ function init() {
         );
 
     } );
-
-
-
-    /**
-     * At the moment runSequence does not work well when task functions are decorated with error catching..
-     * So when you are debugging gulp, you will have to run the tasks one by one.
-     * @returns {boolean}
-     */
-    function checkDebugMode() {
-
-        if(config.gulp.debug) {
-            log.error({message:'Can\'t run sequenced tasks in gulp debug mode.', sender:'gulpfile.js'})
-            return true;
-        }
-
-        return false;
-
-    }
-
 
 }
 

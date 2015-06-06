@@ -27,72 +27,88 @@ var notifier                    = requireCachedModule("node-notifier");
 
 /**
  * Log a message with size
- * @param sender {string}
- * @param message {string}
- * @param size {number}
- * @param optSizeAfter {number}
- * @param opt_wrap {boolean}
+ * Log a message with size
+ * options:
+ *  - sender {string}       sender of the message
+ *  - message {string}      message
+ *  - size {number}         size to log
+ *  - sizeAfter {number=}   size to compare
+ *  - wrap {boolean=}       wrap the log into a handler function
+ *  - check {boolean=}      perform a boolean check before logging
+ *
+ * @param options {{sender: {string}, message: {string}, time: {number}, check: {boolean=}, wrap: {boolean=}}}
  */
-function logSize ( sender, message, size, optSizeAfter, opt_wrap ) {
+function logSize ( options ) {
 
-    if( opt_wrap ) {
+    if( options.wrap ) {
 
-        return function () { logSize.call( this, sender, message, size, optSizeAfter, false ) }
+        options.wrap = false;
+        return function () { logSize.call( this, options ) }
 
     } else {
 
-        var sizeLog = humanFileSize( size );
+        var sizeLog = humanFileSize( options.size );
 
-        if( optSizeAfter ) {
-            var difference = size - optSizeAfter;
+        if( options.sizeAfter ) {
+            var difference = size - options.sizeAfter;
             if( difference > 0 ) sizeLog = 'saved ' + humanFileSize( difference );
             else sizeLog = 'gained ' + humanFileSize( difference );
         }
 
-        console.log( gulpUtil.colors.blue( '[' + sender + ']\t' + message ) + gulpUtil.colors.cyan( sizeLog ) );
+        if( typeof options.check !== 'undefined' && !options.check ) return;
+        console.log( gulpUtil.colors.blue( '[' + options.sender + ']\t' + options.message ) + gulpUtil.colors.cyan( sizeLog ) );
 
     }
 
 }
 /**
  * Log a message with size
- * @param sender {string}
- * @param message {string}
- * @param time {number}
- * @param opt_wrap {boolean}
+ * options:
+ *  - sender {string}   sender of the message
+ *  - message {string}  message
+ *  - time {number}     time to log
+ *  - wrap {boolean=}   wrap the log into a handler function
+ *  - check {boolean=}  perform a boolean check before logging
+ *
+ * @param options {{sender: {string}, message: {string}, time: {number}, check: {boolean=}, wrap: {boolean=}}}
  */
-function logTime ( sender, message, time, opt_wrap ) {
+function logTime ( options ) {
 
-    if( opt_wrap ) {
+    if( options.wrap ) {
 
-        return function () { logTime.call( this, sender, message, size, false ) }
+        options.wrap = false;
+        return function () { logTime.call( this, options ) }
 
     } else {
 
-        console.log( gulpUtil.colors.blue( '[' + sender + '] ' + message ) + gulpUtil.colors.cyan( prettyHrtime( time ) ) );
+        if( typeof options.check !== 'undefined' && !options.check ) return;
+        console.log( gulpUtil.colors.blue( '[' + options.sender + '] ' + options.message ) + gulpUtil.colors.cyan( prettyHrtime( options.time ) ) );
     }
 
 }
 
 /**
  * Logs a debug message
- * @param sender {string}
- * @param message {string|Array}
- * @param opt_data {Array=} data to log
- * @param opt_wrap {boolean=} will wrap the log into another function if true.
- * @param opt_doLog {boolean=} boolean check on whether to actually do the log
- * @returns {Function=}
+ * options:
+ *  - sender {string}   sender of the message
+ *  - message {string}  message
+ *  - data {Array=}      array with data to log
+ *  - wrap {boolean=}   wrap the log into a handler function
+ *  - check {boolean=}  perform a boolean check before logging
+ *
+ * @param options {{sender: {string}, message: {string}, data: {Array=}, check: {boolean=}, wrap: {boolean=}}}
  */
-function logDebug ( sender, message, opt_data, opt_wrap, opt_doLog ) {
+function logDebug ( options ) {
 
-    if( opt_wrap ) {
+    if( options.wrap ) {
 
-        return function () { logDebug.call( this, sender, message, false, opt_doLog ) }
+        options.wrap = false;
+        return function () { logDebug.call( this, options ) }
 
     } else {
 
-        if( typeof opt_doLog !== 'undefined' && !opt_doLog ) return;
-        console.log.apply( this, [ gulpUtil.colors.blue( '[' + sender + '] debug: ' + message ) ].concat( opt_data ? opt_data : []  ) );
+        if( typeof options.check !== 'undefined' && !options.check ) return;
+        console.log.apply( this, [ gulpUtil.colors.blue( '[' + options.sender + '] debug: ' + options.message ) ].concat( options.data ? options.data : [] ) );
 
     }
 
@@ -100,53 +116,68 @@ function logDebug ( sender, message, opt_data, opt_wrap, opt_doLog ) {
 
 /**
  * Logs a warning message
- * @param sender {string}
- * @param message {string|Array}
- * @param opt_data {Array=} data to log
- * @param opt_wrap {boolean=} will wrap the log into another function if true.
- * @param opt_doLog {boolean=} boolean check on whether to actually do the log
- * @returns {Function=}
+ * options:
+ *  - sender {string}   sender of the message
+ *  - message {string}  message
+ *  - data {Array=}      array with data to log
+ *  - wrap {boolean=}   wrap the log into a handler function
+ *  - check {boolean=}  perform a boolean check before logging
+ *
+ * @param options {{sender: {string}, message: {string}, data: {Array=}, check: {boolean=}, wrap: {boolean=}}}
  */
-function logWarn ( sender, message, opt_data, opt_wrap, opt_doLog ) {
+function logWarn ( options ) {
 
-    if( opt_wrap ) {
+    if( options.wrap ) {
 
-        return function () { logWarn.call( this, sender, message, false, opt_doLog ) }
+        options.wrap = false;
+        return function () { logDebug.call( this, options ) }
 
     } else {
 
-        if( typeof opt_doLog !== 'undefined' && !opt_doLog ) return;
-        console.log.apply( this, [ gulpUtil.colors.yellow( '[' + sender + '] warn: ' + message ) ].concat( opt_data ? opt_data : []  ) );
+        if( typeof options.check !== 'undefined' && !options.check ) return;
+        console.log.apply( this, [ gulpUtil.colors.yellow( '[' + options.sender + '] warn: ' + options.message ) ].concat( options.data ? options.data : [] ) );
+
     }
 
 }
 
 /**
  * Logs a info message
- * @param sender {string}
- * @param message {string|Array}
- * @param opt_data {Array=} data to log
- * @param opt_wrap {boolean=} will wrap the log into another function if true.
- * @param opt_doLog {boolean=} boolean check on whether to actually do the log
- * @returns {Function=}
+ * options:
+ *  - sender {string}   sender of the message
+ *  - message {string}  message
+ *  - data {Array=}      array with data to log
+ *  - wrap {boolean=}   wrap the log into a handler function
+ *  - check {boolean=}  perform a boolean check before logging
+ *
+ * @param options {{sender: {string}, message: {string}, data: {Array=}, check: {boolean=}, wrap: {boolean=}}}
  */
-function logInfo ( sender, message, opt_data, opt_wrap, opt_doLog ) {
+function logInfo ( options ) {
 
-    if( opt_wrap ) {
+    if( options.wrap ) {
 
-        return function () { logInfo.call( this, sender, message, null, false, opt_doLog ) }
+        options.wrap = false;
+        return function () { logDebug.call( this, options ) }
 
     } else {
 
-        if( typeof opt_doLog !== 'undefined' && !opt_doLog ) return;
-        console.log.apply( this, [ gulpUtil.colors.blue( '[' + sender + '] info: ' ) + gulpUtil.colors.cyan( message ) ].concat( opt_data ? opt_data : [] ) );
+        if( typeof options.check !== 'undefined' && !options.check ) return;
+        console.log.apply( this, [ gulpUtil.colors.blue( '[' + options.sender + '] info: ' ) + gulpUtil.colors.cyan( options.message ) ].concat( options.data ? options.data : [] ) );
     }
 
 }
 
 /**
  * Logs error and throws a notification (if set in the config)
- * @param error {Error|object}
+ * error:
+ *  - name {string}         name of the error
+ *  - sender {string}       sender of the error
+ *  - plugin {string}       plugin of the error
+ *  - message {string}      message
+ *  - stack {string}        stack trace
+ *  - fileName {string=}    name of the file
+ *
+ * @param error {Error|{name:{string}, sender:{string=}, plugin:{string=}, message:{string}, stack:{string=}, fileName:{string}}
  * @param opt_stack {boolean=} deploy a stack trace in the console
  * @param opt_exit {boolean=} kill the process
  */
@@ -215,16 +246,19 @@ function logError ( error, opt_stack, opt_exit ) {
 /**
  * The complete collection of log functions to be used during the building process.
  * @name log
- * @type {{time: logTime, size: logSize, error: logError, debug: logDebug, warn: logWarn, info: logInfo}}
+ * @type {{time: logTime, size: logSize, debug: logDebug, info: logInfo, warn: logWarn, error: logError}}
  */
 var log = {
 
+    colors: gulpUtil.colors,
+
     time: logTime,
     size: logSize,
-    error: logError,
+
     debug: logDebug,
+    info: logInfo,
     warn: logWarn,
-    info: logInfo
+    error: logError
 
 };
 

@@ -16,14 +16,9 @@ var dotRegExp               = /^\./;
 function loadTasks () {
 
     // pre-load all gulp tasks if we're not loading at runtime
-    if( config.gulp.lazy ) {
+    if( config.gulp.lazy ) return log.debug( { sender: 'util/loadTasks', message: '\tRunning in lazy mode, tasks will be loaded at runtime...' } );
 
-        console.log( gulpUtil.colors.blue( '[loadTasks]\tRunning in lazy mode, tasks will be loaded at runtime...' ) );
-
-        return;
-    }
-
-    console.log( gulpUtil.colors.blue( '[loadTasks]\tLoading tasks...' ) );
+    log.debug( { sender: 'util/loadTasks', message: '\tLoading tasks...' } );
 
     var globPattern = './gulp/tasks/**/*.js';
     var relative = path.relative( __dirname, process.cwd() );
@@ -33,11 +28,11 @@ function loadTasks () {
 
         require( taskFiles[ i ].replace( dotRegExp, relative ) );
 
-        if( config.verbose ) console.log( 'task loaded: ' + taskFiles[ i ] );
+        if( config.verbose ) log.debug( { sender: 'util/loadTasks', message: 'task loaded: ' + taskFiles[ i ] } );
 
     }
 
-    console.log( gulpUtil.colors.blue( '[loadTasks]\tDone.' ) );
+    log.debug( { sender: 'util/loadTasks', message: '\tDone.' } );
 
 }
 

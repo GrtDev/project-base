@@ -29,7 +29,7 @@ gulp.task('copyBower', function () {
     {
         log.error({
             message: 'Failed to find the source location of the bower components. Please define a \'bower\' path in the config.source .',
-            plugin: 'copyBower'
+            sender: 'copyBower'
         });
         return null;
     }
@@ -44,7 +44,7 @@ gulp.task('copyBower', function () {
         {
             log.error({
                 message: 'Bower dependency needs to have a \'source\' property!',
-                plugin: 'copyBower'
+                sender: 'copyBower'
             });
             continue;
         }
@@ -53,7 +53,7 @@ gulp.task('copyBower', function () {
         {
             log.error({
                 message: 'Bower dependency needs to have a \'dest\' property!',
-                plugin: 'copyBower'
+                sender: 'copyBower'
             });
             continue;
         }

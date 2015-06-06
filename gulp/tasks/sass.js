@@ -107,7 +107,6 @@ gulp.task('sass', function () {
         .pipe(gulp.dest(options.dest))
         // exclude map files because somehow they break the browserSync flow/connection
         .pipe(gulpIgnore.exclude('*.map'))
-        //.on('end', log.size.onDifference(sizeBefore, sizeAfter, options.minify))
         .pipe(browserSync.reload({stream: true}));
 
 });

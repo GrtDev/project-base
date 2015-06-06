@@ -58,7 +58,7 @@ function decorate ( gulp ) {
     var gulpTaskFunction = gulp.task;
     gulp.task = function () {
 
-        if( config.gulp.debug) log.debug( 'gulpDecorator', 'gulp.task()', [arguments] );
+        if( config.gulp.debug ) log.debug( { sender: 'gulpDecorator', message: 'gulp.task()', data: [ arguments ] } );
 
         var taskIndex;
         var taskFunction;
@@ -87,28 +87,65 @@ function decorate ( gulp ) {
         }
 
 
-        //TODO: Figure out how this works in combination with runSequence..
-        if( config.gulp.debug ) {
+        if( config.verbose ) log.debug( {
+            sender: 'gulpDecorator',
+            message: 'Modifying gulp task ( ' + arguments[ 0 ] + ' ) for for better error handling...'
+        } );
 
-            if( config.verbose ) console.log( '[gulpDecorator] debug: Modifying gulp for for better error handling...' );
+        if( typeof taskFunction === 'function' ) {
 
-            var wrappedTaskFunction = function () {
+            var taskParams = getParamNames( taskFunction );
+            var wrappedTaskFunction;
 
-                try { return taskFunction.apply( gulp, arguments ); }
-                catch ( error ) {
-                    log.error( error, true, true )
-                    return null;
+            /**
+             *  Gulp (or maybe orchestra) checks the task parameters for a callback param.
+             *  So we need to properly give the wrapper function a 'callback' param as well.
+             *  If we don't some function might break down (runSequence for example).
+             */
+            if( !taskParams || !taskParams.length ) {
+
+                wrappedTaskFunction = function () {
+                    try {
+                        return taskFunction.apply( gulp, arguments );
+                    }
+                    catch ( error ) {
+                        log.error( error, true, true );
+                    }
                 }
+
+            } else if( taskParams.length && taskParams[ 0 ] === 'callback' ) {
+
+                wrappedTaskFunction = function ( callback ) {
+                    try {
+                        return taskFunction.apply( gulp, arguments );
+                    }
+                    catch ( error ) {
+                        log.error( error, true, true );
+                    }
+                }
+
+            } else {
+
+                log.error( {
+                    sender: 'gulpDecorator',
+                    message: 'Ran into unknown parameters when trying to wrap the task function: ',
+                    data: [ taskParams ]
+                } )
 
             }
 
-            arguments[ taskIndex ] = wrappedTaskFunction;
-        }
+            if( wrappedTaskFunction ) arguments[ taskIndex ] = wrappedTaskFunction;
 
+        } else {
+
+            if( config.verbose ) log.warn( 'Failed to find the task function for task: ' + arguments[ 0 ] );
+
+        }
 
         gulpTaskFunction.apply( gulp, arguments );
 
     }
+
 
     /**
      * Adds lazy loading capabilities
@@ -117,7 +154,7 @@ function decorate ( gulp ) {
      */
     if( config.gulp.lazy ) {
 
-        if( config.verbose ) console.log( '[gulpDecorator] debug: Modifying gulp for lazy loading...' );
+        if( config.verbose ) log.debug( { sender: 'gulpDecorator', message: 'Modifying gulp for lazy loading...' } );
 
 
         var gulpStartFunction = gulp.start;
@@ -125,14 +162,14 @@ function decorate ( gulp ) {
 
         gulp.start = function () {
 
-            if( config.verbose ) console.log( '[gulpDecorator] debug: start', arguments );
+            if( config.verbose ) log.debug( { sender: 'gulpDecorator', message: 'gulp.start()', data: [ arguments ] } );
 
             for ( var i = 0, leni = arguments.length; i < leni; i++ ) {
 
                 if( typeof arguments[ i ] !== 'string' ) {
 
                     // this is probably not an error but just a given callback ('function')
-                    if( config.verbose ) console.log( '[gulpDecorator] debug: Can not load a function.' );
+                    if( config.verbose ) log.warn( { sender: 'gulpDecorator', message: 'Can not load a function.' } );
                     continue;
                 }
 
@@ -150,7 +187,10 @@ function decorate ( gulp ) {
          */
         gulp.hasTask = function ( taskName ) {
 
-            if( config.verbose ) console.log( '[gulpDecorator] debug: hasTask( ' + taskName + ' )' );
+            if( config.verbose ) log.debug( {
+                sender: 'gulpDecorator',
+                message: 'hasTask( ' + log.colors.cyan( taskName ) + ' )'
+            } );
 
             lazyLoadTask( taskName );
 
@@ -174,12 +214,19 @@ function decorate ( gulp ) {
 
             try {
 
-                if( config.verbose ) console.log( '[gulpDecorator] lazy loading:\t\'' + taskName + '\'' );
+                if( config.verbose )log.debug( {
+                    sender: 'gulpDecorator',
+                    message: 'lazy loading:\t\'' + log.colors.cyan( taskName ) + '\''
+                } );
+
                 loadedTasks[ taskName ] = require( '../tasks/' + taskName );
 
             } catch ( error ) {
 
-                if( config.verbose ) console.log( '[gulpDecorator] warning: Failed to lazy load task: ' + taskName );
+                if( config.verbose ) log.warn( {
+                    sender: 'gulpDecorator',
+                    message: 'warning: Failed to lazy load task: ' + taskName
+                } );
 
             }
 
@@ -191,4 +238,16 @@ function decorate ( gulp ) {
 
 
 module.exports = decorate;
+
+
+// helper function
+var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+var ARGUMENT_NAMES = /([^\s,]+)/g;
+function getParamNames ( func ) {
+    var fnStr = func.toString().replace( STRIP_COMMENTS, '' );
+    var result = fnStr.slice( fnStr.indexOf( '(' ) + 1, fnStr.indexOf( ')' ) ).match( ARGUMENT_NAMES );
+    if( result === null )
+        result = [];
+    return result;
+}
 
