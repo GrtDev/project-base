@@ -2,7 +2,7 @@
  * @author Geert Fokke [geert@sector22.com]
  * @www sector22.com
  *
- * Based on the Gulp-starter project of Daniel Tello
+ * Inspired by the Gulp-starter project of Daniel Tello
  * @author Daniel Tello
  * @link: github.com/greypants/gulp-starter
  *
@@ -14,6 +14,12 @@
 var gulp                = require('gulp');
 var PathConfig          = require('./util/PathConfig');
 var packageJSON         = require('../package.json');
+
+
+var gulpSettings        = {
+                            debug: false,
+                            lazy: true
+                          }
 
 
 // Define source folders layout
@@ -46,10 +52,38 @@ config.name             = packageJSON.name;
 config.ignorePrefix     = '_';
 config.debug            = true;
 config.minify           = false;
-config.gulpDebug        = false;
-config.verbose          = false;
+config.verbose          = true;
+config.notifyErrors     = true;
 config.source           = source;
 config.dest             = dest;
+config.gulp             = gulpSettings;
+
+
+/**
+ * Bower Dependencies
+ * Function that returns a list of bower dependencies to be copied to their destination
+ * If possible it is better to use '@import' for scss (instead of css) files
+ * or 'require("path_to_file")' for javascript files.
+ * @see: https://www.npmjs.com/package/glob
+ * For each destination define a config object, e.g.:
+ * {
+ *      source : [ path_to_file(s) ],
+ *      dest: path_to_destination
+ * }
+ * @return {Array}
+ */
+config.bowerDependencies = function () {
+    return [
+        //{
+        //    source: ['bootstrap/fonts/**'],
+        //    dest: config.dest.getPath('fonts', 'bootstrap/')
+        //},
+        //{
+        //    source: ['jquery/dist/jquery.min.js'],
+        //    dest: config.dest.getPath('javascript')
+        //}
+    ];
+}
 
 
 module.exports          = config;

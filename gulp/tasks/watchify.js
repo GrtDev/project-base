@@ -1,7 +1,9 @@
 // @formatter:off
 
-var gulp                = require('gulp');
-var browserifyTask      = require('./browserify');
+var requireCachedModule     = require('../util/requireCachedModule');
+var browserifyTask          = require('./browserify');
+
+var gulp                    = requireCachedModule('gulp');
 
 // @formatter:on
 

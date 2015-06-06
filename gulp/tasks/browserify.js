@@ -2,23 +2,24 @@
 
 var config                  = require('../config');
 var log                     = require('../util/log');
-
-var browserSync             = require('browser-sync');
-var gulp                    = require('gulp');
-var browserify              = require('browserify');
-var source                  = require('vinyl-source-stream');
-var mergeStream             = require('merge-stream');
-var watchify                = require('watchify');
-var buffer                  = require('vinyl-buffer');
-var uglify                  = require('gulp-uglify');
-var gulpSize                = require('gulp-size');
-var sourcemaps              = require('gulp-sourcemaps');
-var glob                    = require('glob');
+var requireCachedModule     = require('../util/requireCachedModule');
 var path                    = require('path');
-var gulpDebug               = require('gulp-debug');
-var gulpPlumber             = require('gulp-plumber');
-var gulpIf                  = require('gulp-if');
-var gulpIgnore              = require('gulp-ignore');
+
+var gulp                    = requireCachedModule('gulp');
+var uglify                  = requireCachedModule('gulp-uglify');
+var gulpSize                = requireCachedModule('gulp-size');
+var sourcemaps              = requireCachedModule('gulp-sourcemaps');
+var gulpDebug               = requireCachedModule('gulp-debug');
+var gulpPlumber             = requireCachedModule('gulp-plumber');
+var gulpIf                  = requireCachedModule('gulp-if');
+var gulpIgnore              = requireCachedModule('gulp-ignore');
+var browserSync             = requireCachedModule('browser-sync');
+var watchify                = requireCachedModule('watchify');
+var browserify              = requireCachedModule('browserify');
+var source                  = requireCachedModule('vinyl-source-stream');
+var mergeStream             = requireCachedModule('merge-stream');
+var buffer                  = requireCachedModule('vinyl-buffer');
+var glob                    = requireCachedModule('glob');
 
 
 //@formatter:on
@@ -81,8 +82,8 @@ function createBundleConfigs() {
  */
 function createBundleConfig(fileName, filePath, options) {
 
-    if(!fileName) return log.error({message: 'fileName can not be null!', plugin: 'browserify task'});
-    if(!filePath) return log.error({message: 'filePath can not be null!', plugin: 'browserify task'});
+    if(!fileName) return log.error({message: 'fileName can not be null!', sender: 'browserify task'});
+    if(!filePath) return log.error({message: 'filePath can not be null!', sender: 'browserify task'});
 
     var bundleConfig = {}
     options = options || {};
@@ -215,7 +216,7 @@ var browserifyTask = function (opt_watch) {
 
 }
 
-// defines the browserify task for Gulp.
+// defines the browserify task for Gulp.tc
 gulp.task('browserify', function () {
 
     return browserifyTask();

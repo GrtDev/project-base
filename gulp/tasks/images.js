@@ -1,9 +1,11 @@
 // @formatter:off
 
-var changed             = require('gulp-changed');
-var gulp                = require('gulp');
-var imagemin            = require('gulp-imagemin');
-var config              = require('../config');
+var requireCachedModule     = require('../util/requireCachedModule');
+var config                  = require('../config');
+
+var changed                 = requireCachedModule('gulp-changed');
+var gulp                    = requireCachedModule('gulp');
+var imagemin                = requireCachedModule('gulp-imagemin');
 
 
 /**

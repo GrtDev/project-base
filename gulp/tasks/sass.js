@@ -1,18 +1,19 @@
 //@formatter:off
 
+var requireCachedModule         = require('../util/requireCachedModule');
 var config                      = require('../config');
 var log                         = require('../util/log');
 
-var gulp                        = require('gulp');
-var browserSync                 = require('browser-sync');
-var sass                        = require('gulp-sass');
-var sourcemaps                  = require('gulp-sourcemaps');
-var autoprefixer                = require('gulp-autoprefixer');
-var gulpIf                      = require('gulp-if');
-var gulpMinCss                  = require('gulp-minify-css');
-var gulpSize                    = require('gulp-size');
-var uncss                       = require('gulp-uncss');
-var gulpIgnore                  = require('gulp-ignore');
+var gulp                        = requireCachedModule('gulp');
+var browserSync                 = requireCachedModule('browser-sync');
+var sass                        = requireCachedModule('gulp-sass');
+var sourcemaps                  = requireCachedModule('gulp-sourcemaps');
+var autoprefixer                = requireCachedModule('gulp-autoprefixer');
+var gulpIf                      = requireCachedModule('gulp-if');
+var gulpMinCss                  = requireCachedModule('gulp-minify-css');
+var gulpSize                    = requireCachedModule('gulp-size');
+var uncss                       = requireCachedModule('gulp-uncss');
+var gulpIgnore                  = requireCachedModule('gulp-ignore');
 
 /**
  * Task for compiled SASS files back to CSS, uses lib-sass instead of ruby for faster compiling.

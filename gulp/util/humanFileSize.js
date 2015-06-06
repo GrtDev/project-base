@@ -1,5 +1,5 @@
 /**
- *  Converts bytes into a humand readable string.
+ *  Converts bytes into a human readable string.
  *  @param bytes {number} number of bytes
  *  @param decimal {boolean} use decimal or binary format for conversion.
  *

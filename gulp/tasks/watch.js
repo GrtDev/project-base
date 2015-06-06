@@ -1,8 +1,10 @@
 // @formatter:off
 
-var gulp                    = require('gulp');
+var requireCachedModule     = require('../util/requireCachedModule');
 var config                  = require('../config');
-var browserSync             = require('browser-sync');
+
+var gulp                    = requireCachedModule('gulp');
+var browserSync             = requireCachedModule('browser-sync');
 
 
 /**

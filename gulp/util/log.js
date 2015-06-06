@@ -1,11 +1,14 @@
 // @formatter:off
 
+var requireCachedModule         = require('./requireCachedModule');
+var humanFileSize               = require('./humanFileSize');
+var config                      = require('../config');
+
 var path                        = require('path');
 var gulpUtil                    = require('gulp-util');
-var prettyHrtime                = require('pretty-hrtime');
-var notifier                    = require("node-notifier");
+var prettyHrtime                = requireCachedModule('pretty-hrtime');
+var notifier                    = requireCachedModule("node-notifier");
 
-var humanFileSize               = require('./humanFileSize');
 
 
 var bundleStartTime;
@@ -38,11 +41,11 @@ var bundleLogs = {
      * @param fileName {string}
      * @returns {Function}
      */
-    onStart: function (fileName) {
+    onStart: function ( fileName ) {
 
         return function () {
             bundleStartTime = process.hrtime();
-            gulpUtil.log('Bundling...\t' + gulpUtil.colors.blue(fileName));
+            gulpUtil.log( 'Bundling...\t' + gulpUtil.colors.blue( fileName ) );
         }
 
     },
@@ -51,8 +54,8 @@ var bundleLogs = {
      * Logs the name of the bundle that is being watched.
      * @param bundleName {string}
      */
-    watch: function (bundleName) {
-        gulpUtil.log('Watching files required by', gulpUtil.colors.yellow(bundleName));
+    watch: function ( bundleName ) {
+        gulpUtil.log( 'Watching files required by', gulpUtil.colors.yellow( bundleName ) );
     },
 
     /**
@@ -61,10 +64,10 @@ var bundleLogs = {
      * @param bundleName {string}
      * @returns {Function}
      */
-    onUglify: function (uglifying, bundleName) {
+    onUglify: function ( uglifying, bundleName ) {
 
         return function () {
-            if(uglifying) gulpUtil.log('Uglifying...\t' + gulpUtil.colors.green(bundleName));
+            if( uglifying ) gulpUtil.log( 'Uglifying...\t' + gulpUtil.colors.green( bundleName ) );
         }
 
     },
@@ -75,11 +78,11 @@ var bundleLogs = {
      * @param fileName {string}
      * @returns {Function}
      */
-    onEnd: function (fileName) {
+    onEnd: function ( fileName ) {
 
         return function () {
-            var taskTime = bundleStartTime ? prettyHrtime(process.hrtime(bundleStartTime)) : null;
-            gulpUtil.log('Bundled:\t' + gulpUtil.colors.blue(fileName) + (taskTime ? ' in ' + gulpUtil.colors.magenta(taskTime) : ''));
+            var taskTime = bundleStartTime ? prettyHrtime( process.hrtime( bundleStartTime ) ) : null;
+            gulpUtil.log( 'Bundled:\t' + gulpUtil.colors.blue( fileName ) + (taskTime ? ' in ' + gulpUtil.colors.magenta( taskTime ) : '') );
         }
 
     }
@@ -97,23 +100,22 @@ var sizeLogs = {
      * @param opt_doLog {boolean=} boolean check to actually perform the log
      * @returns {Function}
      */
-    onDifference: function (sizeBefore, sizeAfter, opt_doLog) {
+    onDifference: function ( sizeBefore, sizeAfter, opt_doLog ) {
 
 
         return function () {
-            
+
             sizeBefore = sizeBefore.size;
             sizeAfter = sizeAfter.size;
 
-            if(opt_doLog === undefined || opt_doLog)
-            {
+            if( opt_doLog === undefined || opt_doLog ) {
                 var difference = sizeBefore - sizeAfter;
-                var message = 'Total size: ' + gulpUtil.colors.magenta(humanFileSize(sizeAfter, true));
+                var message = 'Total size: ' + gulpUtil.colors.magenta( humanFileSize( sizeAfter, true ) );
 
-                if(difference > 0) message += ', ( saved ' + gulpUtil.colors.cyan(humanFileSize(difference, true)) + ' )';
-                else message += ', ( gained ' + gulpUtil.colors.red(humanFileSize(difference * -1, true)) + ' )';
+                if( difference > 0 ) message += ', ( saved ' + gulpUtil.colors.cyan( humanFileSize( difference, true ) ) + ' )';
+                else message += ', ( gained ' + gulpUtil.colors.red( humanFileSize( difference * -1, true ) ) + ' )';
 
-                gulpUtil.log(message);
+                gulpUtil.log( message );
             }
 
         }
@@ -121,31 +123,71 @@ var sizeLogs = {
     }
 };
 
-function logError(error) {
+/**
+ * Logs error and throws a notification (if set in the config)
+ * @param error {Error|object}
+ * @param opt_stack {boolean=} deploy a stack trace in the console
+ * @param opt_exit {boolean=} kill the process
+ */
+function logError ( error, opt_stack, opt_exit ) {
 
-    error.name = error.name || 'Error';
-    error.message = error.message || 'No message...';
-    error.stack = error.stack || 'No stack found...';
-    error.fileName = error.fileName || 'No filename found...';
-    error.plugin = error.plugin || 'Unkown plugin';
+    // @formatter:off
 
-    error.title = error.name + ' (' + error.plugin + ')';
+    error.name      = error.name || 'Error';
+    error.message   = error.message || 'No message...';
+    error.stack     = error.stack || 'No stack found...';
+    error.fileName  = error.fileName || 'No filename found...';
 
-    notifier.notify({
-        title: error.title,
-        message: error.message.replace(/\"/g, '\\"'), // Make sure any quotes are properly escaped as this can break the notifier
-        icon: path.resolve(__dirname, '../assets/gulp-error.png'),
-        sound: false
-    }, function (error, response) {
-        console.log(error);
-        console.log(response);
-    });
+    //@formatter:on
 
-    gulpUtil.log(gulpUtil.colors.red('[ ' + error.title + ' ]:'), error.message);
+    var title = error.name;
+
+    if( error.plugin ) title += ' [' + (error.plugin) + ']';
+    else if( error.sender ) title += ' [' + error.sender + ']';
+
+
+    if( config.notifyErrors ) {
+
+        notifier.notify( {
+
+            title: title,
+            message: error.message.replace( /\"/g, '\\"' ), // Make sure any quotes are properly escaped as this can break the notifier
+            icon: path.resolve( __dirname, '../assets/gulp-error.png' ),
+            sound: false
+
+        }, function ( notifyError, notifyResponse ) {
+
+            // just in case
+            if( notifyError ) console.log( notifyError );
+            if( notifyResponse ) console.log( notifyResponse );
+
+        } );
+
+    }
+
+
+    var message;
+    var stackTrace;
+
+    if( opt_stack && error.stack ) {
+
+        stackTrace = error.stack;
+        stackTrace = stackTrace.replace( new RegExp( '^' + error.name + '.*' ), '' );
+
+    }
+
+    message = error.message;
+    message = message.replace( new RegExp( '^' + error.name + '' ), '' );
+    message = gulpUtil.colors.red( title, message );
+
+    console.log( message + (stackTrace ? stackTrace : '') );
     gulpUtil.beep();
 
     //Keep gulp from hanging on this task
-    this.emit('end');
+    if( this.emit ) this.emit( 'end' );
+
+    // kill the process if necessary
+    if( opt_exit ) process.exit( 1 );
 };
 
 

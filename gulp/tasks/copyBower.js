@@ -1,11 +1,12 @@
 // @formatter:off
 
+var requireCachedModule     = require('../util/requireCachedModule');
 var config                  = require('../config');
 var log                     = require('../util/log');
 
-var gulp                    = require('gulp');
-var changed                 = require('gulp-changed');
-var mergeStream             = require('merge-stream');
+var gulp                    = requireCachedModule('gulp');
+var changed                 = requireCachedModule('gulp-changed');
+var mergeStream             = requireCachedModule('merge-stream');
 
 // @formatter:on
 

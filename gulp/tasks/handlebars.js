@@ -1,19 +1,19 @@
 // @formatter:off
 
-var config              = require('../config');
-var log                 = require('../util/log');
+var requireCachedModule     = require('../util/requireCachedModule');
+var config                  = require('../config');
+var log                     = require('../util/log');
 
-var gulp                = require('gulp');
-var handlebars          = require('gulp-hb');
-var rename              = require('gulp-rename');
-var browserSync         = require('browser-sync');
-var htmlmin             = require('gulp-htmlmin');
-var gulpif              = require('gulp-if');
-var path                = require('path');
-var frontMatter         = require('gulp-front-matter');
-var fileSystem          = require('fs');
-var path                = require('path');
-var glob                = require('glob');
+var path                    = require('path');
+var fileSystem              = require('fs');
+var gulp                    = requireCachedModule('gulp');
+var handlebars              = requireCachedModule('gulp-hb');
+var rename                  = requireCachedModule('gulp-rename');
+var htmlmin                 = requireCachedModule('gulp-htmlmin');
+var gulpif                  = requireCachedModule('gulp-if');
+var frontMatter             = requireCachedModule('gulp-front-matter');
+var browserSync             = requireCachedModule('browser-sync');
+var glob                    = requireCachedModule('glob');
 
 //@formatter:on
 /**
