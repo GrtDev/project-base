@@ -1,20 +1,3 @@
-// @formatter:off
-
-var requireCachedModule         = require('./requireCachedModule');
-var humanFileSize               = require('./humanFileSize');
-var config                      = require('../config');
-
-var path                        = require('path');
-var gulpUtil                    = require('gulp-util');
-var prettyHrtime                = requireCachedModule('pretty-hrtime');
-var notifier                    = requireCachedModule("node-notifier");
-
-
-
-var bundleStartTime;
-
-// @formatter:on
-
 /**
  *  This file contains a collection of log functions to keep track of what is happening during the build process
  *
@@ -28,100 +11,138 @@ var bundleStartTime;
  *
  */
 
+// @formatter:off
+
+var requireCachedModule         = require('./requireCachedModule');
+var humanFileSize               = require('./humanFileSize');
+var config                      = require('../config');
+
+var path                        = require('path');
+var gulpUtil                    = require('gulp-util');
+var prettyHrtime                = requireCachedModule('pretty-hrtime');
+var notifier                    = requireCachedModule("node-notifier");
+
+// @formatter:on
+
 
 /**
- * A collection of log functions specifically for the browserify bundle process.
- *
- * @type {{onStart: Function, watch: Function, onUglify: Function, onEnd: Function}}
+ * Log a message with size
+ * @param sender {string}
+ * @param message {string}
+ * @param size {number}
+ * @param optSizeAfter {number}
+ * @param opt_wrap {boolean}
  */
-var bundleLogs = {
+function logSize ( sender, message, size, optSizeAfter, opt_wrap ) {
 
-    /**
-     * Returns a event listener function to be called at the start of the bundle process
-     * @param fileName {string}
-     * @returns {Function}
-     */
-    onStart: function ( fileName ) {
+    if( opt_wrap ) {
 
-        return function () {
-            bundleStartTime = process.hrtime();
-            gulpUtil.log( 'Bundling...\t' + gulpUtil.colors.blue( fileName ) );
+        return function () { logSize.call( this, sender, message, size, optSizeAfter, false ) }
+
+    } else {
+
+        var sizeLog = humanFileSize( size );
+
+        if( optSizeAfter ) {
+            var difference = size - optSizeAfter;
+            if( difference > 0 ) sizeLog = 'saved ' + humanFileSize( difference );
+            else sizeLog = 'gained ' + humanFileSize( difference );
         }
 
-    },
-
-    /**
-     * Logs the name of the bundle that is being watched.
-     * @param bundleName {string}
-     */
-    watch: function ( bundleName ) {
-        gulpUtil.log( 'Watching files required by', gulpUtil.colors.yellow( bundleName ) );
-    },
-
-    /**
-     * Returns a event listener function to be called just before the Uglifying bundle process
-     * @param uglifying {boolean} whether the bundle is going to start the uglifying process
-     * @param bundleName {string}
-     * @returns {Function}
-     */
-    onUglify: function ( uglifying, bundleName ) {
-
-        return function () {
-            if( uglifying ) gulpUtil.log( 'Uglifying...\t' + gulpUtil.colors.green( bundleName ) );
-        }
-
-    },
-
-    /**
-     * Returns a event listener function to be called at the end of the bundle process
-     * If 'start' was called it will also log the time the task has taken to complete.
-     * @param fileName {string}
-     * @returns {Function}
-     */
-    onEnd: function ( fileName ) {
-
-        return function () {
-            var taskTime = bundleStartTime ? prettyHrtime( process.hrtime( bundleStartTime ) ) : null;
-            gulpUtil.log( 'Bundled:\t' + gulpUtil.colors.blue( fileName ) + (taskTime ? ' in ' + gulpUtil.colors.magenta( taskTime ) : '') );
-        }
+        console.log( gulpUtil.colors.blue( '[' + sender + ']\t' + message ) + gulpUtil.colors.cyan( sizeLog ) );
 
     }
-};
 
+}
+/**
+ * Log a message with size
+ * @param sender {string}
+ * @param message {string}
+ * @param time {number}
+ * @param opt_wrap {boolean}
+ */
+function logTime ( sender, message, time, opt_wrap ) {
 
-var sizeLogs = {
+    if( opt_wrap ) {
 
-    /**
-     * Returns a event listener function that can be called to log the file size difference
-     * @see: https://github.com/sindresorhus/gulp-size
-     *
-     * @param sizeBefore {object} gulp-size object
-     * @param sizeAfter {object} gulp-size object
-     * @param opt_doLog {boolean=} boolean check to actually perform the log
-     * @returns {Function}
-     */
-    onDifference: function ( sizeBefore, sizeAfter, opt_doLog ) {
+        return function () { logTime.call( this, sender, message, size, false ) }
 
+    } else {
 
-        return function () {
+        console.log( gulpUtil.colors.blue( '[' + sender + '] ' + message ) + gulpUtil.colors.cyan( prettyHrtime( time ) ) );
+    }
 
-            sizeBefore = sizeBefore.size;
-            sizeAfter = sizeAfter.size;
+}
 
-            if( opt_doLog === undefined || opt_doLog ) {
-                var difference = sizeBefore - sizeAfter;
-                var message = 'Total size: ' + gulpUtil.colors.magenta( humanFileSize( sizeAfter, true ) );
+/**
+ * Logs a debug message
+ * @param sender {string}
+ * @param message {string|Array}
+ * @param opt_data {Array=} data to log
+ * @param opt_wrap {boolean=} will wrap the log into another function if true.
+ * @param opt_doLog {boolean=} boolean check on whether to actually do the log
+ * @returns {Function=}
+ */
+function logDebug ( sender, message, opt_data, opt_wrap, opt_doLog ) {
 
-                if( difference > 0 ) message += ', ( saved ' + gulpUtil.colors.cyan( humanFileSize( difference, true ) ) + ' )';
-                else message += ', ( gained ' + gulpUtil.colors.red( humanFileSize( difference * -1, true ) ) + ' )';
+    if( opt_wrap ) {
 
-                gulpUtil.log( message );
-            }
+        return function () { logDebug.call( this, sender, message, false, opt_doLog ) }
 
-        }
+    } else {
+
+        if( typeof opt_doLog !== 'undefined' && !opt_doLog ) return;
+        console.log.apply( this, [ gulpUtil.colors.blue( '[' + sender + '] debug: ' + message ) ].concat( opt_data ? opt_data : []  ) );
 
     }
-};
+
+}
+
+/**
+ * Logs a warning message
+ * @param sender {string}
+ * @param message {string|Array}
+ * @param opt_data {Array=} data to log
+ * @param opt_wrap {boolean=} will wrap the log into another function if true.
+ * @param opt_doLog {boolean=} boolean check on whether to actually do the log
+ * @returns {Function=}
+ */
+function logWarn ( sender, message, opt_data, opt_wrap, opt_doLog ) {
+
+    if( opt_wrap ) {
+
+        return function () { logWarn.call( this, sender, message, false, opt_doLog ) }
+
+    } else {
+
+        if( typeof opt_doLog !== 'undefined' && !opt_doLog ) return;
+        console.log.apply( this, [ gulpUtil.colors.yellow( '[' + sender + '] warn: ' + message ) ].concat( opt_data ? opt_data : []  ) );
+    }
+
+}
+
+/**
+ * Logs a info message
+ * @param sender {string}
+ * @param message {string|Array}
+ * @param opt_data {Array=} data to log
+ * @param opt_wrap {boolean=} will wrap the log into another function if true.
+ * @param opt_doLog {boolean=} boolean check on whether to actually do the log
+ * @returns {Function=}
+ */
+function logInfo ( sender, message, opt_data, opt_wrap, opt_doLog ) {
+
+    if( opt_wrap ) {
+
+        return function () { logInfo.call( this, sender, message, null, false, opt_doLog ) }
+
+    } else {
+
+        if( typeof opt_doLog !== 'undefined' && !opt_doLog ) return;
+        console.log.apply( this, [ gulpUtil.colors.blue( '[' + sender + '] info: ' ) + gulpUtil.colors.cyan( message ) ].concat( opt_data ? opt_data : [] ) );
+    }
+
+}
 
 /**
  * Logs error and throws a notification (if set in the config)
@@ -133,10 +154,10 @@ function logError ( error, opt_stack, opt_exit ) {
 
     // @formatter:off
 
-    error.name      = error.name || 'Error';
-    error.message   = error.message || 'No message...';
-    error.stack     = error.stack || 'No stack found...';
-    error.fileName  = error.fileName || 'No filename found...';
+    error.name      = error.name        || 'Error';
+    error.message   = error.message     || 'No message...';
+    error.stack     = error.stack       || 'No stack found...';
+    error.fileName  = error.fileName    || 'No filename found...';
 
     //@formatter:on
 
@@ -193,14 +214,18 @@ function logError ( error, opt_stack, opt_exit ) {
 
 /**
  * The complete collection of log functions to be used during the building process.
- *
  * @name log
- * @type {{error: logError, bundle: {onStart: Function, watch: Function, onUglify: Function, onEnd: Function}, size: {onDifference: Function}}}
+ * @type {{time: logTime, size: logSize, error: logError, debug: logDebug, warn: logWarn, info: logInfo}}
  */
 var log = {
+
+    time: logTime,
+    size: logSize,
     error: logError,
-    bundle: bundleLogs,
-    size: sizeLogs
+    debug: logDebug,
+    warn: logWarn,
+    info: logInfo
+
 };
 
 module.exports = log;

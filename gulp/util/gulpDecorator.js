@@ -58,8 +58,7 @@ function decorate ( gulp ) {
     var gulpTaskFunction = gulp.task;
     gulp.task = function () {
 
-        if( config.verbose ) console.log( '[gulpDecorator] debug: gulp.task()', arguments );
-
+        if( config.gulp.debug) log.debug( 'gulpDecorator', 'gulp.task()', [arguments] );
 
         var taskIndex;
         var taskFunction;
@@ -87,6 +86,8 @@ function decorate ( gulp ) {
 
         }
 
+
+        //TODO: Figure out how this works in combination with runSequence..
         if( config.gulp.debug ) {
 
             if( config.verbose ) console.log( '[gulpDecorator] debug: Modifying gulp for for better error handling...' );
@@ -96,6 +97,7 @@ function decorate ( gulp ) {
                 try { return taskFunction.apply( gulp, arguments ); }
                 catch ( error ) {
                     log.error( error, true, true )
+                    return null;
                 }
 
             }

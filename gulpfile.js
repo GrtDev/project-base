@@ -8,9 +8,9 @@ var config                  = require('./gulp/config');
 
 config.debug                = true;
 config.minify               = false;
-config.verbose              = true;
+config.verbose              = false;
 config.notifyErrors         = true;
-config.gulp.debug           = false;
+config.gulp.debug           = true;
 
 // ---------------------------------------------------------------------
 
@@ -34,18 +34,18 @@ function init() {
     // Decorate gulp with extra functionality for better debugging and error handling.
     gulpDecorator(gulp);
 
-
-    console.log( gulpUtil.colors.blue('[gulpfile]\tinit time: ') + gulpUtil.colors.cyan(prettyHrtime( process.hrtime( startTime ) )) );
-
+    log.time('gulpfile', 'init time:', process.hrtime( startTime ));
 
 
-    //--------------     M A I N   T A S K S    L I S T     --------------//
+
+    //--------------     M A I N   T A S K S    L I S T     --------------
 
     // Specifies the default set of tasks to run when you run `gulp`.
     gulp.task( 'default', [ 'server' ] );
 
 
     /**
+     *  @task server
      *  Build the project.
      *  Fires up a local server.
      *  Starts watching all the used files and rebuilds on file changes.
@@ -65,7 +65,10 @@ function init() {
     } );
 
 
-    // Deletes the olds files and builds the project from scratch.
+    /**
+     *  @task build
+     *  Deletes the olds files and builds the project from scratch.
+     */
     gulp.task( 'build', function ( callback ) {
 
         if(checkDebugMode()) return;
@@ -84,7 +87,10 @@ function init() {
     } );
 
 
-    // Deletes the olds files and builds the project from scratch.
+    /**
+     * @task build:dist
+     * Builds the project in distribution mode.
+     */
     gulp.task( 'build:dist', function ( callback ) {
 
         if(checkDebugMode()) return;
@@ -98,6 +104,8 @@ function init() {
         );
 
     } );
+
+
 
     /**
      * At the moment runSequence does not work well when task functions are decorated with error catching..

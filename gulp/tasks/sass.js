@@ -85,10 +85,10 @@ gulp.task('sass', function () {
 
     // Keep track of the file size changes
     // @see: https://github.com/sindresorhus/gulp-size
+    // TODO: Fix file size logs.
     var sizeBefore = gulpSize({showFiles: true});
     var sizeAfter = gulpSize({showFiles: true});
 
-    // TODO: Fix file size logs.
 
     return gulp.src(options.source)
         //

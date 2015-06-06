@@ -161,33 +161,33 @@ function createBundle(bundleConfig, opt_watch) {
 
         return browserifyInstance.bundle()
             // log the start and keep track of the task process time.
-            .on('readable', log.bundle.onStart(bundleConfig.fileName))
+            .on('readable', log.info('browserify', 'bundling:\t' + bundleConfig.fileName, null, true))
+            // Use vinyl-source-stream to make the stream gulp compatible.
+            // Specify the desired output filename here.
+            .pipe(source(bundleConfig.fileName))
             // Add plumber to keep the pipe going and to catch errors
             .pipe(gulpPlumber(bundleConfig.plumberConfig))
             // print file names if in gulp debug mode
-            .pipe(gulpIf(config.gulpDebug, gulpDebug(bundleConfig.debugConfig)))
-            // Use vinyl-source-stream to make the
-            // stream gulp compatible. Specify the
-            // desired output filename here.
-            .pipe(source(bundleConfig.fileName))
-            //
-            .on('end', log.bundle.onUglify(bundleConfig.uglify, bundleConfig.fileName))
+            .pipe(gulpIf(config.gulp.debug, gulpDebug(bundleConfig.debugConfig)))
 
+            // convert from streaming to buffer object for uglify
             .pipe(buffer())
             .pipe(sourcemaps.init({loadMaps: true}))
-            // convert from streaming to buffer object for uglify
-            //.pipe(gulpIf(bundleConfig.uglify,   sizeBefore))
+
+            //.pipe(gulpIf(bundleConfig.uglify,   sizeBefore)) // TODO:
+
+            .on('end', log.info('browserify', 'minifying:\t' + bundleConfig.fileName, null, true, bundleConfig.uglify))
             .pipe(gulpIf(bundleConfig.uglify, uglify(bundleConfig.uglifyOptions)))
 
             .pipe(sourcemaps.write('./maps'))
-            // Specify the output destination
             .pipe(gulp.dest(bundleConfig.dest))
-            //
-            .pipe(gulpIf(bundleConfig.uglify, sizeAfter))
+
+            //.pipe(gulpIf(bundleConfig.uglify, sizeAfter)) // TODO:
             //.on('end', log.size.onDifference(sizeBefore, sizeAfter, bundleConfig.uglify))
 
             // log the end of the bundle task and calculate the task time.
-            .on('end', log.bundle.onEnd(bundleConfig.fileName))
+            .on('end', log.info('browserify', 'finished:\t' + bundleConfig.fileName, null, true))
+
             // remove the maps from the stream because it can cause problems with browserSync
             .pipe(gulpIgnore.exclude('*.map'))
             .pipe(browserSync.reload({stream: true}));
