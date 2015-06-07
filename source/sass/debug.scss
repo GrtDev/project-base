@@ -1,94 +1,12 @@
+@charset "UTF-8";
+
 @import "base/settings/-all";
+@import "pages/styleguide";
+
 
 html
 {
     background-color: $color-off-white;
-}
-
-div.project-link-list
-{
-    position: relative;
-    margin: 0 auto;
-    text-align: center;
-    padding: 20px 50px;
-
-    .project-link-list__disclaimer
-    {
-        margin: 20px 0;
-        color: #bbaea5;
-        font-size: .7em;
-    }
-
-    ul
-    {
-        margin-left: 40px;
-    }
-
-    > ul
-    {
-        display: inline-block;
-        text-align: left;
-        margin-left: 0;
-    }
-
-    a
-    {
-        position: relative;
-        padding: 4px 10px;
-        color: #EDE0CE;
-        text-decoration: none;
-        font-weight: 300;
-        z-index: 2;
-        transition-property: color;
-
-        &, &:before
-        {
-            transition: 250ms $ease-out-quad;
-        }
-
-        &:before
-        {
-            box-shadow: $shadow-depth-1;
-            transition-property: background-color, left, right;
-            content: ' ';
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #2B2A27;
-            z-index: -1;
-        }
-
-        &:hover
-        {
-            color: #2B2A27;
-
-            &:before
-            {
-                background-color: #EDE0CE;
-                left: -3px;
-                right: -3px;
-            }
-        }
-    }
-
-    li
-    {
-        position: relative;
-        height: 30px;
-        margin-bottom: 7px;
-
-        &.link-folder
-        {
-            margin-left: 6px;
-            font-size: .8em;
-            line-height: 1.4em;
-            padding-top: 5px;
-            height: auto;
-        }
-    }
 }
 
 div.handlebars-debug
@@ -96,7 +14,7 @@ div.handlebars-debug
     font-size: 12px;
     font-family: consolas, menlo, monaco, monospace;
     background-color: #2B2A27;
-    color: #EDE0CE;
+    color: #9a9286;
     max-height: 400px;
     overflow: scroll;
     padding: 5px 10px;
@@ -105,11 +23,15 @@ div.handlebars-debug
 
     // json syntax highlighting
 
-    .string {   color: #EDE0CE; }
+    .string {   color: #26A6A6; }
     .number {   color: #BCD42A; }
     .boolean {  color: #FF5D38; }
     .null {     color: #FF5D38; }
-    .key {      color: #26A6A6; }
+    .key {      color: #EDE0CE; }
 
     // @formatter:on
 }
+
+
+
+

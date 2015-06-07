@@ -96,34 +96,55 @@ gulp.task( 'handlebars', function () {
     function onDataEach ( context, file ) {
 
         var fileName = path.basename( file.path, '.hbs' );
-        var filePath = config.source.getPath( 'markup', 'data/pages/' + fileName + '.json' );
+        var metaDataFilePath = config.source.getPath( 'markup', '_data/pages/' + fileName + '.json' );
 
-        // if a json exists for this file, add it to the context.
-        if( fileSystem.existsSync( filePath ) )  context.meta = require( filePath );
-
-        // supply list of available links to the index as a file tree
-        if( fileName === 'index' ) {
-
-            // get list of pages
-            var pagesList = getPagesList( options );
-
-            if( pagesList ) {
-
-                // convert the list into a tree & strip project path
-                var pageTree = createFileTree( pagesList, '_files', 'html' );
-                context.pages = pageTree;
-
-            } else {
-
-                log.error( { sender: 'handlebars', message: 'Failed to generate the list of pages' } )
-
-            }
-        }
-
+        // pass some basic options to the files
         context.options = {
 
             debug: config.debug
 
+        }
+
+        // Add meta data to the pages that is available in the _data/pages folder
+        try {
+
+            // throws an error if the file does not exist
+            context.meta = require( path.relative( __dirname, metaDataFilePath ) );
+
+        } catch ( error ) {
+
+            if( config.verbose ) console.log( 'No meta data file found for page: ' + fileName );
+
+        }
+
+
+        switch ( fileName ) {
+            case 'styleguide':
+                // nothing special
+                break;
+            case 'index':
+
+                // get list of pages. then convert the list into a tree & strip project path
+                var pagesList = getPagesList( options );
+                if( pagesList ) {
+
+                    var pageTree = createFileTree( pagesList, '_files', 'html' );
+                    context.pages = pageTree;
+
+                } else {
+
+                    log.error( { message: 'Failed to generate the list of pages', plugin: 'handlebars' } )
+
+                }
+
+            // no break!
+
+            default:
+
+                // strip svg data since we don't need it anywhere else but in the styleguide
+                if( context[ 'svg-filelist' ] ) context[ 'svg-filelist' ] = undefined;
+
+                break;
         }
 
         return context;

@@ -183,6 +183,8 @@ function logInfo ( options ) {
  */
 function logError ( error, opt_stack, opt_exit ) {
 
+    if( !error ) return;
+
     // @formatter:off
 
     error.name      = error.name        || 'Error';

@@ -1,14 +1,56 @@
 ---
-title: Styleguide
+title: Index overview
+headers:
+- h1
+- h2
+- h3
+- h4
+- h5
+- h6
 ---
-
 {{> base/_head }}
 
-<div>
 
- TODO: ......
+{{!--{{{ debug }}}--}}
+
+<div class="styleguide">
+
+    <div class="styleguide__styleblock">
+        <h3>Headers</h3>
+        <ul>
+			{{#each file.front.headers}}
+                <li><{{this}}>Header {{math @index '+' 1}} style<{{this}}></li>
+			{{/each}}
+        </ul>
+    </div>
+
+	{{#if svg-filelist}}
+
+        <div class="styleguide__styleblock svg-sprites">
+            <h3>SVG Shapes<span class="notes">This section is automatically generated from .svg files in the 'source/assets/svg' folder</span></h3>
+            <ul>
+
+				{{#svg-filelist}}
+                    <!-- {{this}} -->
+                    <li title="{{this}}">
+
+                        <div class="svg-box">
+	                        {{{ svg this }}}
+                            {{!--<i class="svg-{{this}}"></i>--}}
+                        </div>
+                        <h4>{{this}}</h4>
+                    </li>
+				{{/svg-filelist}}
+
+            </ul>
+        </div>
+
+	{{/if}}
+
+
 
 </div>
+
 
 {{> base/_foot }}
 

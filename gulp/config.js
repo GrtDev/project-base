@@ -45,7 +45,6 @@ dest.images             = '<%= assets %>/images';
 dest.fonts              = '<%= assets %>/fonts';
 dest.videos             = '<%= assets %>/videos';
 dest.data               = '<%= assets %>/data';
-dest.svg                = '<%= assets %>/svg';
 
 
 // Create the config object and add all the default settings

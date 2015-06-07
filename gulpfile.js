@@ -70,6 +70,7 @@ function init() {
             'copyAssets',
             'copyBower',
             'images',
+            'svg',
             'handlebars',
             'browserify',
             'sass',
