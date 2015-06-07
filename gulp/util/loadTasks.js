@@ -6,7 +6,6 @@ var requireCachedModule     = require('./requireCachedModule');
 
 var path                    = require('path');
 var glob                    = requireCachedModule('glob');
-var gulpUtil                = requireCachedModule('gulp-util');
 
 
 var dotRegExp               = /^\./;
@@ -16,23 +15,22 @@ var dotRegExp               = /^\./;
 function loadTasks () {
 
     // pre-load all gulp tasks if we're not loading at runtime
-    if( config.gulp.lazy ) return log.debug( { sender: 'util/loadTasks', message: '\tRunning in lazy mode, tasks will be loaded at runtime...' } );
+    if( config.gulp.lazy ) return log.info( { sender: 'loadTasks', message: '\tRunning in lazy mode, tasks will be loaded at runtime.' } );
 
-    log.debug( { sender: 'util/loadTasks', message: '\tLoading tasks...' } );
+    log.debug( { sender: 'loadTasks', message: '\tLoading tasks...' } );
 
-    var globPattern = './gulp/tasks/**/*.js';
     var relative = path.relative( __dirname, process.cwd() );
-    var taskFiles = glob.sync( globPattern );
+    var taskFiles = glob.sync( './gulp/tasks/**/*.js' );
 
     for ( var i = 0, leni = taskFiles.length; i < leni; i++ ) {
 
         require( taskFiles[ i ].replace( dotRegExp, relative ) );
 
-        if( config.verbose ) log.debug( { sender: 'util/loadTasks', message: 'task loaded: ' + taskFiles[ i ] } );
+        if( config.verbose ) log.info( { sender: 'loadTasks', message: 'task loaded: ' + taskFiles[ i ] } );
 
     }
 
-    log.debug( { sender: 'util/loadTasks', message: '\tDone.' } );
+    log.debug( { sender: 'loadTasks', message: '\tDone.' } );
 
 }
 

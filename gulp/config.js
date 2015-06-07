@@ -33,6 +33,7 @@ source.images           = '<%= assets %>/images';
 source.fonts            = '<%= assets %>/fonts';
 source.videos           = '<%= assets %>/videos';
 source.data             = '<%= assets %>/data';
+source.svg              = '<%= assets %>/svg';
 
 // Define destination folders layout
 var dest                = new PathConfig('./build');
@@ -44,6 +45,7 @@ dest.images             = '<%= assets %>/images';
 dest.fonts              = '<%= assets %>/fonts';
 dest.videos             = '<%= assets %>/videos';
 dest.data               = '<%= assets %>/data';
+dest.svg                = '<%= assets %>/svg';
 
 
 // Create the config object and add all the default settings

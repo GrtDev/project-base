@@ -96,17 +96,18 @@ gulp.task('sass', function () {
         // sass
         .pipe(sass(options.sass))
         // start optimizing...
-        //.pipe(gulpIf(options.minify,        sizeBefore))
+        .pipe(gulpIf(options.minify,        sizeBefore))
         .pipe(gulpIf(options.removeUnused,  uncss(options.uncss)))
         .pipe(gulpIf(options.minify,        gulpMinCss(options.cleanCSS)))
         //
         .pipe(autoprefixer(options.autoprefixer))
         .pipe(gulpIf(options.sourcemaps,    sourcemaps.write('./maps')))
         //
-        .pipe(gulpIf(options.minify,        sizeAfter))
         .pipe(gulp.dest(options.dest))
         // exclude map files because somehow they break the browserSync flow/connection
         .pipe(gulpIgnore.exclude('*.map'))
+        .pipe(gulpIf(options.minify,        sizeAfter))
+        .on('end', log.size({sender: 'sass', message: 'css - ', size:sizeBefore, sizeAfter:sizeAfter, wrap:true, check:options.minify}))
         .pipe(browserSync.reload({stream: true}));
 
 });

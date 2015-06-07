@@ -14,7 +14,7 @@ function loadPlugins ( callback, lazy, opt_global ) {
     if( typeof opt_global.plugins !== 'undefined' ) {
 
         log.error( {
-            sender: 'util/loadPlugins',
+            sender: 'loadPlugins',
             message: 'Attempting to load plugins, but they have already been loaded?!'
         } );
 
@@ -34,7 +34,7 @@ function loadPlugins ( callback, lazy, opt_global ) {
         }
     };
 
-    log.debug( { sender: 'util/loadPlugins', message: '\tIndexing plugins...' } );
+    log.info( { sender: 'loadPlugins', message: '\tIndexing plugins...' } );
 
     var plugins = gulpLoadPlugins( options.load );
 
@@ -50,7 +50,7 @@ function loadPlugins ( callback, lazy, opt_global ) {
         }
 
         log.info( {
-            sender: 'util/loadPlugins',
+            sender: 'loadPlugins',
             message: '\tPlugins loaded at runtime (lazy load: ' + options.load.lazy + '):',
             data: [ pluginsLoaded ]
         } );
@@ -61,7 +61,7 @@ function loadPlugins ( callback, lazy, opt_global ) {
     // make globally accessible
     opt_global.plugins = plugins;
 
-    log.debug( { sender: 'util/loadPlugins', message: '\tDone.' } );
+    log.info( { sender: 'loadPlugins', message: '\tDone.' } );
 
     callback();
 

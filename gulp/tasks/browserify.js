@@ -40,7 +40,7 @@ function createBundleConfigs () {
 
         // Minify files with UglifyJS.
         // @see: https://www.npmjs.com/package/gulp-uglify
-        uglify: config.minify,
+        minify: config.minify,
         uglifyOptions: {
             mangle: true, // Pass false to skip mangling names.
             preserveComments: false // 'all', 'some', {function}
@@ -95,7 +95,7 @@ function createBundleConfig ( fileName, filePath, options ) {
         debug: true // always enable source maps
     };
 
-    bundleConfig.uglify = (options.uglify !== undefined) ? options.uglify : config.minify;
+    bundleConfig.minify = (options.minify !== undefined) ? options.minify : config.minify;
     bundleConfig.uglifyOptions = options.uglifyOptions || {
         mangle: true, // Pass false to skip mangling names.
         preserveComments: false // 'all', 'some', {function}
@@ -159,7 +159,7 @@ function createBundle ( bundleConfig, opt_watch ) {
             // log the start and keep track of the task process time.
             .on( 'readable', log.info( {
                 sender: 'browserify',
-                message: 'bundling:\t' + bundleConfig.fileName,
+                message: 'bundling:\t' + log.colors.cyan(bundleConfig.fileName),
                 wrap: true
             } ) )
             // Use vinyl-source-stream to make the stream gulp compatible.
@@ -174,32 +174,32 @@ function createBundle ( bundleConfig, opt_watch ) {
             .pipe( buffer() )
             .pipe( sourcemaps.init( { loadMaps: true } ) )
 
-            //.pipe(gulpIf(bundleConfig.uglify,   sizeBefore)) // TODO:
+            .pipe(gulpIf(bundleConfig.minify,   sizeBefore))
 
             .on( 'end', log.info( {
                 sender: 'browserify',
-                message: 'minifying:\t' + bundleConfig.fileName,
+                message: 'minifying:\t' + log.colors.cyan(bundleConfig.fileName),
                 wrap: true,
-                check: bundleConfig.uglify
+                check: bundleConfig.minify
             } ) )
 
-            .pipe( gulpIf( bundleConfig.uglify, uglify( bundleConfig.uglifyOptions ) ) )
+            .pipe( gulpIf( bundleConfig.minify, uglify( bundleConfig.uglifyOptions ) ) )
 
             .pipe( sourcemaps.write( './maps' ) )
             .pipe( gulp.dest( bundleConfig.dest ) )
 
-            //.pipe(gulpIf(bundleConfig.uglify, sizeAfter)) // TODO:
-            //.on('end', log.size.onDifference(sizeBefore, sizeAfter, bundleConfig.uglify))
 
             // log the end of the bundle task and calculate the task time.
             .on( 'end', log.info( {
                 sender: 'browserify',
-                message: 'finished:\t' + bundleConfig.fileName,
+                message: 'finished:\t' + log.colors.cyan(bundleConfig.fileName),
                 wrap: true
             } ) )
 
             // remove the maps from the stream because it can cause problems with browserSync
             .pipe( gulpIgnore.exclude( '*.map' ) )
+            .pipe(gulpIf(bundleConfig.minify, sizeAfter))
+            .on('end', log.size({sender: 'browserify', message: bundleConfig.fileName + ' - ', size:sizeBefore, sizeAfter:sizeAfter, wrap:true, check:bundleConfig.minify}))
             .pipe( browserSync.reload( { stream: true } ) );
     }
 

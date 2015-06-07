@@ -8,7 +8,7 @@ var config                  = require('./gulp/config');
 
 config.debug                = true;
 config.minify               = false;
-config.verbose              = true;
+config.verbose              = false;
 config.notifyErrors         = true;
 config.gulp.debug           = false;
 
@@ -28,9 +28,9 @@ function init() {
     var gulp                = requireCachedModule('gulp');
     var runSequence         = requireCachedModule('run-sequence');
 
-    gulpDecorator(gulp); // Decorate gulp with extra functionality for better debugging and error handling.
+    gulpDecorator.decorate(gulp); // Decorate gulp with extra functionality for better debugging and error handling.
 
-    log.time( { sender: 'gulpfile', message: 'init time:', time: process.hrtime( startTime ) } );
+    log.time( { sender: 'gulpfile', message: 'init - ', time: process.hrtime( startTime ) } );
 
 
 
