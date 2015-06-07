@@ -28,6 +28,8 @@ gulp.task('copyAssets', function () {
         ignore: [
             config.source.getPath('images'),        // images are copied to the assets via the 'images' task.
             config.source.getPath('images', '**'),  // need a separate ignore for both the folder and all its files.
+            config.source.getPath('svg'),
+            config.source.getPath('svg', '**')
         ],
         dest: config.dest.getPath('assets')
 
