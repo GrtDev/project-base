@@ -18,7 +18,7 @@ var humanFileSize               = require('./humanFileSize');
 var config                      = require('../config');
 
 var path                        = require('path');
-var gulpUtil                    = require('gulp-util');
+var gulpUtil                    = requireCachedModule('gulp-util');
 var prettyHrtime                = requireCachedModule('pretty-hrtime');
 var notifier                    = requireCachedModule("node-notifier");
 
@@ -31,12 +31,12 @@ var notifier                    = requireCachedModule("node-notifier");
  * options:
  *  - sender {string}       sender of the message
  *  - message {string}      message
- *  - size {number}         size to log
- *  - sizeAfter {number=}   size to compare
+ *  - size {number}         gulpSizeObject
+ *  - sizeAfter {number=}   gulpSizeObject to compare
  *  - wrap {boolean=}       wrap the log into a handler function
  *  - check {boolean=}      perform a boolean check before logging
  *
- * @param options {{sender: {string}, message: {string}, time: {number}, check: {boolean=}, wrap: {boolean=}}}
+ * @param options {{sender: {string}, message: {string}, size: {object}, sizeAfter:{object} check: {boolean=}, wrap: {boolean=}}}
  */
 function logSize ( options ) {
 
@@ -47,16 +47,16 @@ function logSize ( options ) {
 
     } else {
 
-        var sizeLog = humanFileSize( options.size );
+        var sizeLog = humanFileSize( options.size.size, true );
 
         if( options.sizeAfter ) {
-            var difference = size - options.sizeAfter;
-            if( difference > 0 ) sizeLog = 'saved ' + humanFileSize( difference );
+            var difference = options.size.size - options.sizeAfter.size;
+            if( difference > 0 ) sizeLog = 'saved ' + humanFileSize( difference, true );
             else sizeLog = 'gained ' + humanFileSize( difference );
         }
 
         if( typeof options.check !== 'undefined' && !options.check ) return;
-        console.log( gulpUtil.colors.blue( '[' + options.sender + ']\t' + options.message ) + gulpUtil.colors.cyan( sizeLog ) );
+        console.log( gulpUtil.colors.blue( '[' + options.sender + '] size: ' + options.message ) + gulpUtil.colors.cyan( sizeLog ) );
 
     }
 
@@ -82,7 +82,7 @@ function logTime ( options ) {
     } else {
 
         if( typeof options.check !== 'undefined' && !options.check ) return;
-        console.log( gulpUtil.colors.blue( '[' + options.sender + '] ' + options.message ) + gulpUtil.colors.cyan( prettyHrtime( options.time ) ) );
+        console.log( gulpUtil.colors.blue( '[' + options.sender + '] time: ' + options.message ) + gulpUtil.colors.cyan( prettyHrtime( options.time ) ) );
     }
 
 }
