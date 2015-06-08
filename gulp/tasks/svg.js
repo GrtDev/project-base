@@ -26,8 +26,13 @@ gulp.task('svg', function () {
         config: {
             js2svg: {
                 pretty: true // pretty printed svg
-            }
+            },
+            plugins: [
+                { removeTitle: true }
+            ]
         },
+
+        // TODO: Strip title
 
         json: config.source.getPath('markup', '_data/_export/svg/svg-filelist.json')
 

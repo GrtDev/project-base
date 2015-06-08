@@ -156,6 +156,7 @@ function createBundle ( bundleConfig, opt_watch ) {
         // TODO: Fix file size logs
 
         return browserifyInstance.bundle()
+            .on( 'error', log.error )
             // log the start and keep track of the task process time.
             .on( 'readable', log.info( {
                 sender: 'browserify',
@@ -165,6 +166,7 @@ function createBundle ( bundleConfig, opt_watch ) {
             // Use vinyl-source-stream to make the stream gulp compatible.
             // Specify the desired output filename here.
             .pipe( source( bundleConfig.fileName ) )
+            .on( 'error', log.error )
             // Add plumber to keep the pipe going and to catch errors
             .pipe( gulpPlumber( bundleConfig.plumberConfig ) )
             // print file names if in gulp debug mode

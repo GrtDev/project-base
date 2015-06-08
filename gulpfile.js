@@ -86,8 +86,14 @@ function init() {
      */
     gulp.task( 'build:dist', function ( callback ) {
 
-        config.debug = false;
-        config.minify = true;
+        config.debug    = false;
+        config.minify   = true;
+
+        //var backendPath = '../Backend/.../';
+
+        //config.dest.markup      = backendPath + 'html';
+        //config.dest.javascript  = backendPath + 'js';
+        //config.dest.css         = backendPath + 'css';
 
         runSequence(
             'build',

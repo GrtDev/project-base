@@ -11,7 +11,6 @@
 
 // @formatter:off
 
-var gulp                = require('gulp');
 var PathConfig          = require('./util/PathConfig');
 var packageJSON         = require('../package.json');
 

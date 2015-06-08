@@ -14,6 +14,7 @@ var gulpif                  = requireCachedModule('gulp-if');
 var frontMatter             = requireCachedModule('gulp-front-matter');
 var browserSync             = requireCachedModule('browser-sync');
 var glob                    = requireCachedModule('glob');
+var prettify                = requireCachedModule('gulp-jsbeautifier');
 
 //@formatter:on
 /**
@@ -55,6 +56,13 @@ gulp.task( 'handlebars', function () {
             remove: true // should we remove front-matter header?
         },
 
+        pretty: true, // Turn off if you are using minify!
+        // @see: https://www.npmjs.com/package/gulp-jsbeautifier
+        prettyConfig:{
+            html:{
+                unformatted: ["sub", "sup", "b", "i", "u"]
+            }
+        },
 
         minify: false, //config.minify,
         htmlmin: {

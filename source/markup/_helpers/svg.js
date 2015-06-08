@@ -35,5 +35,5 @@ module.exports = function ( name ) {
 
     }
 
-    return '<div class=\"' + SVG_CLASS_PREFIX + name + '\">' + svg + '</div>';
+    return '<span class=\"' + SVG_CLASS_PREFIX + name + '\">' + svg + '</span>';
 };
