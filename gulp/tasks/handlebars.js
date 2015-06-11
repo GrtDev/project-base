@@ -5,7 +5,6 @@ var config                  = require('../config');
 var log                     = require('../util/log');
 
 var path                    = require('path');
-var fileSystem              = require('fs');
 var gulp                    = requireCachedModule('gulp');
 var handlebars              = requireCachedModule('gulp-hb');
 var rename                  = requireCachedModule('gulp-rename');
@@ -76,6 +75,10 @@ gulp.task( 'handlebars', function () {
     }
 
     // @formatter:on
+
+
+    // Check if we are not doing unnecessary tasks.
+    if(options.pretty && options.minify) log.warn({sender:'handlebars', message:'You should not use both prettify and minify at the same time in your config...'});
 
 
     /**
@@ -164,6 +167,7 @@ gulp.task( 'handlebars', function () {
         .pipe( frontMatter( options.frontmatter ) )
         .pipe( handlebars( options.handlebars ) )
 
+        .pipe( gulpif( options.pretty, prettify( options.prettyConfig ) ) )
         .pipe( gulpif( options.minify, htmlmin( options.htmlmin ) ) )
         .pipe( rename( function ( path ) {
             path.extname = '.html';

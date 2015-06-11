@@ -102,7 +102,7 @@ function decorateTask () {
             if( config.gulp.lazy ) {
 
                 var taskDependencies = arguments[ 1 ];
-                if( config.verbose ) {
+                if( config.gulp.debug ) {
                     log.debug( {
                         sender: 'gulpDecorator',
                         message: 'gulp.task() - dependencies: ',
@@ -121,7 +121,7 @@ function decorateTask () {
 
         }
 
-        if( config.verbose ) {
+        if( config.gulp.debug ) {
             log.debug( {
                 sender: 'gulpDecorator',
                 message: 'Modifying gulp task ( ' + log.colors.cyan( arguments[ 0 ] ) + ' ) for for better error handling...'
@@ -137,7 +137,7 @@ function decorateTask () {
 
         } else {
 
-            if( config.verbose ) log.warn( {
+            if( config.gulp.debug ) log.warn( {
                 sender: 'gulpDecorator',
                 message: 'Failed to find the task function for task: ',
                 data: [ arguments[ 0 ] ]
@@ -159,14 +159,14 @@ function decorateTask () {
  */
 function decorateStart () {
 
-    if( config.verbose ) log.debug( { sender: 'gulpDecorator', message: 'Modifying gulp for lazy loading...' } );
+    if( config.gulp.debug ) log.debug( { sender: 'gulpDecorator', message: 'Modifying gulp for lazy loading...' } );
 
     var gulpStartFunction = _gulp.start;
 
 
     _gulp.start = function () {
 
-        if( config.verbose ) log.debug( { sender: 'gulpDecorator', message: 'gulp.start()', data: [ arguments ] } );
+        if( config.gulp.debug ) log.debug( { sender: 'gulpDecorator', message: 'gulp.start()', data: [ arguments ] } );
 
         for ( var i = 0, leni = arguments.length; i < leni; i++ ) {
 
@@ -198,7 +198,7 @@ function decorateHasTask () {
      */
     _gulp.hasTask = function ( taskName ) {
 
-        if( config.verbose ) log.debug( {
+        if( config.gulp.debug ) log.debug( {
             sender: 'gulpDecorator',
             message: 'hasTask( ' + log.colors.cyan( taskName ) + ' )'
         } );
@@ -227,7 +227,7 @@ function lazyLoadTask ( taskName ) {
 
             var taskPath = '../tasks/' + taskName;
 
-            if( config.verbose )log.debug( {
+            if( config.gulp.debug )log.debug( {
                 sender: 'gulpDecorator',
                 message: 'lazy loading:\t\'' + log.colors.cyan( taskName ) + '\' ( ' + taskPath + ' )'
             } );
@@ -239,7 +239,7 @@ function lazyLoadTask ( taskName ) {
 
             // Some tasks won't be able to load if they are not in a separate file.
             // So if it fails it is not necessarily an error.
-            if( config.verbose ) log.warn( {
+            if( config.gulp.debug ) log.warn( {
                 sender: 'gulpDecorator',
                 message: 'warning: Failed to lazy load task: ' + taskName
             } );

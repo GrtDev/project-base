@@ -10,7 +10,8 @@ config.debug                = true;
 config.minify               = false;
 config.verbose              = false;
 config.notifyErrors         = true;
-config.gulp.debug           = true;
+config.gulp.debug           = false;
+config.gulp.lazy            = true;
 
 // ---------------------------------------------------------------------
 
@@ -22,7 +23,6 @@ function init() {
 
     require('./gulp/util/loadTasks')(); // load tasks
     
-    console.log('check');
 
     var requireCachedModule = require('./gulp/util/requireCachedModule');
     var gulpDecorator       = require('./gulp/util/gulpDecorator');

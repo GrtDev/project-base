@@ -26,7 +26,7 @@ function loadTasks () {
 
         require( taskFiles[ i ].replace( dotRegExp, relative ) );
 
-        if( config.verbose ) log.info( { sender: 'loadTasks', message: 'task loaded: ' + taskFiles[ i ] } );
+        if( config.gulp.debug ) log.info( { sender: 'loadTasks', message: 'task loaded: ' + taskFiles[ i ] } );
 
     }
 

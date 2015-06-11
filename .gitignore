@@ -1,5 +1,7 @@
-# ignore build folder
-www/
+
+# ignore optimized svg export
+source/markup/_data/_export/
+
 
 # ignore sass cache
 .sass-cache/
@@ -23,6 +25,7 @@ x64/
 build/
 [Bb]in/
 [Oo]bj/
+www/
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
