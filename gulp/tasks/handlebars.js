@@ -60,7 +60,8 @@ gulp.task( 'handlebars', function () {
         // @see: https://www.npmjs.com/package/gulp-jsbeautifier
         prettyConfig:{
             html:{
-                unformatted: ["sub", "sup", "b", "i", "u"]
+                unformatted: ["sub", "sup", "b", "i", "u", "svg"],
+                wrapAttributes: 'auto'
             }
         },
 

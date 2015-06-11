@@ -10,7 +10,7 @@ config.debug                = true;
 config.minify               = false;
 config.verbose              = false;
 config.notifyErrors         = true;
-config.gulp.debug           = false;
+config.gulp.debug           = true;
 
 // ---------------------------------------------------------------------
 
@@ -21,6 +21,8 @@ require('./gulp/util/loadPlugins')(init, true, global);
 function init() {
 
     require('./gulp/util/loadTasks')(); // load tasks
+    
+    console.log('check');
 
     var requireCachedModule = require('./gulp/util/requireCachedModule');
     var gulpDecorator       = require('./gulp/util/gulpDecorator');
@@ -70,7 +72,7 @@ function init() {
             'copyAssets',
             'copyBower',
             'images',
-            'svg',
+            'svgOptimize',
             'handlebars',
             'browserify',
             'sass',
@@ -97,6 +99,7 @@ function init() {
 
         runSequence(
             'build',
+            'svgExport',
             callback
         );
 

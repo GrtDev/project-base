@@ -33,6 +33,7 @@ source.fonts            = '<%= assets %>/fonts';
 source.videos           = '<%= assets %>/videos';
 source.data             = '<%= assets %>/data';
 source.svg              = '<%= assets %>/svg';
+source.svgOptimized     = '<%= markup %>/_data/_export/svg';
 
 // Define destination folders layout
 var dest                = new PathConfig('./build');
@@ -44,6 +45,7 @@ dest.images             = '<%= assets %>/images';
 dest.fonts              = '<%= assets %>/fonts';
 dest.videos             = '<%= assets %>/videos';
 dest.data               = '<%= assets %>/data';
+dest.svg                = '<%= assets %>/svg';
 
 
 // Create the config object and add all the default settings
@@ -52,7 +54,7 @@ config.name             = packageJSON.name;
 config.ignorePrefix     = '_';
 config.debug            = true;
 config.minify           = false;
-config.verbose          = true;
+config.verbose          = false;
 config.notifyErrors     = true;
 config.source           = source;
 config.dest             = dest;

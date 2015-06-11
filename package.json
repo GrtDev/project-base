@@ -49,7 +49,7 @@
   },
   "dependencies": {},
   "scripts": {
-    "gulp": "gulp",
-    "bower": "bower"
+    "postinstall": "bower install --config.interactive=false",
+    "bamboo": "gulp build:dist"
   }
 }

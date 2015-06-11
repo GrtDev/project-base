@@ -1,8 +1,8 @@
 //@formatter:off
 
 var fileSystem              = require( 'fs' );
-
-var SVG_FOLDER              = './source/markup/_data/_export/svg/';
+var config                  = require('../../../gulp/config');
+var SVG_FOLDER              = config.source.getPath('svgOptimized');
 var SVG_CLASS_PREFIX        = 'svg-';
 
 //@formatter:on
@@ -35,5 +35,9 @@ module.exports = function ( name ) {
 
     }
 
-    return '<span class=\"' + SVG_CLASS_PREFIX + name + '\">' + svg + '</span>';
+    svg = svg.toString();
+    svg = svg.replace(/^<svg/, '<svg class=\"' + SVG_CLASS_PREFIX + name + '\"');
+    svg = '\n<!--  '  + name + '.svg  -->\n' + svg + '\n';
+
+    return svg;
 };
