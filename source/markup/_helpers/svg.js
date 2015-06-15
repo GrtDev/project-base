@@ -22,7 +22,7 @@ module.exports = function ( name ) {
     name = name.replace(/\.svg$/, '');
 
     var svg = '';
-    var svgPath = SVG_FOLDER + name + '.svg';
+    var svgPath = SVG_FOLDER + '/' +  name + '.svg';
 
     try {
 
