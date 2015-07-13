@@ -54,12 +54,14 @@ a
     }
 }
 
+
 // Only apply regular link styles to <p> elements and rich-text containers.
 // This prevents us from having to reset the regular style every time we use an <a> tag.
 #{$rich-text-container} a, p a
 {
     @extend %regular-link;
 }
+
 
 // Apply specific link styles BEM style.
 // e.g.: <a class="link--white " >

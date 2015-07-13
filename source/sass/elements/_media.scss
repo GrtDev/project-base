@@ -1,0 +1,13 @@
+@import "../variables/config";
+@import "../variables/colors";
+@import "../variables/eases";
+
+
+[class^="media"],
+[class*=" media"]{
+
+    &[class*="--embed"]{
+
+    }
+
+}

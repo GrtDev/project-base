@@ -9,13 +9,10 @@
     div  {
 
         .child {
-
             float: left;
-
         }
 
         @extend %clearfix;
-
     }
 
 */
@@ -30,18 +27,3 @@
     }
 
 }
-
-
-/**
-
-    Complete reset for the list element.
-
-*/
-%list-reset {
-
-    list-style: none;
-    margin: 0;
-    padding: 0;
-
-}
-

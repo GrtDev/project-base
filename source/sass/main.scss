@@ -18,11 +18,10 @@
 
 // -------- Mixins & Placeholders -------- //
 @import "mixins/placeholders/placeholder";
-@import "mixins/placeholders/reset";
+@import "mixins/placeholders/clearfix";
 
 @import "mixins/alignment";
 @import "mixins/conversion";
-@import "mixins/helpers";
 @import "mixins/triangle";
 
 
@@ -33,15 +32,21 @@
 
 
 // ------------- Elements -----------------
-@import "elements/buttons";
-@import "elements/links";
-@import "elements/form";
-@import "elements/images";
-@import "elements/images";
+@import "elements/form/form";
+@import "elements/form/input";
+
+@import "elements/button";
+@import "elements/link";
+@import "elements/image";
+@import "elements/list";
+@import "elements/media";
+@import "elements/quote";
+@import "elements/table";
+@import "elements/text";
 
 
 // ---------- Modules / Components -------- //
-@import "modules/cookie-notification";
+@import "modules/cookie";
 
 
 // --------------- Pages ------------------ //
