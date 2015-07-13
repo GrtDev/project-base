@@ -29,7 +29,9 @@ gulp.task('sass', function () {
 
         source: config.source.getPath('css', '!(' + config.ignorePrefix + ')*.scss'),
         dest: config.dest.getPath('css'),
+
         sourcemaps: true, // always include sourcemaps
+        sourcemapsDest: config.dest.getPath('sourcemaps'),
 
 
         sass: {
@@ -73,6 +75,9 @@ gulp.task('sass', function () {
 
     };
 
+     // convert to a relative path used by sourcemaps
+    options.sourcemapsDest = path.relative(options.dest, options.sourcemapsDest);
+
     // Push RegExp ignore matches here to prevent Array syntax problems
     options.uncss.ignore.push(/.*\.active/);        // .active
     options.uncss.ignore.push(/.*\.selected/);      // .selected
@@ -101,7 +106,7 @@ gulp.task('sass', function () {
         .pipe(gulpIf(options.minify,        gulpMinCss(options.cleanCSS)))
         //
         .pipe(autoprefixer(options.autoprefixer))
-        .pipe(gulpIf(options.sourcemaps,    sourcemaps.write('./maps')))
+        .pipe(gulpIf(options.sourcemaps,    sourcemaps.write(options.sourcemapsDest)))
         //
         .pipe(gulp.dest(options.dest))
         // exclude map files because somehow they break the browserSync flow/connection

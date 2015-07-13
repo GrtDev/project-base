@@ -1,9 +1,109 @@
-@import "../base/settings/-all";
+@import "../variables/config";
+@import "../variables/colors";
+@import "../variables/eases";
 
-// define button styles here
+$link-animation-time: 150ms;
+$link-animation-ease: $ease-out-quad;
 
+
+// most basic link style
 a
 {
     color: $color-primary;
-    text-decoration: underline;
+    text-decoration: none;
+}
+
+
+// regular link style
+%regular-link
+{
+    @extend a;
+
+    padding-bottom: 1px;
+    border-bottom: 2px solid transparent;
+    transition-duration: $link-animation-time;
+    transition-timing-function: $link-animation-ease;
+    transition-property: border-bottom-color;
+
+    &:hover
+    {
+        border-bottom-color: $color-primary;
+    }
+
+    &:active
+    {
+        border-bottom-color: darken($color-primary, 10%);
+    }
+}
+
+
+// reset of a regular link
+%a-reset
+{
+    border-bottom: none;
+    transition: none;
+
+    &:hover
+    {
+        border-bottom-color: transparent;
+    }
+
+    &:active
+    {
+        border-bottom-color: transparent;
+    }
+}
+
+// Only apply regular link styles to <p> elements and rich-text containers.
+// This prevents us from having to reset the regular style every time we use an <a> tag.
+#{$rich-text-container} a, p a
+{
+    @extend %regular-link;
+}
+
+// Apply specific link styles BEM style.
+// e.g.: <a class="link--white " >
+[class^="link"], [class*=" link"] {
+
+    @extend %regular-link;
+
+    &[class*="--white"] {
+
+        color: $color-white;
+
+        &:hover
+        {
+            border-bottom-color: $color-white;
+        }
+
+    }
+
+    &[class*="--underline"] {
+
+        span
+        {
+            padding-bottom: 3px;
+            border-bottom: 2px solid $color-primary;
+        }
+
+    }
+
+
+    &[class*="--return"] {
+
+        color: rgba(255, 255, 255, .6);
+        font-size: 1.5rem;
+
+        svg
+        {
+            path
+            {
+                fill: rgba(255, 255, 255, .6);
+            }
+            height: 1.3em;
+            transform: rotate(180deg);
+        }
+
+    }
+
 }

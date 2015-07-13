@@ -8,20 +8,40 @@
 
 
 // --------- Settings & Variables -------- //
-@import "base/settings/-all";
+@import "variables/colors";
+@import "variables/eases";
+@import "variables/shadows";
+@import "variables/media";
+@import "variables/typography";
+@import "variables/config";
+
+
+// -------- Mixins & Placeholders -------- //
+@import "mixins/placeholders/placeholder";
+@import "mixins/placeholders/reset";
+
+@import "mixins/alignment";
+@import "mixins/conversion";
+@import "mixins/helpers";
+@import "mixins/triangle";
 
 
 // --------------- Base ------------------ //
 @import "base/normalize";
-@import "base/base";
 @import "base/typography";
+@import "base/global";
+
 
 // ------------- Elements -----------------
 @import "elements/buttons";
 @import "elements/links";
+@import "elements/form";
+@import "elements/images";
+@import "elements/images";
+
 
 // ---------- Modules / Components -------- //
-@import "components/cookie-notification";
+@import "modules/cookie-notification";
 
 
 // --------------- Pages ------------------ //

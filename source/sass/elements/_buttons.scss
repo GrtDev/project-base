@@ -1,44 +1,134 @@
-@import "../base/settings/-all";
+@import "../variables/config";
+@import "../variables/colors";
+@import "../variables/eases";
 
-// define button styles here
+$button-animation-time: 250ms;
+$button-animation-ease: $ease-inout-quad;
 
-%button-base {
+// ----------------- Button styling ---------------
+
+%button-base
+{
+    position: relative;
+    display: inline-block;
     cursor: pointer;
     user-select: none;
     text-decoration: none;
+    vertical-align: top;
+
+    background-color: $color-primary;
+    color: $color-white;
+
+    transition-duration: $button-animation-time;
+    transition-timing-function: $button-animation-ease;
+    transition-property: background-color;
+
+    &:hover
+    {
+        background-color: darken($color-primary, 10%);
+    }
+
 }
 
-.button--close {
-
+button,
+[class^="button"],
+[class*=" button"]
+{
     @extend %button-base;
 
-    color: $color-white;
-    position: relative;
-    padding: 5px 40px 5px 10px;
-    color: #FFFFFF;
+    // ----------------- button sizes ---------------
 
-    // create cross
-    &:after, &:before{
-        position: absolute;
-        right: 10px;
-        content: ' ';
-        height: 20px;
-        width: 2px;
-        background-color: $color-white;
-        transform: rotate(45deg);
-        transition: 200ms $ease-out-quart;
-        transition-property: height, top;
-        top: 5px;
+    // regular
+    padding: 15px 30px 11px 35px;
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+
+    &[class*="--small"]
+    {
+        padding: 15px 30px 11px 35px;
+        font-size: 1.5rem;
+        line-height: 1.5rem;
     }
 
-    &:after{
-        transform: rotate(-45deg);
-    }
 
-    &:hover {
-        &:after, &:before{
-            height: 30px;
-            top: 0px;
+    &[class*="--medium"]
+    {
+        padding: 15px 30px 11px 35px;
+        font-size: 2rem;
+        line-height: 2rem;
+
+        @include viewport('medium-max')
+        {
+            font-size: 1.6rem;
+            line-height: 1.6rem;
         }
     }
+
+    &[class*="--large"]
+    {
+        padding: 15px 30px 11px 35px;
+        font-size: 2.5rem;
+        line-height: 2.5rem;
+
+        @include viewport('medium-max')
+        {
+            font-size: 2rem;
+            line-height: 2rem;
+        }
+    }
+
+
+
+    // -------------- END - button sizes ------------
+
+
+    &[class*="--transparent"]
+    {
+        background-color: rgba(0,0,0,0);
+        border: 1px solid $color-white;
+
+        &:hover {
+            background-color: rgba(0,0,0,.2);
+        }
+    }
+
+
+    &[class*="--close"]
+    {
+        position: relative;
+        padding-right: 55px;
+        font-size: 1.8rem;
+        white-space: nowrap;
+
+        // Pseudo: Cross element
+        &:after, &:before
+        {
+            position: absolute;
+            top: 18px;
+            right: 30px;
+            content: ' ';
+            height: 20px;
+            width: 3px;
+            background-color: $color-white;
+
+            transform: rotate(45deg);
+            transition: 200ms $ease-out-quad;
+            transition-property: height, top;
+        }
+
+        &:after
+        {
+            transform: rotate(-45deg);
+        }
+
+        &:hover
+        {
+            &:after, &:before
+            {
+                height: 26px;
+                top: 15px;
+            }
+        }
+    }
+
 }

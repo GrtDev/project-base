@@ -1,38 +1,59 @@
-@import "../base/settings/-all";
-
-// import your fonts here
+/*
+ *  Custom font import
+ */
 @import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
 
+/*
+ *  Layout
+ */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 1.4em;
+}
 
-html
-{
-    color: $color-black;
+html{
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: $color-text;
     font-family: $primary-font-stack;
     line-height: $base-line-height;
     font-size: $base-font-size;
 }
 
+/*
+ *  Sizes
+ */
 h1 {
     font-size: $h1-font-size;
 }
+
 h2  {
     font-size: $h2-font-size;
 }
+
 h3 {
     font-size: $h3-font-size;
 }
+
 h4 {
     font-size: $h4-font-size;
 }
+
 h5 {
     font-size: $h5-font-size;
 }
+
 h6 {
     font-size: $h6-font-size;
 }
 
+/*
+ *  Weights
+ */
 h1, h2, h3, h4, h5, h6
 {
+    color: $color-header;
     font-weight: normal;
 }
 
@@ -41,20 +62,17 @@ strong, b
     font-weight: 700;
 }
 
-html, body, button
-{
-    -webkit-font-smoothing: antialiased; // @see: http://www.intridea.com/blog/2014/5/8/better-font-smoothing-in-chrome-on-mac-os-x
-    -moz-osx-font-smoothing: grayscale; // @see: http://stackoverflow.com/questions/11459746/css3-/font-smoothing-and-antialiasing-in-firefox-and-opera
-}
-
-// @see: http://www.intridea.com/blog/2014/5/8/better-font-smoothing-in-chrome-on-mac-os-x
+/*
+ *  Render fixes
+ *
+ *  @see: http://www.intridea.com/blog/2014/5/8/better-font-smoothing-in-chrome-on-mac-os-x
+ */
 @media only screen and (-webkit-min-device-pixel-ratio: 1.25),
 only screen and (min-device-pixel-ratio: 1.25),
 only screen and (min-resolution: 200dpi),
 only screen and (min-resolution: 1.25dppx) {
 
-    html, body, button
-    {
+    html, body, button{
         -webkit-font-smoothing: subpixel-antialiased;
     }
 }

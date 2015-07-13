@@ -1,0 +1,72 @@
+/**
+
+Creates a triangle shape of the element.
+For more complex triangles check out: http://apps.eky.hk/css-triangle-generator/
+
+@param direction {value}            - valid values: top bottom left right
+@param width { number }             - width of the triangle
+@param height { number }            - height of the triangle
+@param color { number = #ff0033 }   - color of the triangle, any valid CSS color
+
+
+example usage:
+--------------
+
+.tooltip {
+
+    position: relative;
+
+    &:after {
+
+        @include triangle( bottom, 20, 10, rgba( 0, 0, 0, .8 ) );
+
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+
+    }
+
+}
+
+
+*/
+@mixin triangle($direction, $width, $height, $color: #ff0033) {
+
+    @if unitless($width) {
+        $width: $width + 0px;
+    }
+
+    @if unitless($height) {
+        $height: $height + 0px;
+    }
+
+    content: '';
+    display: inline-block;
+    position: absolute;
+    width: 0 !important;
+    height: 0 !important;
+
+    border-style: solid;
+
+    @if ($direction == top) {
+
+        border-width: 0 $width/2 $height $width/2;
+        border-color: transparent transparent $color transparent;
+
+    } @else if ($direction == right) {
+
+        border-width: $height/2 0 $height/2 $width;
+        border-color: transparent transparent transparent $color;
+
+    } @else if ($direction == bottom) {
+
+        border-width: $height $width/2 0 $width/2;
+        border-color: $color transparent transparent transparent;
+
+    } @else if ($direction == left) {
+
+        border-width: $height/2 $width $height/2 0;
+        border-color: transparent $color transparent transparent;
+
+    }
+}

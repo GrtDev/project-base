@@ -1,0 +1,47 @@
+/**
+
+    Adds a clearfix to the container.
+    @see: http://blog.teamtreehouse.com/a-better-clearfix-with-sass
+
+    example usage:
+    --------------
+
+    div  {
+
+        .child {
+
+            float: left;
+
+        }
+
+        @extend %clearfix;
+
+    }
+
+*/
+%clearfix {
+
+    &:after {
+
+        content: "";
+        display: table;
+        clear: both;
+
+    }
+
+}
+
+
+/**
+
+    Complete reset for the list element.
+
+*/
+%list-reset {
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+}
+

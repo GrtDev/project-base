@@ -1,0 +1,40 @@
+@import "../variables/config";
+@import "../variables/colors";
+@import "../variables/eases";
+
+[class^="text"],
+[class=" text"] {
+
+    font-size: 2rem;
+
+    &[class*="--date"] {
+
+        color: rgba(0, 0, 0, 0.5);
+        font-weight: bold;
+        padding-bottom: 75px;
+
+        &:after {
+            content: '';
+            position: absolute;
+            left: -20px;
+            bottom: 37px;
+            width: 80px;
+            height: 4px;
+            background: #fff;
+            border: 1px solid $color-primary;
+        }
+    }
+
+
+    &[class*="--intro"] {
+
+        font-size: 2rem;
+        line-height: 30px;
+        color: #000;
+
+        + * {
+            margin-top: 90px;
+        }
+    }
+
+}

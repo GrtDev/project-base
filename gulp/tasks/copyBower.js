@@ -59,7 +59,7 @@ gulp.task('copyBower', function () {
         }
 
         streams.push(
-            gulp.src(source)
+            gulp.src(bowerComponentsPath + '/' + source)
                 // Ignore unchanged files
                 .pipe(changed(dest))
                 // Push the files straight to their destination

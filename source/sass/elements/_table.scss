@@ -1,0 +1,28 @@
+table {
+
+    margin: 0 auto;
+    width: 100%;
+    line-height: 75px;
+    font-size: 1.5rem;
+
+    thead th:first-of-type {
+
+        text-align: left;
+        font-size: 2rem;
+
+    }
+
+    th:nth-of-type(n+2),
+    td:nth-of-type(n+2) {
+
+        border-left: 3px solid #D8D8D8;
+        text-align: center;
+
+    }
+
+    tbody tr:nth-of-type(n+1) {
+
+        border-top: 1px solid #E4E4E4;
+
+    }
+}

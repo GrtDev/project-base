@@ -1,0 +1,87 @@
+/**
+
+Conversion functions:
+
+@function strip-unit
+@see: https://css-tricks.com/snippets/sass/strip-unit-function/
+@param number               - any value to strip the unit off.
+
+e.g.:   strip-unit( 1em )   // outputs 1.
+
+
+@function em
+@param px                   - pixels to convert to em
+@param base-font-size: 16   - base font size from which to convert to.
+@param round-value: true    - round the result
+
+e.g.:   px( 1.2em )         // outputs 19px;
+
+
+@function px
+@param em                   - (r)em to convert to px
+@param base-font-size: 16   - base font size from which to convert to.
+
+e.g.:   em( 22px )         // outputs 1.375em;
+
+
+*/
+
+
+$base-font-size: 16px !default;
+
+@function strip-unit($number) {
+
+    @if type-of($number) == 'number' and not unitless($number) {
+
+        @return $number / ($number * 0 + 1);
+
+    }
+
+    @return $number;
+}
+
+@function em($px, $base-font-size: $base-font-size, $roundValue:true) {
+
+    @if unitless($px) {
+
+        @warn "Assuming #{$px} to be in pixels, attempting to convert it into em.";
+        @return em($px + 0px); // That may fail.
+
+    } @else if unit($px) == em {
+
+        @return $px;
+
+    }
+
+    @if(round){
+
+        @return round(($px / $base-font-size) * 1em);
+
+    }
+
+    @return ($px / $base-font-size) * 1em;
+
+
+}
+
+@function px($em, $base-font-size: $base-font-size) {
+
+    @if unitless($em) {
+
+        @warn "Assuming #{$em} to be in em, attempting to convert it into pixels.";
+        @return em(#{$em}em); // That may fail.
+
+    } @else if unit($em) == px {
+
+        @return $em;
+
+    }
+
+    @return strip-unit($em) * $base-font-size;
+
+}
+
+
+
+
+

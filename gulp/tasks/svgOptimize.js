@@ -44,11 +44,16 @@ gulp.task( 'svgOptimize', function () {
 
     // retrieve svg name list
     // this is used to create the overview in the styleguide
+    var svgSourcePath = config.source.getPath( 'svg' );
     var fileList = glob.sync( options.source );
     var fileNames = [];
     for ( var i = 0, leni = fileList.length; i < leni; i++ ) {
 
-        fileNames.push( path.basename( fileList[ i ], '.svg' ) );
+        var svgName = fileList[ i ];
+        svgName = svgName.replace(svgSourcePath, '');
+        svgName = svgName.replace(/\.svg$/, '');
+        svgName = svgName.replace(/^\//, '');
+        fileNames.push( svgName );
 
     }
 

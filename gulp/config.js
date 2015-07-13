@@ -33,12 +33,12 @@ source.fonts            = '<%= assets %>/fonts';
 source.videos           = '<%= assets %>/videos';
 source.data             = '<%= assets %>/data';
 source.svg              = '<%= assets %>/svg';
-source.svgOptimized     = '<%= markup %>/_data/_export/svg';
+source.svgOptimized     = '<%= assets %>/_svg-optimized';
 
 // Define destination folders layout
 var dest                = new PathConfig('./build');
 dest.markup             = '<%= root %>';
-dest.assets             = '<%= root %>/inc'
+dest.assets             = '<%= root %>'
 dest.css                = '<%= assets %>/css';
 dest.javascript         = '<%= assets %>/js';
 dest.images             = '<%= assets %>/images';
@@ -46,6 +46,7 @@ dest.fonts              = '<%= assets %>/fonts';
 dest.videos             = '<%= assets %>/videos';
 dest.data               = '<%= assets %>/data';
 dest.svg                = '<%= assets %>/svg';
+dest.sourcemaps         = '<%= assets %>/sourcemaps';
 
 
 // Create the config object and add all the default settings

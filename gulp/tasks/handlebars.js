@@ -55,11 +55,11 @@ gulp.task( 'handlebars', function () {
             remove: true // should we remove front-matter header?
         },
 
-        pretty: true, // Turn off if you are using minify!
         // @see: https://www.npmjs.com/package/gulp-jsbeautifier
+        pretty: true, // Turn off if you are using minify!
         prettyConfig:{
             html:{
-                unformatted: ["sub", "sup", "b", "i", "u", "svg"],
+                unformatted: ["sub", "sup", "b", "i", "u", "svg", "pre"],
                 wrapAttributes: 'auto'
             }
         },

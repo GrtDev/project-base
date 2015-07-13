@@ -37,6 +37,9 @@ function createBundleConfigs () {
         source: config.source.getPath( 'javascript', '!(' + config.ignorePrefix + ')*.js' ),
         dest: config.dest.getPath( 'javascript' ),
 
+        sourcemaps: true, // always include sourcemaps
+        sourcemapsDest: config.dest.getPath('sourcemaps'),
+
 
         // Minify files with UglifyJS.
         // @see: https://www.npmjs.com/package/gulp-uglify
@@ -56,6 +59,13 @@ function createBundleConfigs () {
         }
 
     }
+
+    // convert to a relative path used by sourcemaps
+    options.sourcemapsDest = path.relative(options.dest, options.sourcemapsDest);
+
+    options.browserifyOptions = {
+        debug: options.sourcemaps // enable sourcemaps
+    };
 
 
     var fileEntries = glob.sync( options.source );
@@ -94,6 +104,9 @@ function createBundleConfig ( fileName, filePath, options ) {
     bundleConfig.browserifyOptions = options.browserifyOptions || {
         debug: true // always enable source maps
     };
+
+    bundleConfig.sourcemaps = options.sourcemaps;
+    bundleConfig.sourcemapsDest = options.sourcemapsDest;
 
     bundleConfig.minify = (options.minify !== undefined) ? options.minify : config.minify;
     bundleConfig.uglifyOptions = options.uglifyOptions || {
@@ -187,7 +200,7 @@ function createBundle ( bundleConfig, opt_watch ) {
 
             .pipe( gulpIf( bundleConfig.minify, uglify( bundleConfig.uglifyOptions ) ) )
 
-            .pipe( sourcemaps.write( './maps' ) )
+            .pipe( sourcemaps.write( bundleConfig.sourcemapsDest ) )
             .pipe( gulp.dest( bundleConfig.dest ) )
 
 

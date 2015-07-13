@@ -1,6 +1,7 @@
 // @formatter:off
-var startTime               = process.hrtime();
 var config                  = require('./gulp/config');
+var log                     = require('./gulp/util/log');
+var gulp, runSequence;
 
 //---------------      B A S I C   S E T T I N G S      ----------------
 
@@ -13,53 +14,14 @@ config.notifyErrors         = true;
 config.gulp.debug           = false;
 config.gulp.lazy            = true;
 
-// ---------------------------------------------------------------------
 
 
-// Load / Index all the plugins for faster task loading.
-require('./gulp/util/loadPlugins')(init, true, global);
+//--------------     M A I N   T A S K S    L I S T     --------------
 
-function init() {
-
-    require('./gulp/util/loadTasks')(); // load tasks
-    
-
-    var requireCachedModule = require('./gulp/util/requireCachedModule');
-    var gulpDecorator       = require('./gulp/util/gulpDecorator');
-    var log                 = require('./gulp/util/log');
-    var gulp                = requireCachedModule('gulp');
-    var runSequence         = requireCachedModule('run-sequence');
-
-    gulpDecorator.decorate(gulp); // Decorate gulp with extra functionality for better debugging and error handling.
-
-    log.time( { sender: 'gulpfile', message: 'init - ', time: process.hrtime( startTime ) } );
-
-
-
-    //--------------     M A I N   T A S K S    L I S T     --------------
+function registerMainTasks(){
 
     // Specifies the default set of tasks to run when you run `gulp`.
     gulp.task( 'default', [ 'server' ] );
-
-
-    /**
-     *  @task server
-     *  Build the project.
-     *  Fires up a local server.
-     *  Starts watching all the used files and rebuilds on file changes.
-     *  - This will also automatically refresh your browser after something has been rebuild.
-     */
-    gulp.task( 'server', function ( callback ) {
-
-        runSequence(
-            'build',
-            'browserSync',
-            'watch',
-            callback
-        );
-
-    } );
-
 
     /**
      *  @task build
@@ -83,10 +45,31 @@ function init() {
 
 
     /**
+     *  @task server
+     *  Build the project.
+     *  Fires up a local server.
+     *  Starts watching all the used files and rebuilds on file changes.
+     *  - This will also automatically refresh your browser after something has been rebuild.
+     */
+    gulp.task( 'server', function ( callback ) {
+
+        runSequence(
+            'build',
+            'browserSync',
+            'watch',
+            callback
+        );
+
+    } );
+
+
+
+
+    /**
      * @task build:dist
      * Builds the project in distribution mode.
      */
-    gulp.task( 'build:dist', function ( callback ) {
+    gulp.task( 'dist', function ( callback ) {
 
         config.debug    = false;
         config.minify   = true;
@@ -104,6 +87,35 @@ function init() {
         );
 
     } );
+
+}
+
+
+
+
+
+ //--------------     I N I T     --------------
+
+var startTime = process.hrtime();
+// Load / Index all the plugins for faster task loading.
+require('./gulp/util/loadPlugins')(prepare, true, global);
+
+function prepare() {
+
+    require('./gulp/util/loadTasks')(); // load tasks
+
+    var requireCachedModule = require('./gulp/util/requireCachedModule');
+    var gulpDecorator       = require('./gulp/util/gulpDecorator');
+
+    gulp                    = requireCachedModule('gulp');
+    runSequence             = requireCachedModule('run-sequence');
+
+    gulpDecorator.decorate(gulp); // Decorate gulp with extra functionality for better debugging and error handling.
+
+    log.time( { sender: 'gulpfile', message: 'init - ', time: process.hrtime( startTime ) } );
+
+
+    registerMainTasks();
 
 }
 

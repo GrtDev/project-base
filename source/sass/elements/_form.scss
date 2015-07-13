@@ -1,0 +1,30 @@
+@import "../variables/config";
+@import "../variables/colors";
+@import "../variables/eases";
+
+$form-input-hint-color: #CCCCCC;
+
+
+
+input[type="text"] {
+
+    &:focus {
+    }
+
+    ::-webkit-input-placeholder
+    {
+        color: $form-input-hint-color;
+    }
+    :-moz-placeholder // Firefox 18-
+    {
+        color: $form-input-hint-color;
+    }
+    ::-moz-placeholder // Firefox 19+
+    {
+        color: $form-input-hint-color;
+    }
+    :-ms-input-placeholder
+    {
+        color: $form-input-hint-color;
+    }
+}
