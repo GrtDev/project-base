@@ -1,33 +1,36 @@
 // @formatter:off
 
-var config                  = require('./gulp/config');
+var config                      = require('./gulp/config');
+var processArguments            = require('./gulp/util/processArguments');
 
 //---------------      S E T T I N G S      ----------------
 
-// You can find all possible settings in the 'gulp/config.js' file.
-// But -- MAKE YOUR CUSTOM CONFIGURATION HERE, and NOT in the config file!
+// You can find all possible settings ( and more information ) in the 'gulp/config.js' file.
+// But -- PLEASE CREATE YOUR DEFAULT CONFIGURATION HERE, and NOT in the config file!
+
+config.gulp.debug               = false;
 
 config.debug                    = true;
 config.verbose                  = false;
 config.notifyErrors             = true;
-config.gulp.debug               = false;
-config.gulp.lazy                = true;
 
-config.javascript.minify        = false;
-config.javascript.sourcemaps    = true;
+config.minify                   = false;
+config.sourcemaps               = true;
+config.cleanCSS                 = false; // removes unused CSS, requires 'gulp-uncss' installation.
+config.prettyHTML               = false;
 
-config.css.minify               = false;
-config.css.sourcemaps           = true;
-config.css.removeUnused         = false;
 
-config.markup.minify            = true;
-config.markup.prettify          = true;
-
+// Assign process arguments.
+// To use process arguments add '--[key] [value]' to the command.
+// If the value is omitted, the value true will be assigned to the key.
+if( processArguments.has( 'verbose' ) )      config.verbose     = processArguments.get( 'verbose' );
+if( processArguments.has( 'debug' ) )        config.debug       = processArguments.get( 'debug' );
+if( processArguments.has( 'gulp-debug' ) )   config.gulp.debug  = processArguments.get( 'gulp-debug' );
 
 
 // Register files that need to be copied from the bower components here.
-// NOTE:    It is better to use 'require("path_to_file")' for javascript
-//          or to use '@import' in sass, as less files means less server requests.
+// NOTE:    It is better to use 'require("path_to_file")' for javascript files
+//          or to use '@import' in sass so it is compiled into the existing file.
 config.bowerDependencies = function () {
     return [
         //{
@@ -77,13 +80,8 @@ function registerMainTasks(){
 
         runSequence(
             'clean',
-            'copyAssets',
-            'copyBower',
-            'images',
-            'svgOptimize',
-            'handlebars',
-            'browserify',
-            'sass',
+            [ 'copyAssets', 'copyBower', 'images', 'svgOptimize' ],
+            [ 'handlebars', 'browserify', 'sass' ],
             callback
         );
 
@@ -96,18 +94,13 @@ function registerMainTasks(){
      */
     gulp.task( 'dist', function ( callback ) {
 
-        config.debug                    = false;
-
-        config.javascript.minify        = true;
-        config.javascript.sourcemaps    = false;
-
-        config.css.minify               = true;
-        config.css.sourcemaps           = false;
-
-        config.markup.prettify          = true;
+        config.debug            = false;
+        config.minify           = true;
+        config.sourcemaps       = false;
+        config.prettyHTML       = true;
 
         //var backendPath = '../backend';
-
+        //
         //config.dest.markup      = backendPath + '/html';
         //config.dest.javascript  = backendPath + '/js';
         //config.dest.css         = backendPath + '/css';
@@ -130,19 +123,16 @@ function registerMainTasks(){
      */
     gulp.task( 'build:bamboo', function ( callback ) {
 
-        config.debug        = false;
-        config.minify       = true;
-        config.throwError   = true;
+        config.debug            = false;
+        config.throwError       = true;
+        config.minify           = true;
+        config.sourcemaps       = false;
+        config.prettyHTML       = true;
 
         runSequence(
             'clean',
-            'copyAssets',
-            'copyBower',
-            'images',
-            'svgOptimize',
-            'handlebars',
-            'browserify',
-            'sass',
+            [ 'copyAssets', 'copyBower', 'images', 'svgOptimize' ],
+            [ 'handlebars', 'browserify', 'sass', 'svgExport' ],
             callback
         );
 
@@ -156,10 +146,11 @@ function registerMainTasks(){
 
  //--------------     I N I T     --------------
 
+var startTime               = process.hrtime();
 var log                     = require('./gulp/util/log');
 var gulp;
 var runSequence;
-var startTime = process.hrtime();
+
 // Load / Index all the plugins for faster task loading.
 require('./gulp/util/loadPlugins')(prepare, true, global);
 

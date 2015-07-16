@@ -73,7 +73,7 @@ config.ignorePrefix     = '_';      // ignore files and folders with this prefix
 config.debug            = true;
 config.verbose          = false;
 config.notifyError      = true;
-config.throwError       = false;    // Actually throw an error when one occurs, useful for bamboo.
+config.throwError       = false;    // Actually throws an error when one occurs, useful for bamboo.
 
 config.minify           = false;
 config.sourcemaps       = true;
