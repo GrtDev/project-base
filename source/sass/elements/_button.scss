@@ -57,11 +57,6 @@ button,
         font-size: 2rem;
         line-height: 2rem;
 
-        @include viewport('medium-max')
-        {
-            font-size: 1.6rem;
-            line-height: 1.6rem;
-        }
     }
 
     &[class*="--large"]
@@ -70,11 +65,6 @@ button,
         font-size: 2.5rem;
         line-height: 2.5rem;
 
-        @include viewport('medium-max')
-        {
-            font-size: 2rem;
-            line-height: 2rem;
-        }
     }
 
 

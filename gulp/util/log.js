@@ -13,14 +13,14 @@
 
 // @formatter:off
 
-var requireCachedModule         = require('./requireCachedModule');
 var humanFileSize               = require('./humanFileSize');
 var config                      = require('../config');
 
+// Note: we don't use requireCachedModule here because it causes a circular reference which causes problems.
 var path                        = require('path');
-var gulpUtil                    = requireCachedModule('gulp-util');
-var prettyHrtime                = requireCachedModule('pretty-hrtime');
-var notifier                    = requireCachedModule("node-notifier");
+var gulpUtil                    = require('gulp-util');
+var prettyHrtime                = require('pretty-hrtime');
+var notifier                    = require("node-notifier");
 
 // @formatter:on
 
@@ -200,7 +200,7 @@ function logError ( error, opt_stack, opt_exit ) {
     else if( error.sender ) title += ' [' + error.sender + ']';
 
 
-    if( config.notifyErrors ) {
+    if( config.notifyError ) {
 
         notifier.notify( {
 
@@ -236,6 +236,12 @@ function logError ( error, opt_stack, opt_exit ) {
 
     console.log( message + (stackTrace ? stackTrace : '') );
     gulpUtil.beep();
+
+    if( config.throwError ) {
+
+        throw new Error(title + ': ' + error.message);
+
+    }
 
     //Keep gulp from hanging on this task
     if( this.emit ) this.emit( 'end' );

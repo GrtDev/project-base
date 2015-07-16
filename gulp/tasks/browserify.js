@@ -37,12 +37,9 @@ function createBundleConfigs () {
         source: config.source.getPath( 'javascript', '!(' + config.ignorePrefix + ')*.js' ),
         dest: config.dest.getPath( 'javascript' ),
 
-        sourcemaps: true, // always include sourcemaps
+        sourcemaps: config.sourcemaps,
         sourcemapsDest: config.dest.getPath('sourcemaps'),
 
-
-        // Minify files with UglifyJS.
-        // @see: https://www.npmjs.com/package/gulp-uglify
         minify: config.minify,
         uglifyOptions: {
             mangle: true, // Pass false to skip mangling names.
@@ -54,8 +51,8 @@ function createBundleConfigs () {
         },
 
         debugConfig: {
-            title: 'gulp-debug:',
-            minimal: true           // By default only relative paths are shown. Turn off minimal mode to also show cwd, base, path.
+            title: 'browserify-debug:',
+            minimal: true // By default only relative paths are shown. Turn off minimal mode to also show cwd, base, path.
         }
 
     }
@@ -64,7 +61,7 @@ function createBundleConfigs () {
     options.sourcemapsDest = path.relative(options.dest, options.sourcemapsDest);
 
     options.browserifyOptions = {
-        debug: options.sourcemaps // enable sourcemaps
+        debug: options.sourcemaps // enables sourcemap creation of browserify itself
     };
 
 
@@ -72,10 +69,13 @@ function createBundleConfigs () {
     var bundleConfigs = [];
 
     for ( var i = 0, leni = fileEntries.length; i < leni; i++ ) {
+
         var entry = fileEntries[ i ];
         var name = path.basename( entry );
         var bundleConfig = createBundleConfig( name, entry, options )
+
         bundleConfigs.push( bundleConfig );
+
     }
 
     return bundleConfigs;
@@ -93,26 +93,15 @@ function createBundleConfig ( fileName, filePath, options ) {
 
     if( !fileName ) return log.error( { message: 'fileName can not be null!', sender: 'browserify task' } );
     if( !filePath ) return log.error( { message: 'filePath can not be null!', sender: 'browserify task' } );
+    if( !options ) return log.error( { message: 'options can not be null!', sender: 'browserify task' } );
 
     var bundleConfig = {}
-    options = options || {};
+
+    // duplicate the object
+    for(var key in options)	bundleConfig[key] = options[key];
 
     bundleConfig.fileName = fileName;
     bundleConfig.source = filePath;
-    bundleConfig.dest = options.dest || config.dest.getPath( 'javascript' );
-
-    bundleConfig.browserifyOptions = options.browserifyOptions || {
-        debug: true // always enable source maps
-    };
-
-    bundleConfig.sourcemaps = options.sourcemaps;
-    bundleConfig.sourcemapsDest = options.sourcemapsDest;
-
-    bundleConfig.minify = (options.minify !== undefined) ? options.minify : config.minify;
-    bundleConfig.uglifyOptions = options.uglifyOptions || {
-        mangle: true, // Pass false to skip mangling names.
-        preserveComments: false // 'all', 'some', {function}
-    }
 
     return bundleConfig;
 }
@@ -165,8 +154,6 @@ function createBundle ( bundleConfig, opt_watch ) {
         // @see: https://github.com/sindresorhus/gulp-size
         var sizeBefore = gulpSize( { showFiles: true } );
         var sizeAfter = gulpSize( { showFiles: true } );
-
-        // TODO: Fix file size logs
 
         return browserifyInstance.bundle()
             .on( 'error', log.error )
@@ -240,7 +227,7 @@ var browserifyTask = function ( opt_watch ) {
 
 }
 
-// defines the browserify task for Gulp.tc
+// registers the browserify task for Gulp.
 gulp.task( 'browserify', function () {
 
     return browserifyTask();

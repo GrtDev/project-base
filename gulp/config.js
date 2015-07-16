@@ -6,22 +6,28 @@
  * @author Daniel Tello
  * @link: github.com/greypants/gulp-starter
  *
- * Note:    Define all path as seen from the gulpfile.js location.
  */
 
 // @formatter:off
 
+
+//      Default configuration
+//      PLEASE DO NOT CHANGE THESE SETTINGS HERE!
+//      Overwrite what you need in the gulpfile.js!
+
+
 var PathConfig          = require('./util/PathConfig');
 var packageJSON         = require('../package.json');
 
-
-var gulpSettings        = {
-                            debug: false,
-                            lazy: true
-                          }
-
-
-// Define source folders layout
+/**
+ *  Defines source folders layout.
+ *  Creates an object that parses lo-dash templates on itself.
+ *  To retrieve a path use the 'getPath' method.
+ *
+ *  for example: The following script returns the path for the source location of the css (sass) files.
+ *
+ *  config.dest.getPath('css');
+ */
 var source              = new PathConfig('./source');
 source.bower            = './bower_components'
 source.assets           = '<%= root %>/assets'
@@ -35,7 +41,15 @@ source.data             = '<%= assets %>/data';
 source.svg              = '<%= assets %>/svg';
 source.svgOptimized     = '<%= assets %>/_svg-optimized';
 
-// Define destination folders layout
+/**
+ *  Defines destination folders layout.
+ *  Creates an object that parses lo-dash templates on itself.
+ *  To retrieve a path use the 'getPath' method.
+ *
+ *  for example: The following script returns the path for the output destination of the javascript files.
+ *
+ *  config.dest.getPath('javascript');
+ */
 var dest                = new PathConfig('./build');
 dest.markup             = '<%= root %>';
 dest.assets             = '<%= root %>'
@@ -49,44 +63,28 @@ dest.svg                = '<%= assets %>/svg';
 dest.sourcemaps         = '<%= assets %>/sourcemaps';
 
 
-// Create the config object and add all the default settings
 var config              = {};
 config.name             = packageJSON.name;
-config.ignorePrefix     = '_';
-config.debug            = true;
-config.minify           = false;
-config.verbose          = false;
-config.notifyErrors     = true;
+config.version          = packageJSON.version;
 config.source           = source;
 config.dest             = dest;
-config.gulp             = gulpSettings;
 
+config.ignorePrefix     = '_';      // ignore files and folders with this prefix.
+config.debug            = true;
+config.verbose          = false;
+config.notifyError      = true;
+config.throwError       = false;    // Actually throw an error when one occurs, useful for bamboo.
 
-/**
- * Bower Dependencies
- * Function that returns a list of bower dependencies to be copied to their destination
- * If possible it is better to use '@import' for scss (instead of css) files
- * or 'require("path_to_file")' for javascript files.
- * @see: https://www.npmjs.com/package/glob
- * For each destination define a config object, e.g.:
- * {
- *      source : [ path_to_file(s) ],
- *      dest: path_to_destination
- * }
- * @return {Array}
- */
-config.bowerDependencies = function () {
-    return [
-        //{
-        //    source: ['bootstrap/fonts/**'],
-        //    dest: config.dest.getPath('fonts', 'bootstrap/')
-        //},
-        //{
-        //    source: ['jquery/dist/jquery.min.js'],
-        //    dest: config.dest.getPath('javascript')
-        //}
-    ];
-}
+config.minify           = false;
+config.sourcemaps       = true;
+config.cleanCSS         = false;    // removes unused CSS, requires 'gulp-uncss' installation.
+config.prettyHTML       = false;
+config.minifyHTML       = false;    // requires 'gulp-htmlmin' installation.
+
+config.gulp             = {
+                            debug: false,   // if true, gulp will output a lot of extra information for debugging purposes.
+                            lazy: true      // will only load the tasks in the 'gulp/tasks' folder, just before they are used.
+                        };
 
 
 module.exports          = config;

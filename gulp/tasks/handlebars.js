@@ -37,7 +37,7 @@ gulp.task( 'handlebars', function () {
             helpers: config.source.getPath( 'markup', '_helpers/**/*.js' ),     // Helpers that are made available in the templates
             partials: config.source.getPath( 'markup', '_partials/**/*.hbs' ),   // Partials that are made available in the templates
 
-            bustCache: true,           // default false
+            bustCache: true,       // default false
             debug: false,          // Whether to log the helper names, partial names, and root property names for each file as they are rendered.
 
             // By default, globbed data files are merged into a object structure according to
@@ -56,7 +56,7 @@ gulp.task( 'handlebars', function () {
         },
 
         // @see: https://www.npmjs.com/package/gulp-jsbeautifier
-        pretty: true, // Turn off if you are using minify!
+        pretty: config.prettyHTML,
         prettyConfig:{
             html:{
                 unformatted: ["sub", "sup", "b", "i", "u", "svg", "pre"],
@@ -64,7 +64,7 @@ gulp.task( 'handlebars', function () {
             }
         },
 
-        minify: false, //config.minify,
+        minify: config.minifyHTML,
         htmlmin: {
             collapseWhitespace: true,
             removeComments: true,
@@ -78,7 +78,7 @@ gulp.task( 'handlebars', function () {
 
 
     // Check if we are not doing unnecessary tasks.
-    if(options.pretty && options.minify) log.warn({sender:'handlebars', message:'You should not use both prettify and minify at the same time in your config...'});
+    if(options.pretty && options.minify) log.warn({sender:'handlebars', message:'You should not use both prettifyHTML and minifyHTML at the same time in your config...'});
 
 
     /**

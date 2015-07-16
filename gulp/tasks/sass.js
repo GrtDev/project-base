@@ -3,6 +3,7 @@
 var requireCachedModule         = require('../util/requireCachedModule');
 var config                      = require('../config');
 var log                         = require('../util/log');
+var path                        = require('path');
 
 var gulp                        = requireCachedModule('gulp');
 var browserSync                 = requireCachedModule('browser-sync');
@@ -21,16 +22,16 @@ var gulpIgnore                  = requireCachedModule('gulp-ignore');
  *
  * @see https://www.npmjs.com/package/gulp-sass
  * @see http://libsass.org/
+ * @see: https://github.com/sindresorhus/gulp-size
  */
 gulp.task('sass', function () {
-
-
+    
     var options = {
 
         source: config.source.getPath('css', '!(' + config.ignorePrefix + ')*.scss'),
         dest: config.dest.getPath('css'),
 
-        sourcemaps: true, // always include sourcemaps
+        sourcemaps: config.sourcemaps,
         sourcemapsDest: config.dest.getPath('sourcemaps'),
 
 
@@ -64,7 +65,7 @@ gulp.task('sass', function () {
         // UnCSS crawls the HTML and removes any unused CSS selectors and styling.
         // it uses PhantomJS to try to run JavaScript files.
         // @see: https://github.com/giakki/uncss
-        removeUnused: false,
+        removeUnused: config.cleanCSS,
         uncss: {
             html: [config.dest.getPath('markup', '*.html')],
             // Provide a list of selectors that should not be removed by UnCSS. For example, styles added by user interaction with the page (hover, click),
@@ -89,8 +90,6 @@ gulp.task('sass', function () {
     //@formatter:on
 
     // Keep track of the file size changes
-    // @see: https://github.com/sindresorhus/gulp-size
-    // TODO: Fix file size logs.
     var sizeBefore = gulpSize({showFiles: true});
     var sizeAfter = gulpSize({showFiles: true});
 

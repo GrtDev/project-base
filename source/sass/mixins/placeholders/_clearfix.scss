@@ -8,11 +8,12 @@
 
     div  {
 
+        @extend %clearfix;
+
         .child {
             float: left;
         }
 
-        @extend %clearfix;
     }
 
 */
