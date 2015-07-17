@@ -57,9 +57,9 @@ gulp.task( 'handlebars', function () {
 
         // @see: https://www.npmjs.com/package/gulp-jsbeautifier
         pretty: config.prettyHTML,
-        prettyConfig:{
-            html:{
-                unformatted: ["sub", "sup", "b", "i", "u", "svg", "pre"],
+        prettyConfig: {
+            html: {
+                unformatted: [ "sub", "sup", "b", "i", "u", "svg", "pre" ],
                 wrapAttributes: 'auto'
             }
         },
@@ -78,7 +78,10 @@ gulp.task( 'handlebars', function () {
 
 
     // Check if we are not doing unnecessary tasks.
-    if(options.pretty && options.minify) log.warn({sender:'handlebars', message:'You should not use both prettifyHTML and minifyHTML at the same time in your config...'});
+    if( options.pretty && options.minify ) log.warn( {
+        sender: 'handlebars',
+        message: 'You should not use both prettifyHTML and minifyHTML at the same time in your config...'
+    } );
 
 
     /**
@@ -173,7 +176,7 @@ gulp.task( 'handlebars', function () {
             path.extname = '.html';
         } ) )
         .pipe( gulp.dest( options.dest ) )
-        .pipe( browserSync.stream( { once: true } ) );
+        .pipe( browserSync.reload( { stream: true } ) );
 
 } );
 

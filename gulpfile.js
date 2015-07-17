@@ -129,6 +129,8 @@ function registerMainTasks(){
         config.sourcemaps       = false;
         config.prettyHTML       = true;
 
+        config.dest.markup      = '<%= root %>/html';
+
         runSequence(
             'clean',
             [ 'copyAssets', 'copyBower', 'images', 'svgOptimize' ],

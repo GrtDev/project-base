@@ -90,31 +90,38 @@ gulp.task('sass', function () {
     //@formatter:on
 
     // Keep track of the file size changes
-    var sizeBefore = gulpSize({showFiles: true});
-    var sizeAfter = gulpSize({showFiles: true});
+    var sizeBefore = gulpSize( { showFiles: true } );
+    var sizeAfter = gulpSize( { showFiles: true } );
 
 
-    return gulp.src(options.source)
+    return gulp.src( options.source )
         //
-        .pipe(gulpIf(options.sourcemaps,    sourcemaps.init()))
+        .pipe( gulpIf( options.sourcemaps, sourcemaps.init() ) )
         // sass
-        .pipe(sass(options.sass))
+        .pipe( sass( options.sass ) )
         // start optimizing...
-        .pipe(gulpIf(options.minify,        sizeBefore))
-        .pipe(gulpIf(options.removeUnused,  uncss(options.uncss)))
-        .pipe(gulpIf(options.minify,        gulpMinCss(options.cleanCSS)))
+        .pipe( gulpIf( options.minify, sizeBefore ) )
+        .pipe( gulpIf( options.removeUnused, uncss( options.uncss ) ) )
+        .pipe( gulpIf( options.minify, gulpMinCss( options.cleanCSS ) ) )
         //
-        .pipe(autoprefixer(options.autoprefixer))
-        .pipe(gulpIf(options.sourcemaps,    sourcemaps.write(options.sourcemapsDest)))
+        .pipe( autoprefixer( options.autoprefixer ) )
+        .pipe( gulpIf( options.sourcemaps, sourcemaps.write( options.sourcemapsDest ) ) )
         //
-        .pipe(gulp.dest(options.dest))
+        .pipe( gulp.dest( options.dest ) )
         // exclude map files because somehow they break the browserSync flow/connection
-        .pipe(gulpIgnore.exclude('*.map'))
-        .pipe(gulpIf(options.minify,        sizeAfter))
-        .on('end', log.size({sender: 'sass', message: 'css - ', size:sizeBefore, sizeAfter:sizeAfter, wrap:true, check:options.minify}))
-        .pipe(browserSync.reload({stream: true}));
+        .pipe( gulpIgnore.exclude( '*.map' ) )
+        .pipe( gulpIf( options.minify, sizeAfter ) )
+        .on( 'end', log.size( {
+            sender: 'sass',
+            message: 'css - ',
+            size: sizeBefore,
+            sizeAfter: sizeAfter,
+            wrap: true,
+            check: options.minify
+        } ) )
+        .pipe( browserSync.reload( { stream: true } ) );
 
-});
+} );
 
 
 
