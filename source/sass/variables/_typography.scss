@@ -11,14 +11,15 @@ $secondary-font-stack:  'Helvetica Neue', Helvetica, Arial, sans-serif;
 
 
 // The font size set on the root html element.
-$base-font-size:        10px;
-$base-line-height:      12px;
+$html-font-size:        10px;
+
+$body-font-size:        1.4rem;
 
 
 // The font sizes for h1-h6.
-$h1-font-size: 2    * $base-font-size;
-$h2-font-size: 1.5  * $base-font-size;
-$h3-font-size: 1.2  * $base-font-size;
-$h4-font-size: 1    * $base-font-size;
-$h5-font-size: 0.8  * $base-font-size;
-$h6-font-size: 0.7  * $base-font-size;
+$h1-font-size: 3.2rem;
+$h2-font-size: 2.4rem;
+$h3-font-size: 1.9rem;
+$h4-font-size: 1.6rem;
+$h5-font-size: 1.3rem;
+$h6-font-size: 1.1rem;

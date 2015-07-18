@@ -3,7 +3,10 @@
 var requireCachedModule     = require('../util/requireCachedModule');
 var config                  = require('../config');
 var log                     = require('../util/log');
+var createHTMLFileList      = require('../util/createHTMLFileList');
 
+
+var fileSystem              = require('fs');
 var path                    = require('path');
 var gulp                    = requireCachedModule('gulp');
 var handlebars              = requireCachedModule('gulp-hb');
@@ -14,8 +17,9 @@ var frontMatter             = requireCachedModule('gulp-front-matter');
 var browserSync             = requireCachedModule('browser-sync');
 var glob                    = requireCachedModule('glob');
 var prettify                = requireCachedModule('gulp-jsbeautifier');
+var mkdirp                  = requireCachedModule('mkdirp');
 
-//@formatter:on
+
 /**
  *  Gulp task responsible for compiling the handlebar templates to html.
  *  @see: http://handlebarsjs.com/
@@ -29,50 +33,62 @@ gulp.task( 'handlebars', function () {
             config.source.getPath( 'markup', '!(' + config.ignorePrefix + ')*.hbs' ),
             config.source.getPath( 'markup', '!(' + config.ignorePrefix + ')/**/!(' + config.ignorePrefix + ')*.hbs' )
         ],
-        dest: config.dest.getPath( 'markup' ),
+        dest: config.dest.getPath( 'markup' )
 
-        handlebars: {
-            // Data that is added to the context when rendering the templates
-            data: config.source.getPath( 'markup', '_data/**/*.json' ),
-            helpers: config.source.getPath( 'markup', '_helpers/**/*.js' ),     // Helpers that are made available in the templates
-            partials: config.source.getPath( 'markup', '_partials/**/*.hbs' ),   // Partials that are made available in the templates
+    };
 
-            bustCache: true,       // default false
-            debug: false,          // Whether to log the helper names, partial names, and root property names for each file as they are rendered.
+    options.htmlPageListPartial = {
 
-            // By default, globbed data files are merged into a object structure according to
-            // the shortest unique file path without the extension, where path separators determine object nesting.
-            parseDataName: parseDataName,
-            // A pre-render hook to modify the context object being passed to the handlebars template on a per-file basis.
-            // May be used to load additional file-specific data.
-            dataEach: onDataEach
-        },
+        dest: config.source.getPath( 'markupPartials', 'debug'),
+        fileName: '_pagesList.hbs'
 
-        frontmatter: {
-            // defines the property that is added to the file object
-            // Note: Can NOT be any of the following: 'history','cwd','base','stat','_contents','isBuffer','isStream','isNull','isDirectory','clone','pipe','inspect'.
-            property: 'front',
-            remove: true // should we remove front-matter header?
-        },
+    };
 
-        // @see: https://www.npmjs.com/package/gulp-jsbeautifier
-        pretty: config.prettyHTML,
-        prettyConfig: {
-            html: {
-                unformatted: [ "sub", "sup", "b", "i", "u", "svg", "pre" ],
-                wrapAttributes: 'auto'
-            }
-        },
+    options.handlebars = {
 
-        minify: config.minifyHTML,
-        htmlmin: {
-            collapseWhitespace: true,
-            removeComments: true,
-            minifyJS: true,
-            minifyCSS: true,
-            keepClosingSlash: true // can break SVG if not set to true!
+        data:       config.source.getPath( 'markupData',      '**/*.json' ), // Data that is added to the context when rendering the templates
+        helpers:    config.source.getPath( 'markupHelpers',   '**/*.js' ),   // Helpers that are made available in the templates
+        partials:   config.source.getPath( 'markupPartials',  '**/*.hbs' ),  // Partials that are made available in the templates
+
+        bustCache: true,       // default false
+        debug: false,          // Whether to log the helper names, partial names, and root property names for each file as they are rendered.
+
+        // By default, globbed data files are merged into a object structure according to
+        // the shortest unique file path without the extension, where path separators determine object nesting.
+        parseDataName: parseDataName,
+
+        // A pre-render hook to modify the context object being passed to the handlebars template on a per-file basis.
+        // May be used to load additional file-specific data.
+        dataEach: onDataEach
+    };
+
+
+    options.frontmatter = {
+        // defines the property that is added to the file object
+        // Note: Can NOT be any of the following: 'history','cwd','base','stat','_contents','isBuffer','isStream','isNull','isDirectory','clone','pipe','inspect'.
+        property: 'front',
+        remove: true // should we remove front-matter header?
+    };
+
+    // @see: https://www.npmjs.com/package/gulp-jsbeautifier
+    options.pretty = config.prettyHTML;
+    options.prettyConfig = {
+        html: {
+            unformatted: [ "sub", "sup", "b", "i", "u", "svg", "pre" ],
+            wrapAttributes: 'auto'
         }
-    }
+    };
+
+    options.minify  = config.minifyHTML;
+    options.htmlmin = {
+
+        collapseWhitespace: true,
+        removeComments:     true,
+        minifyJS:           true,
+        minifyCSS:          true,
+        keepClosingSlash:   true // can break SVG if not set to true!
+
+    };
 
     // @formatter:on
 
@@ -110,13 +126,16 @@ gulp.task( 'handlebars', function () {
      */
     function onDataEach ( context, file ) {
 
+        // TODO: Fix for pages inside folders
         var fileName = path.basename( file.path, '.hbs' );
-        var metaDataFilePath = config.source.getPath( 'markup', '_data/pages/' + fileName + '.json' );
+        var metaDataFilePath = config.source.getPath( 'markupData', 'pages/' + fileName + '.json' );
 
-        // pass some basic options to the files
-        context.options = {
+        // add some config data to the context
+        context.config = {
 
-            debug: config.debug
+            name: config.name,
+            debug: config.debug,
+            version: config.version
 
         }
 
@@ -128,42 +147,32 @@ gulp.task( 'handlebars', function () {
 
         } catch ( error ) {
 
-            if( config.verbose ) console.log( 'No meta data file found for page: ' + fileName );
+            if( config.verbose ) log.debug( {
+                sender: 'handlebars',
+                message: 'No meta data file found for page: ' + fileName
+            } );
 
-        }
-
-
-        switch ( fileName ) {
-            case 'styleguide':
-                // nothing special
-                break;
-            case 'index':
-
-                // get list of pages. then convert the list into a tree & strip project path
-                var pagesList = getPagesList( options );
-                if( pagesList ) {
-
-                    var pageTree = createFileTree( pagesList, '_files', 'html' );
-                    context.pages = pageTree;
-
-                } else {
-
-                    log.error( { message: 'Failed to generate the list of pages', plugin: 'handlebars' } )
-
-                }
-
-            // no break!
-
-            default:
-
-                // strip svg data since we don't need it anywhere else but in the styleguide
-                if( context[ 'svg-filelist' ] ) context[ 'svg-filelist' ] = undefined;
-
-                break;
         }
 
         return context;
     }
+
+
+    // Creates a HTML list of all the pages
+    var htmlFileTreeListPartial = createHTMLFileList( options.source, config.source.getPath( 'markup' ) );
+
+    try {
+
+        // Make sure the directory exists
+        mkdirp.sync( options.htmlPageListPartial.dest );
+        fileSystem.writeFileSync( options.htmlPageListPartial.dest + path.sep + options.htmlPageListPartial.fileName, htmlFileTreeListPartial );
+
+    } catch ( error ) {
+
+        log.error( error );
+
+    }
+
 
     return gulp.src( options.source )
 
@@ -175,82 +184,11 @@ gulp.task( 'handlebars', function () {
         .pipe( rename( function ( path ) {
             path.extname = '.html';
         } ) )
-        .pipe( gulp.dest( options.dest ) )
-        .pipe( browserSync.reload( { stream: true } ) );
+        .pipe( gulp.dest( options.dest ) );
+
+    // Browser Sync is reloaded from the watch task for HTML files to bypass a chrome bug.
+    // See the watch task for more info.
 
 } );
-
-/**
- * Retrieves a list of page paths
- * @param options {object} the configuration object for the handlebars task
- */
-function getPagesList ( options ) {
-
-    var pagesList = [];
-
-    if( typeof options.source === 'string' ) {
-
-        pagesList = glob.sync( options.source );
-
-    } else if( Array.isArray( options.source ) ) {
-
-        for ( var i = 0, leni = options.source.length; i < leni; i++ ) {
-
-            var source = options.source[ i ];
-            var list = glob.sync( source );
-            pagesList = pagesList.concat( list );
-
-        }
-
-    }
-
-    return pagesList;
-}
-
-/**
- * Converts an array with file urls into a object tree.
- * @param filePaths {Array}
- * @param treeFileProperty {string} defines on what property the array with files are written to.
- * @param opt_fileExtention {string} replace file extention.
- */
-function createFileTree ( filePaths, treeFileProperty, opt_fileExtention ) {
-
-    var fileTree = {};
-    var extensionRegExp = /\.\w*$/;
-    var markupSourceRoot = config.source.getPath( 'markup' );
-
-    for ( var i = 0, leni = filePaths.length; i < leni; i++ ) {
-
-        var pagePath = filePaths[ i ];
-        pagePath = path.relative( markupSourceRoot, pagePath );
-        if( opt_fileExtention )pagePath = pagePath.replace( extensionRegExp, '.' + opt_fileExtention );
-        pagePath = pagePath.split( path.sep );
-
-        var currentPathNode = fileTree;
-        for ( var j = 0, lenj = pagePath.length; j < lenj; j++ ) {
-
-            var pathNode = pagePath[ j ];
-
-            if( j < (lenj - 1) ) {
-
-                if( typeof currentPathNode[ pathNode ] === 'undefined' )  currentPathNode[ pathNode ] = {};
-                currentPathNode = currentPathNode[ pathNode ];
-
-            } else {
-
-                if( typeof currentPathNode[ treeFileProperty ] === 'undefined' )  currentPathNode[ treeFileProperty ] = [];
-                // the last node is the filename
-                currentPathNode[ treeFileProperty ].push( pathNode );
-
-            }
-
-        }
-
-    }
-
-    return fileTree;
-
-}
-
 
 

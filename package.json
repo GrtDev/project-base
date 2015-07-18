@@ -1,7 +1,8 @@
 {
   "name": "project-base",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A project base for developing (static) site documents. Includes many automated (GulpJS) tasks such as compiling, bundeling and minifying JS, SASS & HTML.",
+  "author": "Geert Fokke <geert@sector22.com>",
   "private": true,
   "repository": {
     "type": "git",
@@ -35,7 +36,6 @@
     "gulp-svgmin": "^1.1.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
-    "jsonfile": "^2.2.1",
     "lodash.template": "^3.6.2",
     "merge-stream": "^0.1.8",
     "mkdirp": "^0.5.1",

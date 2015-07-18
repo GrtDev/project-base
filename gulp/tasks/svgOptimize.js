@@ -3,16 +3,18 @@
 var requireCachedModule     = require('../util/requireCachedModule');
 var config                  = require('../config');
 var log                     = require('../util/log');
+var createSVGFileList       = require('../util/createSVGFileList');
 
+var fileSystem              = require('fs');
 var path                    = require('path');
 var changed                 = requireCachedModule('gulp-changed');
 var gulp                    = requireCachedModule('gulp');
 var svgmin                  = requireCachedModule('gulp-svgmin');
 var glob                    = requireCachedModule('glob');
-var jsonFile                = requireCachedModule('jsonfile');
 var mkdirp                  = requireCachedModule('mkdirp');
 
 // @formatter:on
+
 
 /**
  * Task for optimizing svg images and making them available in the markup.
@@ -35,40 +37,28 @@ gulp.task( 'svgOptimize', function () {
             ]
         },
 
-        json: {
-            dest: config.source.getPath( 'svgOptimized' ),
-            fileName: 'svg-filelist.json'
+        svgListPartial:{
+            dest: config.source.getPath( 'markupPartials', 'debug'),
+            fileName: '_svgList.hbs'
         }
 
     };
 
-    // retrieve svg name list
-    // this is used to create the overview in the styleguide
-    var svgSourcePath = config.source.getPath( 'svg' );
-    var fileList = glob.sync( options.source );
-    var fileNames = [];
-    for ( var i = 0, leni = fileList.length; i < leni; i++ ) {
 
-        var svgName = fileList[ i ];
-        svgName = svgName.replace(svgSourcePath, '');
-        svgName = svgName.replace(/\.svg$/, '');
-        svgName = svgName.replace(/^\//, '');
-        fileNames.push( svgName );
-
-    }
+    // Creates a SVG list partial for all the svg files, used in the styleguide
+    var svgListPartial = createSVGFileList( options.source, config.source.getPath( 'svg' ), 'handlebars' );
 
     try {
 
         // Make sure the directory exists
-        mkdirp.sync( options.json.dest );
-        jsonFile.writeFileSync( options.json.dest + '/' + options.json.fileName, fileNames );
+        mkdirp.sync( options.svgListPartial.dest );
+        fileSystem.writeFileSync( options.svgListPartial.dest + path.sep + options.svgListPartial.fileName, svgListPartial );
 
     } catch ( error ) {
 
         log.error( error );
 
     }
-
 
     return gulp.src( options.source )
 

@@ -1,8 +1,11 @@
-html, body
-{
-    min-width: $viewport-small;
+html {
+
+    background-color: $color-background;
+
 }
 
-html {
-    background-color: $color-background;
+html, body {
+
+    min-width: $viewport-small;
+
 }

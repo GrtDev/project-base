@@ -86,9 +86,7 @@ function decorateTask () {
 
     _gulp.task = function () {
 
-        if( config.gulp.debug ) {
-            log.debug( { sender: 'gulpDecorator', message: 'gulp.task()', data: [ arguments ] } );
-        }
+        if( config.gulp.debug ) log.debug( { sender: 'gulpDecorator', message: 'gulp.task()', data: [ arguments ] } );
 
         var taskIndex;
         var taskFunction;
@@ -221,7 +219,7 @@ function lazyLoadTask ( taskName ) {
         sender: 'gulpDecorator'
     } );
 
-    if( typeof _loadedTasks[ taskName ] === 'undefined' ) {
+    if( _loadedTasks[ taskName ] === undefined ) {
 
         try {
 
@@ -284,7 +282,7 @@ function wrapTaskFunction ( taskFunction ) {
 
     } else {
 
-        log.error( {
+        log.warn( {
             sender: 'gulpDecorator',
             message: 'Ran into unknown parameters when trying to wrap the task function: ',
             data: [ taskParams ]

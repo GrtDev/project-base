@@ -46,19 +46,19 @@ gulp.task( 'fileInclude', function () {
     };
     // @formatter:on
 
-    options.minify = false;
+    options.minify  = config.minifyHTML;
     options.htmlmin = {
 
         collapseWhitespace: true,
-        removeComments: true,
-        minifyJS: true,
-        minifyCSS: true,
-        keepClosingSlash: true // can break SVG if not set to true!
+        removeComments:     true,
+        minifyJS:           true,
+        minifyCSS:          true,
+        keepClosingSlash:   true // can break SVG if not set to true!
 
     };
 
     // @see: https://www.npmjs.com/package/gulp-jsbeautifier
-    options.pretty = !options.minify;
+    options.pretty = config.prettyHTML;
     options.prettyConfig = {
 
         html: {
@@ -67,6 +67,13 @@ gulp.task( 'fileInclude', function () {
         }
 
     };
+
+    // Check if we are not doing unnecessary tasks.
+    if( options.pretty && options.minify ) log.warn( {
+        sender: 'file include',
+        message: 'You should not use both prettifyHTML and minifyHTML at the same time in your config...'
+    } );
+
 
 
 
@@ -77,8 +84,10 @@ gulp.task( 'fileInclude', function () {
         .pipe( gulpif( options.pretty, prettify( options.prettyConfig ) ) )
         .pipe( gulpif( options.minify, htmlmin( options.htmlmin ) ) )
 
-        .pipe( gulp.dest( options.dest ) )
-        .pipe( browserSync.stream( { once: true } ) );
+        .pipe( gulp.dest( options.dest ) );
+
+        // Browser Sync is reloaded from the watch task for HTML files to bypass a chrome bug.
+        // See the watch task for more info.
 
 } );
 

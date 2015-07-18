@@ -1,12 +1,10 @@
 // @formatter:off
 
 /**
-
     Place your media queries here.
 
-
     example usage:
-
+    -------------
 
     div {
 
@@ -22,7 +20,6 @@
 
 */
 
-
 // breakpoints
 $viewport-small:            320px;
 $viewport-medium:           768px;
@@ -31,15 +28,15 @@ $viewport-extra-large:      1200px;
 
 
 // media queries
-$screen-small-only:         "only screen and (min-width : #{$viewport-small + 1}) and (max-width : #{$viewport-medium})";
-$screen-small-and-down:     "only screen and (max-width : #{$viewport-small})";
-$screen-small-and-up:       "only screen and (min-width : #{$viewport-small + 1})";
+$screen-small-only:         "only screen and ( min-width : #{$viewport-small} ) and ( max-width : #{$viewport-medium - 1} )";
+$screen-small-and-down:     "only screen and ( max-width : #{$viewport-small} )";
+$screen-small-and-up:       "only screen and ( min-width : #{$viewport-small + 1} )";
 
-$screen-medium-only:        "only screen and (min-width : #{$viewport-medium + 1}) and (max-width : #{$viewport-large})";
-$screen-medium-and-down:    "only screen and (max-width : #{$viewport-medium})";
-$screen-medium-and-up:      "only screen and (min-width : #{$viewport-medium + 1})";
+$screen-medium-only:        "only screen and ( min-width : #{$viewport-medium} ) and ( max-width : #{$viewport-large - 1} )";
+$screen-medium-and-down:    "only screen and ( max-width : #{$viewport-medium} )";
+$screen-medium-and-up:      "only screen and ( min-width : #{$viewport-medium + 1} )";
 
-$screen-large-and-down:     "only screen and (max-width : #{$viewport-large})";
-$screen-large-and-up:       "only screen and (min-width : #{$viewport-large + 1})";
+$screen-large-and-down:     "only screen and ( max-width : #{$viewport-large} )";
+$screen-large-and-up:       "only screen and ( min-width : #{$viewport-large + 1} )";
 
-$screen-extra-large-only:   "only screen and (min-width : #{$viewport-extra-large + 1})";
+$screen-extra-large-only:   "only screen and ( min-width : #{$viewport-extra-large + 1} )";

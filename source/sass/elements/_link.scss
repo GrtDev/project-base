@@ -5,63 +5,53 @@
 $link-animation-time: 150ms;
 $link-animation-ease: $ease-out-quad;
 
-
 // most basic link style
-a
-{
+a {
     color: $color-primary;
     text-decoration: none;
 }
 
-
 // regular link style
-%regular-link
-{
+%regular-link {
     @extend a;
 
-    padding-bottom: 1px;
+    padding-bottom: 0px;
     border-bottom: 2px solid transparent;
     transition-duration: $link-animation-time;
     transition-timing-function: $link-animation-ease;
-    transition-property: border-bottom-color;
+    transition-property: border-bottom-color, padding-bottom;
 
-    &:hover
-    {
+    &:hover {
+        padding-bottom: 1px;
         border-bottom-color: $color-primary;
     }
 
-    &:active
-    {
+    &:active {
+        padding-bottom: 1px;
         border-bottom-color: darken($color-primary, 10%);
     }
 }
 
-
 // reset of a regular link
-%a-reset
-{
+%a-reset {
     border-bottom: none;
     transition: none;
 
-    &:hover
-    {
+    &:hover {
+        padding-bottom: 0;
         border-bottom-color: transparent;
     }
 
-    &:active
-    {
+    &:active {
         border-bottom-color: transparent;
     }
 }
-
 
 // Only apply regular link styles to <p> elements and rich-text containers.
 // This prevents us from having to reset the regular style every time we use an <a> tag.
-#{$rich-text-container} a, p a
-{
+#{$rich-text-container} a, p a {
     @extend %regular-link;
 }
-
 
 // Apply specific link styles BEM style.
 // e.g.: <a class="link--white " >
@@ -69,42 +59,10 @@ a
 
     @extend %regular-link;
 
-    &[class*="--white"] {
-
-        color: $color-white;
-
-        &:hover
-        {
-            border-bottom-color: $color-white;
-        }
-
-    }
-
     &[class*="--underline"] {
 
-        span
-        {
-            padding-bottom: 3px;
-            border-bottom: 2px solid $color-primary;
-        }
-
-    }
-
-
-    &[class*="--return"] {
-
-        color: rgba(255, 255, 255, .6);
-        font-size: 1.5rem;
-
-        svg
-        {
-            path
-            {
-                fill: rgba(255, 255, 255, .6);
-            }
-            height: 1.3em;
-            transform: rotate(180deg);
-        }
+        padding-bottom: 2px;
+        border-bottom: 2px solid $color-primary;
 
     }
 

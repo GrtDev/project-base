@@ -2,8 +2,7 @@
 @import "../variables/colors";
 @import "../variables/eases";
 
-[class^="quote"],
-[class*=" quote"] {
+blockquote {
 
     display: block;
     margin: 40px auto 0 auto;

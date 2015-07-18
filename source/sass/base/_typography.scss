@@ -8,20 +8,20 @@
 /*
  *  Layout
  */
-body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 1.4em;
-}
-
-html{
+html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: $color-text;
     font-family: $primary-font-stack;
-    line-height: $base-line-height;
-    font-size: $base-font-size;
+    font-size: $html-font-size;
 }
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: $body-font-size;
+}
+
 
 /*
  *  Sizes

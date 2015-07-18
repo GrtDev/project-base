@@ -6,17 +6,14 @@ title: Styleguide
 
 {{!--{{{ debug }}}--}}
 
-<aside id="menu">
-	<ul>
-		<li><a href="#headings">Headings</a></li>
-	</ul>
-</aside>
 
-<article id="headings" class="styleguide">
+<article class="styleguide__styleblock">
 
-    <div class="styleguide__styleblock">
+    <div class="styleguide__header">
+        <h3 class="styleguide__title">Headings</h3>
+    </div>
 
-        <h1 id="headings">Headings</h1>
+    <div>
 
         <h1>Heading 1</h1>
         <h2>Heading 2</h2>
@@ -29,28 +26,56 @@ title: Styleguide
 
 </article>
 
-<article>
+<article class="styleguide__styleblock">
 
-	{{#if svg-filelist}}
+    <div class="styleguide__header">
+        <h3 class="styleguide__title">Links</h3>
+    </div>
 
-        <div class="styleguide__styleblock svg-sprites">
-            <h3>SVG Shapes<span class="notes">This section is automatically generated from .svg files in the 'source/assets/svg' folder</span></h3>
-            <ul>
+    <div>
+        <p><a href="#" class="link--underline">Underline link</a></p>
+        <br/>
+        <p>Donec id elit non mi <a href="#">regular link</a> at eget metus. Maecenas faucibus mollis interdum. Duis
+            mollis, est non
+            commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec id elit non mi porta
+            gravida at eget metus. Morbi leo risus, porta ac <a href="#">consectetur</a> ac, vestibulum at eros.</p>
 
-				{{#svg-filelist}}
-                    <!-- {{this}} -->
-                    <li title="{{this}}">
+    </div>
 
-                        <div class="svg-box"> {{{ svg this }}} </div>
+</article>
 
-                        <h4>{{this}}</h4>
-                    </li>
-				{{/svg-filelist}}
+<article class="styleguide__styleblock">
 
-            </ul>
-        </div>
+    <div class="styleguide__header">
+        <h3 class="styleguide__title">Text styles</h3>
+    </div>
 
-	{{/if}}
+    <div>
+        <p class="text--date">March 29th, Date text</p>
+        <p class="text--intro">Intro text, Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
+            fermentum
+            massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla. Aenean lacinia bibendum
+            nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Morbi leo risus,
+            porta ac consectetur ac, vestibulum at eros.</p>
+        <p>Regular text, Curabitur blandit tempus porttitor. Etiam porta sem malesuada magna mollis euismod. Curabitur blandit tempus
+            porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nulla vitae elit libero, a pharetra augue.
+            Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+    </div>
+
+</article>
+
+<article class="styleguide__styleblock">
+
+    <div class="styleguide__header">
+        <h3 class="styleguide__title">SVG Shapes</h3>
+        <span class="styleguide__disclaimer">This section is automatically generated from .svg files in the 'source/assets/svg' folder</span>
+    </div>
+
+    <div class="project-svg__collection">
+
+		{{> debug/_svgList }}
+
+    </div>
 
 </article>
 
