@@ -1,0 +1,40 @@
+@import "../variables/config";
+@import "../variables/colors";
+@import "../variables/eases";
+
+// Complete reset for the list element.
+%list-reset {
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & > li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+}
+
+ul {
+
+    li {
+
+    }
+
+}
+
+// BEM list styles
+[class^="list"],
+[class*=" list"] {
+
+    &[class*="--links"] {
+
+        a {
+            @extend %regular-link;
+        }
+
+    }
+
+}

@@ -1,0 +1,30 @@
+/**
+
+    Adds a clearfix to the container.
+    @see: http://blog.teamtreehouse.com/a-better-clearfix-with-sass
+
+    example usage:
+    --------------
+
+    div  {
+
+        @extend %clearfix;
+
+        .child {
+            float: left;
+        }
+
+    }
+
+*/
+%clearfix {
+
+    &:after {
+
+        content: "";
+        display: table;
+        clear: both;
+
+    }
+
+}

@@ -1,0 +1,69 @@
+@import "../variables/config";
+@import "../variables/colors";
+@import "../variables/eases";
+
+$link-animation-time: 150ms;
+$link-animation-ease: $ease-out-quad;
+
+// most basic link style
+a {
+    color: $color-primary;
+    text-decoration: none;
+}
+
+// regular link style
+%regular-link {
+    @extend a;
+
+    padding-bottom: 0px;
+    border-bottom: 2px solid transparent;
+    transition-duration: $link-animation-time;
+    transition-timing-function: $link-animation-ease;
+    transition-property: border-bottom-color, padding-bottom;
+
+    &:hover {
+        padding-bottom: 1px;
+        border-bottom-color: $color-primary;
+    }
+
+    &:active {
+        padding-bottom: 1px;
+        border-bottom-color: darken($color-primary, 10%);
+    }
+}
+
+// reset of a regular link
+%a-reset {
+    border-bottom: none;
+    transition: none;
+
+    &:hover {
+        padding-bottom: 0;
+        border-bottom-color: transparent;
+    }
+
+    &:active {
+        border-bottom-color: transparent;
+    }
+}
+
+// Only apply regular link styles to <p> elements and rich-text containers.
+// This prevents us from having to reset the regular style every time we use an <a> tag.
+#{$rich-text-container} a, p a {
+    @extend %regular-link;
+}
+
+// Apply specific link styles BEM style.
+// e.g.: <a class="link--white " >
+[class^="link"], [class*=" link"] {
+
+    @extend %regular-link;
+
+    &[class*="--underline"] {
+
+        padding-bottom: 2px;
+        border-bottom: 2px solid $color-primary;
+
+    }
+
+}

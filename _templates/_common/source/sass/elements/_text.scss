@@ -1,0 +1,34 @@
+@import "../variables/config";
+@import "../variables/colors";
+@import "../variables/eases";
+
+/**
+
+    Define basic text styles here
+
+*/
+
+[class^="text"],
+[class=" text"] {
+
+    &[class*="--date"] {
+
+        display: block;
+        margin-bottom: 15px;
+        font-size: 1.4rem;
+        color: rgba(0, 0, 0, 0.5);
+        font-weight: bold;
+
+    }
+
+
+    &[class*="--intro"] {
+
+        color: #000;
+        font-size: 2rem;
+        line-height: 2.4rem;
+        margin-bottom: 50px;
+
+    }
+
+}

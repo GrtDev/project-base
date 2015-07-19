@@ -1,0 +1,57 @@
+@import "../variables/config";
+@import "../variables/colors";
+@import "../variables/eases";
+
+blockquote {
+
+    display: block;
+    margin: 40px auto 0 auto;
+    font-size: 4rem;
+    line-height: 4.8rem;
+    color: #BAB0B0;
+
+    span {
+        display: block;
+        margin-top: 40px;
+        font-size: 2rem;
+        line-height: 2.4rem;
+    }
+
+
+    // Left
+    &[class*="--left"] {
+
+        padding-left: 50px;
+        text-align: left;
+
+        &:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            border: 1px solid #BAB0B0;
+        }
+    }
+
+
+    // Right
+    &[class*="--right"] {
+
+        padding-right: 50px;
+        text-align: right;
+
+        &:after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            border: 1px solid #BAB0B0;
+        }
+    }
+
+}
+

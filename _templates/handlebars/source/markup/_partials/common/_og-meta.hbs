@@ -1,0 +1,28 @@
+{{!
+	Handlebars partial for implementing Facebook Open Graph meta data
+	see:    https://developers.facebook.com/docs/sharing/best-practices
+	see:    https://developers.facebook.com/tools/debug/
+	see:    http://ogp.me/
+	usage:  {{> common/_facebook-og-meta }\}
+
+	@params:
+	title       {string}        A clear title without branding or mentioning the domain itself.
+	site_name   {string}        Provide a site name, e.g. "My Favorite News"
+	url         {string}        A URL with no session id or extraneous parameters. All shares on Facebook will use this as the identifying URL for this article.
+	description {string}        A clear description, at least two sentences long.
+	type        {string}        The type of object e.g.: 'article'
+	image       {string}        image shown of FB, at least 1200 x 630 pixels for the best display on high resolution devices
+	fb_id       {string}        A Facebook App ID that identifies your website to Facebook.
+}}
+<meta property="og:title"       content="{{title}}" />
+<meta property="og:description" content="{{description}}" />
+<meta property="og:type"        content="{{type}}" />
+<meta property="og:url"         content="{{url}}" />
+<meta property="og:image"       content="{{image}}" />
+{{!--<meta property="og:image:width" content="400" />--}}
+{{!--<meta property="og:image:height" content="300" />--}}
+<meta property="og:site_name"   content="{{site_name}}" />
+<meta property="fb:app_id"      content="{{fb_id}}" />
+
+
+{{!-- TODO: make a helper of this stuff --}}

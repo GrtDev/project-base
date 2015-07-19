@@ -1,0 +1,21 @@
+{
+  "parse-files": [
+  ],
+  "bower-dependencies": [
+    {
+      "name": "Susy",
+      "value": "susy",
+      "checked": false
+    },
+    {
+      "name": "GreenSock Animation Platform",
+      "value": "gsap",
+      "checked": false
+    },
+    {
+      "name": "JQuery",
+      "value": "jquery",
+      "checked": false
+    }
+  ]
+}

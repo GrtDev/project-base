@@ -1,0 +1,50 @@
+/**
+
+Vertically aligns the element using `vertical-align: middle` and `display: inline-block`.
+Creates a 'ghost' element with 100% height before the element(s) to align with.
+
+@see:  https://css-tricks.com/centering-in-the-unknown/
+
+@param: element         - child element to align
+@param: align: middle   - what alignment value to use
+
+ ____________________________________________________
+|    || < ghost element                             |
+|    ||       ________                              |
+|    ||      |        | < vertical-align: middle    |
+|----||------|--------|-----------------------------|
+|    ||      |________|                             |
+|    ||                                             |
+|____||_____________________________________________|
+
+
+example usage:
+--------------
+
+.items-container {
+
+    @include vertical-align( '.item' );
+
+}
+
+*/
+
+@mixin vertical-align($element, $align: middle) {
+
+    &:before {
+
+        content: '';
+        display: inline-block;
+        height: 100%;
+        margin-left: -0.25em;
+        vertical-align: $align;
+
+    }
+
+    #{$element} {
+
+        display: inline-block !important;
+        vertical-align: $align;
+
+    }
+}

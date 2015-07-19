@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "gulp-front-matter": "^1.2.3",
+    "gulp-hb": "^2.6.1"
+  }
+}
