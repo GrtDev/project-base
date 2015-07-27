@@ -7,7 +7,8 @@ $link-animation-ease: $ease-out-quad;
 
 // most basic link style
 a {
-    color: $color-primary;
+    color: inherit;
+    cursor: pointer;
     text-decoration: none;
 }
 
@@ -29,21 +30,6 @@ a {
     &:active {
         padding-bottom: 1px;
         border-bottom-color: darken($color-primary, 10%);
-    }
-}
-
-// reset of a regular link
-%a-reset {
-    border-bottom: none;
-    transition: none;
-
-    &:hover {
-        padding-bottom: 0;
-        border-bottom-color: transparent;
-    }
-
-    &:active {
-        border-bottom-color: transparent;
     }
 }
 

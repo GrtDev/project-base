@@ -36,7 +36,7 @@ button,
 {
     @extend %button-base;
 
-    // ----------------- button sizes ---------------
+    // -------------- START button sizes ---------------
 
     // regular
     padding: 15px 30px 11px 35px;
@@ -67,9 +67,8 @@ button,
 
     }
 
+    // -------------- END - button sizes ---------------
 
-
-    // -------------- END - button sizes ------------
 
 
     &[class*="--transparent"]
@@ -122,3 +121,4 @@ button,
     }
 
 }
+
