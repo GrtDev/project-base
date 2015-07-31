@@ -20,12 +20,12 @@ var mkdirp                  = requireCachedModule('mkdirp');
  * Task for optimizing svg images and making them available in the markup.
  * @see https://www.npmjs.com/package/gulp-svgmin
  */
-gulp.task( 'svgOptimize', function () {
+gulp.task( 'svg', function () {
 
     var options = {
 
         source: config.source.getPath( 'svg', '**/*.svg' ),
-        dest: config.source.getPath( 'svgOptimized' ),
+        dest: config.dest.getPath( 'svg' ),
 
         config: {
             js2svg: {
@@ -51,8 +51,8 @@ gulp.task( 'svgOptimize', function () {
     try {
 
         // Make sure the directory exists
-        mkdirp.sync( options.svgListPartial.dest );
-        fileSystem.writeFileSync( options.svgListPartial.dest + path.sep + options.svgListPartial.fileName, svgListPartial );
+        //mkdirp.sync( options.svgListPartial.dest );
+        //fileSystem.writeFileSync( options.svgListPartial.dest + path.sep + options.svgListPartial.fileName, svgListPartial );
 
     } catch ( error ) {
 

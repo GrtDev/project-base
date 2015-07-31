@@ -1,6 +1,6 @@
-@import "../variables/config";
-@import "../variables/colors";
-@import "../variables/eases";
+@import "../../variables/config";
+@import "../../variables/colors";
+@import "../../variables/eases";
 
 // Complete reset for the list element.
 %list-reset {
@@ -17,17 +17,11 @@
 
 }
 
-ul {
-
-    li {
-
-    }
-
-}
-
 // BEM list styles
 [class^="list"],
 [class*=" list"] {
+
+    @extend %list-reset;
 
     &[class*="--links"] {
 

@@ -38,7 +38,7 @@ function requireCachedModule ( module ) {
         moduleInstance = require( module );
 
     } catch ( error ) {
-
+        
         // assign placeholder function
         moduleInstance = function ( options ) {
 

@@ -1,19 +1,22 @@
+@import "../variables/colors";
 @import "../variables/typography";
 
-/*
- *  Custom font import
- */
+// ------------ Font imports ----------------- //
+
+//  Place your all your font imports here
+
 @import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
 
-/*
- *  Layout
- */
+
+
+// ------------- Base styles ----------------- //
+
 html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: $color-text;
     font-family: $primary-font-stack;
     font-size: $html-font-size;
+    color: $color-text;
 }
 
 body {
@@ -22,53 +25,14 @@ body {
     font-size: $body-font-size;
 }
 
-
-/*
- *  Sizes
- */
-h1 {
-    font-size: $h1-font-size;
-}
-
-h2  {
-    font-size: $h2-font-size;
-}
-
-h3 {
-    font-size: $h3-font-size;
-}
-
-h4 {
-    font-size: $h4-font-size;
-}
-
-h5 {
-    font-size: $h5-font-size;
-}
-
-h6 {
-    font-size: $h6-font-size;
-}
-
-/*
- *  Weights
- */
-h1, h2, h3, h4, h5, h6
-{
-    color: $color-header;
-    font-weight: normal;
-}
-
 strong, b
 {
     font-weight: 700;
 }
 
-/*
- *  Render fixes
- *
- *  @see: http://www.intridea.com/blog/2014/5/8/better-font-smoothing-in-chrome-on-mac-os-x
- */
+
+// Render fixes
+// @see: http://www.intridea.com/blog/2014/5/8/better-font-smoothing-in-chrome-on-mac-os-x
 @media only screen and (-webkit-min-device-pixel-ratio: 1.25),
 only screen and (min-device-pixel-ratio: 1.25),
 only screen and (min-resolution: 200dpi),

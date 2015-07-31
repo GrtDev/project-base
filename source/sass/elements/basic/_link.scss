@@ -1,6 +1,6 @@
-@import "../variables/config";
-@import "../variables/colors";
-@import "../variables/eases";
+@import "../../variables/config";
+@import "../../variables/colors";
+@import "../../variables/eases";
 
 $link-animation-time: 150ms;
 $link-animation-ease: $ease-out-quad;
@@ -10,10 +10,12 @@ a {
     color: inherit;
     cursor: pointer;
     text-decoration: none;
+    text-overflow: ellipsis;
 }
 
 // regular link style
 %regular-link {
+
     @extend a;
 
     padding-bottom: 0px;
@@ -31,17 +33,19 @@ a {
         padding-bottom: 1px;
         border-bottom-color: darken($color-primary, 10%);
     }
+
 }
 
-// Only apply regular link styles to <p> elements and rich-text containers.
+// Only apply regular link styles to <p> content links.
 // This prevents us from having to reset the regular style every time we use an <a> tag.
-#{$rich-text-container} a, p a {
+p a {
     @extend %regular-link;
 }
 
 // Apply specific link styles BEM style.
 // e.g.: <a class="link--white " >
-[class^="link"], [class*=" link"] {
+[class^="link"],
+[class*=" link"] {
 
     @extend %regular-link;
 
@@ -49,6 +53,10 @@ a {
 
         padding-bottom: 2px;
         border-bottom: 2px solid $color-primary;
+
+        &:hover, &:active {
+            padding-bottom: 2px;
+        }
 
     }
 

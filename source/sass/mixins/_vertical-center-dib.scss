@@ -1,12 +1,13 @@
 /**
 
+vertical center Display Inline-Block
+
+
 Vertically aligns the element using `vertical-align: middle` and `display: inline-block`.
 Creates a 'ghost' element with 100% height before the element(s) to align with.
 
 @see:  https://css-tricks.com/centering-in-the-unknown/
 
-@param: element         - child element to align
-@param: align: middle   - what alignment value to use
 
  ____________________________________________________
 |    || < ghost element                             |
@@ -21,15 +22,18 @@ Creates a 'ghost' element with 100% height before the element(s) to align with.
 example usage:
 --------------
 
-.items-container {
+.container {
 
-    @include vertical-align( '.item' );
+    @include vertical-center-dib( '.item', '.another-item' );
 
 }
 
-*/
 
-@mixin vertical-align($element, $align: middle) {
+@mixin:  vertical-center-dib
+@param:  $opt_elements         - any number of children selectors to align.
+
+*/
+@mixin vertical-center-dib($opt_elements...) {
 
     &:before {
 
@@ -37,14 +41,19 @@ example usage:
         display: inline-block;
         height: 100%;
         margin-left: -0.25em;
-        vertical-align: $align;
+        vertical-align: middle;
 
     }
 
-    #{$element} {
+    @each $element in $opt_elements {
 
-        display: inline-block !important;
-        vertical-align: $align;
+        #{$element} {
+
+            display: inline-block !important;
+            vertical-align: middle;
+
+        }
 
     }
+
 }

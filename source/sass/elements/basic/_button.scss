@@ -1,6 +1,5 @@
-@import "../variables/config";
-@import "../variables/colors";
-@import "../variables/eases";
+@import "../../variables/colors";
+@import "../../variables/eases";
 
 $button-animation-time: 250ms;
 $button-animation-ease: $ease-inout-quad;
@@ -30,7 +29,6 @@ $button-animation-ease: $ease-inout-quad;
 
 }
 
-button,
 [class^="button"],
 [class*=" button"]
 {

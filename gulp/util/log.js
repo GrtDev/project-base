@@ -13,10 +13,10 @@
 
 // @formatter:off
 
-var humanFileSize               = require('./humanFileSize');
 var config                      = require('../config');
 
 // Note: we don't use requireCachedModule here because it causes a circular reference which causes problems.
+var humanSize                   = require('human-size');
 var path                        = require('path');
 var gulpUtil                    = require('gulp-util');
 var prettyHrtime                = require('pretty-hrtime');
@@ -47,12 +47,12 @@ function logSize ( options ) {
 
     } else {
 
-        var sizeLog = humanFileSize( options.size.size, true );
+        var sizeLog = humanSize( options.size.size, true );
 
         if( options.sizeAfter ) {
             var difference = options.size.size - options.sizeAfter.size;
-            if( difference > 0 ) sizeLog = 'saved ' + humanFileSize( difference, true );
-            else sizeLog = 'gained ' + humanFileSize( difference );
+            if( difference > 0 ) sizeLog = 'saved ' + humanSize( difference, true );
+            else sizeLog = 'gained ' + humanSize( difference );
         }
 
         if( typeof options.check !== 'undefined' && !options.check ) return;
@@ -235,6 +235,7 @@ function logError ( error, opt_stack, opt_exit ) {
     message = gulpUtil.colors.red( title, message );
 
     console.log( message + (stackTrace ? stackTrace : '') );
+    if(error.data) console.log(error.data);
     gulpUtil.beep();
 
     if( config.throwError ) {

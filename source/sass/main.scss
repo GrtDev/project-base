@@ -1,13 +1,12 @@
 @charset "UTF-8";
 
-// ------------ External libs ------------ //
-//@import "../../bower_components/susy/sass/susy";
+// ------- External libs & Vendor styles ------- //
+
+// @import "../../bower_components/susy/sass/susy";
 
 
-// ------------ Vendor styles ------------ //
+// ------------ Settings & Variables ----------- //
 
-
-// --------- Settings & Variables -------- //
 @import "variables/colors";
 @import "variables/eases";
 @import "variables/shadows";
@@ -16,37 +15,48 @@
 @import "variables/config";
 
 
-// -------- Mixins & Placeholders -------- //
+// ----------- Mixins & Placeholders ----------- //
+
 @import "mixins/placeholders/placeholder";
 @import "mixins/placeholders/clearfix";
 
-@import "mixins/alignment";
+@import "mixins/vertical-center-dib";
 @import "mixins/conversion";
 @import "mixins/triangle";
 
 
-// --------------- Base ------------------ //
+// ------------------ Base --------------------- //
+
 @import "base/normalize";
 @import "base/typography";
 @import "base/global";
 
 
-// ------------- Elements -----------------
+// ---------------- Elements -------------------- //
+
+// basic
+@import "elements/basic/button";
+@import "elements/basic/link";
+@import "elements/basic/figure";
+@import "elements/basic/list";
+@import "elements/basic/quote";
+@import "elements/basic/table";
+@import "elements/basic/text";
+
+// form
 @import "elements/form/form";
 @import "elements/form/input";
 
-@import "elements/button";
-@import "elements/link";
-@import "elements/image";
-@import "elements/list";
-@import "elements/quote";
-@import "elements/table";
-@import "elements/text";
+// other
+@import "elements/background-image";
 
 
-// ---------- Modules / Components -------- //
+// ------------- Modules / Components ----------- //
+
 @import "modules/cookie";
+@import "modules/rich-text";
 
 
-// --------------- Pages ------------------ //
+// ------------------ Pages --------------------- //
+
 @import "pages/home";

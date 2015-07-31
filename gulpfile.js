@@ -80,8 +80,8 @@ function registerMainTasks(){
 
         runSequence(
             'clean',
-            [ 'copyAssets', 'copyBower', 'images', 'svgOptimize' ],
-            [ 'handlebars', 'browserify', 'sass' ],
+            [ 'copyAssets', 'copyBower', 'images', 'svg' ],
+            [ 'ejs', 'browserify', 'sass' ],
             callback
         );
 
@@ -110,7 +110,6 @@ function registerMainTasks(){
 
         runSequence(
             'build',
-            'svgExport',
             callback
         );
 
@@ -133,8 +132,8 @@ function registerMainTasks(){
 
         runSequence(
             'clean',
-            [ 'copyAssets', 'copyBower', 'images', 'svgOptimize' ],
-            [ 'handlebars', 'browserify', 'sass', 'svgExport' ],
+            [ 'copyAssets', 'copyBower', 'images', 'svg' ],
+            [ 'ejs', 'browserify', 'sass' ],
             callback
         );
 

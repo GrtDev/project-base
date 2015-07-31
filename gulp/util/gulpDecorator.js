@@ -239,7 +239,8 @@ function lazyLoadTask ( taskName ) {
             // So if it fails it is not necessarily an error.
             if( config.gulp.debug ) log.warn( {
                 sender: 'gulpDecorator',
-                message: 'warning: Failed to lazy load task: ' + taskName
+                message: 'warning: Failed to lazy load task: ' + taskName,
+                data: error
             } );
 
         }

@@ -19,7 +19,7 @@ gulp.task('watch', ['watchify'], function (callback) {
 
     gulp.watch(config.source.getPath('images',  '**/*.{jpg|jpeg|gif|svg|png}'),     ['images']);
     gulp.watch(config.source.getPath('css',     '**/*.scss'),                       ['sass']);
-    gulp.watch(config.source.getPath('markup',  '**'),                              ['handlebars']);
+    gulp.watch(config.source.getPath('markup',  '**'),                              ['ejs']);
     gulp.watch(config.dest.getPath('markup',    '**/*.html') ).on('change', onHTMLChange);
 
 });

@@ -1,0 +1,75 @@
+@import "../../variables/typography";
+@import "../../variables/colors";
+@import "../../variables/eases";
+
+.select__wrap {
+
+    @include vertical-center-dib( 'select' );
+
+    display: inline-block;
+    position: relative;
+    font-size: 2rem;
+    background-color: #fff;
+    overflow: hidden;
+    border: 1px solid rgba(64, 58, 58, .43);
+    border-radius: 9px;
+
+    @media #{$screen-small-and-down}{
+
+        font-size: 15px;
+
+    }
+
+    &, &:before {
+
+        min-height: 42px;
+
+    }
+
+    &:after {
+
+        @include icon('arrow-down');
+
+        position: absolute;
+        right: .8em;
+        font-size: 1em;
+        top: 53%;
+        transform: translateY(-50%);
+        color: $color-primary;
+
+        transition: color 200ms ease;
+    }
+
+    &:hover:after {
+
+        color: $color-brand-primary;
+
+    }
+
+    select {
+
+        z-index: 2;
+        cursor: pointer;
+        position: relative;
+
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+
+        font-size: inherit;
+        font-family: $font-stack-primary;
+        text-overflow: ellipsis;
+        text-transform: capitalize;
+
+        border: 0;
+        background-color: transparent;
+        padding: 6px 2.4em 6px 1em;
+        outline: none;
+
+        &::-ms-expand {
+            display: none;
+        }
+
+    }
+
+}

@@ -1,0 +1,51 @@
+[class^="background-image"],
+[class*=" background-image"] {
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center center;
+
+
+    // image alignments
+
+    &[class*="--top"] {
+        background-position: center top;
+    }
+
+    &[class*="--bottom"] {
+        background-position: center bottom;
+    }
+
+    &[class*="--left"] {
+        background-position: left center;
+    }
+
+    &[class*="--right"] {
+        background-position: right center;
+    }
+
+    // shade overlay with a slight gradient from bottom to half-way point
+    &:after {
+
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#2d1f1f+0,2d1f1f+100&amp;0.25+0,0.25+63,0.45+100 */
+        background: -moz-linear-gradient(top, rgba(45, 31, 31, 0.25) 0%, rgba(45, 31, 31, 0.25) 63%, rgba(45, 31, 31, 0.45) 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(45, 31, 31, 0.25)), color-stop(63%, rgba(45, 31, 31, 0.25)), color-stop(100%, rgba(45, 31, 31, 0.45))); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, rgba(45, 31, 31, 0.25) 0%, rgba(45, 31, 31, 0.25) 63%, rgba(45, 31, 31, 0.45) 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, rgba(45, 31, 31, 0.25) 0%, rgba(45, 31, 31, 0.25) 63%, rgba(45, 31, 31, 0.45) 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top, rgba(45, 31, 31, 0.25) 0%, rgba(45, 31, 31, 0.25) 63%, rgba(45, 31, 31, 0.45) 100%); /* IE10+ */
+        background: linear-gradient(to bottom, rgba(45, 31, 31, 0.25) 0%, rgba(45, 31, 31, 0.25) 63%, rgba(45, 31, 31, 0.45) 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#402d1f1f', endColorstr='#732d1f1f', GradientType=0); /* IE6-9 */
+
+    }
+
+}

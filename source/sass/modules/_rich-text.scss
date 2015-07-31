@@ -1,7 +1,11 @@
 @import "../variables/config";
 
-#{$rich-text-container}
-{
+[class^="rich-text"],
+[class*=" rich-text"]{
+
+    a {
+        @extend %regular-link;
+    }
 
     // styles specific for rich text content
 

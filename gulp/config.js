@@ -55,7 +55,7 @@ source.assets               = '<%= root %>/assets'
 source.markup               = '<%= root %>/markup';
 source.markupPartials       = '<%= markup %>/' + config.ignorePrefix + 'partials';
 source.markupHelpers        = '<%= markup %>/' + config.ignorePrefix + 'helpers';   // for handlebars
-source.markupData           = '<%= markup %>/' + config.ignorePrefix + 'data';      // for handlebars
+source.markupData           = '<%= root %>/data';      // for handlebars
 source.css                  = '<%= root %>/sass';
 source.javascript           = '<%= root %>/javascript';
 source.images               = '<%= assets %>/images';
@@ -63,7 +63,6 @@ source.fonts                = '<%= assets %>/fonts';
 source.videos               = '<%= assets %>/videos';
 source.data                 = '<%= assets %>/data';
 source.svg                  = '<%= assets %>/svg';
-source.svgOptimized         = '<%= assets %>/_svg-optimized';
 
 /**
  *  Defines destination folders layout.

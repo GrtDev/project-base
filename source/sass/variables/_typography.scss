@@ -1,25 +1,30 @@
-// @formatter:off
+/**
+ @formatter:off
 
-// Add your font imports to the base/typography.scss file.
+NOTE:
+        Do not place any actual styles in here!
+        Otherwise you risk the chance of it being added to your css in multiple places.
 
-// NOTE:
-// Do not place any actual styles in here!
-// Otherwise you risk the chance of it being added to your css in multiple places.
+NOTE:
+        Add your font imports to the base/typography.scss file.
 
-$primary-font-stack:    'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-$secondary-font-stack:  'Helvetica Neue', Helvetica, Arial, sans-serif;
+*/
+
+$font-stack-primary:    'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-stack-secondary:  'Helvetica Neue', Helvetica, Arial, sans-serif;
 
 
 // The font size set on the root html element.
-$html-font-size:        10px;
+$font-size-root:        10px;
 
-$body-font-size:        1.4rem;
+// regular font size
+$font-size-body:        1.4rem;
 
 
 // The font sizes for h1-h6.
-$h1-font-size: 3.2rem;
-$h2-font-size: 2.4rem;
-$h3-font-size: 1.9rem;
-$h4-font-size: 1.6rem;
-$h5-font-size: 1.3rem;
-$h6-font-size: 1.1rem;
+$font-size-h1:          3.2rem;
+$font-size-h2:          2.4rem;
+$font-size-h3:          1.9rem;
+$font-size-h4:          1.6rem;
+$font-size-h5:          1.3rem;
+$font-size-h6:          1.1rem;

@@ -1,11 +1,16 @@
-//  Ceaser cubic bezier’s
-//  @see: http://matthewlein.com/ceaser/
-//
-//  In order from soft to extreme (top to bottom)
+/* @formatter:off
 
-// NOTE:
-// Do not place any actual styles in here!
-// Otherwise you risk the chance of it being added to your css in multiple places.
+NOTE:
+    Do not place any actual styles in here!
+    Otherwise you risk the chance of it being added to your css in multiple places.
+
+
+    Ceaser cubic bezier’s
+    @see: http://matthewlein.com/ceaser/
+
+    In order from soft to extreme (top to bottom)
+
+*/
 
 
 // sine
@@ -19,7 +24,7 @@ $ease-out-quad    : cubic-bezier(0.250, 0.460, 0.450, 0.940);
 $ease-inout-quad  : cubic-bezier(0.455, 0.030, 0.515, 0.955);
 
 // cubic
-$ease-in--cubic    : cubic-bezier(0.550, 0.055, 0.675, 0.190);
+$ease-in--cubic   : cubic-bezier(0.550, 0.055, 0.675, 0.190);
 $ease-out-cubic   : cubic-bezier(0.215, 0.610, 0.355, 1.000);
 $ease-inout-cubic : cubic-bezier(0.645, 0.045, 0.355, 1.000);
 

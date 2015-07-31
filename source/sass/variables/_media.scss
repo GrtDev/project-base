@@ -1,6 +1,10 @@
-// @formatter:off
+/* @formatter:off
 
-/**
+NOTE:
+    Do not place any actual styles in here!
+    Otherwise you risk the chance of it being added to your css in multiple places.
+
+
     Place your media queries here.
 
     example usage:
@@ -10,14 +14,13 @@
 
         display: block;
 
-        @media $screen-small-only {
+        @media #{$screen-small-and-down} {
 
             display: none;
 
         }
 
     }
-
 */
 
 // breakpoints
