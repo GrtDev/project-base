@@ -6,7 +6,7 @@ var requireCachedModule         = require('./requireCachedModule');
 var glob                        = requireCachedModule('glob');
 
 var SVG_HELPER                   = 'svg';
-var SVG_CONTAINER_CLASS         = 'project-svg__container';
+var SVG_CONTAINER_CLASS         = '_project-svg__container';
 var thisFilePath                = __filename.replace(process.cwd(), '')
 
 var DISCLAIMER                  = 'WARNING:\n\nThis partial is auto-generated from gulp!\nSee the \'' + thisFilePath + '\' for details on its creation process.';

@@ -41,7 +41,12 @@ gulp.task( 'ejs', function () {
     var options = {
 
         source: config.source.getPath( 'markup', '!(' + config.ignorePrefix + ')*.ejs' ),
-        dest: config.dest.getPath( 'markup' )
+        dest: config.dest.getPath( 'markup' ),
+
+        htmlPageListPartial:{
+            dest: config.source.getPath( 'markupPartials', 'base/debug'),
+            fileName: 'pagesList.ejs'
+        }
 
     };
 
@@ -160,7 +165,7 @@ gulp.task( 'ejs', function () {
 
     } catch ( error ) {
 
-        log.error( error );
+        log.error( error, true );
 
     }
 

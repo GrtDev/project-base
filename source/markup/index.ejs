@@ -1,30 +1,23 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
+<%- include('_partials/base/doctype'); %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="lang" content="en-US">
-    <meta name="dir" content="ltr">
-    <meta name="author" content="Geert Fokke">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<html class="<%- global.html.classes %>" <%- global.html.attributes %>>
 
-    <title>Project Overview</title>
+<%- include('_partials/base/head'); %>
 
-    <link rel="stylesheet" href="/css/debug.css"/>
 
-</head>
+<body class="<%- global.body.classes %>" <%- global.body.attributes %>>
 
-<body>
 
-<div class="project-pages-list">
 
-    <div class="project-pages-list__disclaimer">automatically generated list</div>
+<div role="main" class="<%- global.main.classes %>" <%- global.main.attributes %>>
 
-	<div><%- data(context) %></div>
+
+	<%- include('_partials/base/debug/pagesList'); %>
 
 
 </div>
+
+
 
 </body>
 

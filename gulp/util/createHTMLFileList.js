@@ -6,7 +6,7 @@ var requireCachedModule         = require('./requireCachedModule');
 var glob                        = requireCachedModule('glob');
 
 var FILE_PROPERTY               = '_files';
-var FOLDER_CLASS_NAME           = 'pages-list__folder';
+var FOLDER_CLASS_NAME           = '_pages-list__folder';
 var thisFilePath                = __filename.replace(process.cwd(), '')
 
 

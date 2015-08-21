@@ -1,0 +1,19 @@
+{
+  "title": "Example title",
+  "html": {
+    "classes": "",
+    "attributes": {
+      "lang": "en-US",
+      "dir": "ltr"
+    }
+  },
+  "body": {
+    "classes": "",
+    "attributes": null
+  },
+  "main": {
+    "classes": "page-content",
+    "attributes": null
+  },
+  "GTM-id": "GTM-000000"
+}

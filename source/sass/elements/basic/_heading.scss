@@ -2,8 +2,9 @@
 @import "../../variables/typography";
 
 %heading-base {
-    color: $color-header;
+    font-family: $font-stack-header;
     font-weight: normal;
+    color: $color-header;
 }
 
 %regular-h1 {

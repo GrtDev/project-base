@@ -1,25 +1,14 @@
-var DEBUG_CLASS_NAME = 'handlebars-debug';
+var DEBUG_CLASS_NAME = '_debug-data-log';
 
 
 /**
- * EJS helper function
+ * helper function
  * Add the current context as an element to the page with syntax highlighting
  * @name: debug
  * @usage: {{debug}} or {{debug someValue}}
  * @see: http://thinkvitamin.com/code/handlebars-js-part-3-tips-and-tricks/
  */
 module.exports = function debug ( object ) {
-    //
-    //for ( var key in object ) {
-    //    //if( !value.hasOwnProperty( key ) ) continue;
-    //    var value = object[ key ];
-    //
-    //    console.log( 'key: ' + key );
-    //
-    //    //if(key === 'test') console.log('HERE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
-    //    //if(key === 'context') console.log('HERE <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<');
-    //}
-    //return;
 
     // if the value does not exist or is the helper itself, set it to the context
     if( !object || object.name && object.name === 'debug' ) object = this;
