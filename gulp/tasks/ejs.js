@@ -5,9 +5,11 @@ var config                  = require('../config');
 var log                     = require('../util/log');
 var mergeJSONData           = require('../util/mergeJSONData');
 var packageJSON             = require(process.cwd() + '/package.json');
+var createHTMLFileList      = require('../util/createHTMLFileList');
 
 var fileSystem              = require( 'fs' );
 var path                    = require('path');
+var mkdirp                  = requireCachedModule('mkdirp');
 var gulp                    = requireCachedModule('gulp');
 var ejs                     = requireCachedModule('gulp-ejs');
 var htmlmin                 = requireCachedModule('gulp-htmlmin');
@@ -17,6 +19,14 @@ var prettify                = requireCachedModule('gulp-jsbeautifier');
 
 var debugHelper             = require('../ejs/helpers/debug');
 var svgHelper               = require('../ejs/helpers/svg');
+
+// If you change these names, make sure they arent already in the reserved words list, AND update the name also in the createSVGFileList.js
+var dataHelperName          = 'data';
+var svgHelperName           = 'svg';
+var EJS_RESERVED_KEYWORDS   = [dataHelperName, svgHelperName, 'cache','filename','context','compileDebug','client','delimiter','debug','_with','rmWhitespace','project'];
+
+
+
 
 //@formatter:on
 
@@ -63,13 +73,10 @@ gulp.task( 'ejs', function () {
             // Data for the templates
             project: {
                 name: packageJSON.name,
-                version: packageJSON.version
-            },
-            svg: svgHelper,
-            data: debugHelper,
-            title: 'default title',
-            test: 'TEST',
-            process: 'PROCESS'
+                version: packageJSON.version,
+                debug: config.debug
+            }
+
         },
 
         settings: {
@@ -78,7 +85,13 @@ gulp.task( 'ejs', function () {
 
     };
 
-    options.minify  = config.minifyHTML;
+    options.ejs.context[ svgHelperName ] = svgHelper;
+    options.ejs.context[ dataHelperName ] = debugHelper;
+
+    options.minify = config.minifyHTML;
+
+
+    // @formatter:off
     options.htmlmin = {
 
         collapseWhitespace: true,
@@ -88,6 +101,7 @@ gulp.task( 'ejs', function () {
         keepClosingSlash:   true // can break SVG if not set to true!
 
     };
+    // @formatter:on
 
     // @see: https://www.npmjs.com/package/gulp-jsbeautifier
     options.pretty = config.prettyHTML;
@@ -107,10 +121,18 @@ gulp.task( 'ejs', function () {
     } );
 
 
-    var markupData = {};// mergeJSONData( options.ejs.contextData.root, options.ejs.contextData.source );
+    var markupData = mergeJSONData( options.ejs.contextData.root, options.ejs.contextData.source );
 
-    // merge data into the context object
+    // merge retrieved data into the context object
     for ( var key in markupData ) {
+
+        if( EJS_RESERVED_KEYWORDS.indexOf( key ) >= 0 ) {
+            log.error( {
+                sender: 'EJS',
+                message: 'A data object has been given a reserved keyword as a name, please update the file name : ' + key + '.\nReserved keywords: ' + EJS_RESERVED_KEYWORDS
+            } );
+            continue;
+        }
 
         if( options.ejs.context[ key ] !== undefined ) log.warn( {
             sender: 'EJS',
@@ -125,16 +147,37 @@ gulp.task( 'ejs', function () {
     options.ejs.context.context = options.ejs.context;
 
 
+
+
+    // Creates a HTML list of all the pages
+    var htmlFileTreeListPartial = createHTMLFileList( options.source, config.source.getPath( 'markup' ) );
+
+    try {
+
+        // Make sure the directory exists
+        mkdirp.sync( options.htmlPageListPartial.dest );
+        fileSystem.writeFileSync( options.htmlPageListPartial.dest + path.sep + options.htmlPageListPartial.fileName, htmlFileTreeListPartial );
+
+    } catch ( error ) {
+
+        log.error( error );
+
+    }
+
+
+
+
+
     return gulp.src( options.source )
 
-        .pipe( ejs(options.ejs.context, options.ejs.settings) )
+        .pipe( ejs( options.ejs.context, options.ejs.settings ) )
 
         .pipe( gulpif( options.pretty, prettify( options.prettyConfig ) ) )
         .pipe( gulpif( options.minify, htmlmin( options.htmlmin ) ) )
 
         .pipe( gulp.dest( options.dest ) );
 
-        // Browser Sync is reloaded from the watch task for HTML files to bypass a chrome bug.
-        // See the watch task for more info.
+    // Browser Sync is reloaded from the watch task for HTML files to bypass a chrome bug.
+    // See the watch task for more info.
 
 } );

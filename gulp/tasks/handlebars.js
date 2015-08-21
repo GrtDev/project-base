@@ -147,7 +147,7 @@ gulp.task( 'handlebars', function () {
 
         } catch ( error ) {
 
-            if( config.verbose ) log.debug( {
+            if( config.gulp.verbose ) log.debug( {
                 sender: 'handlebars',
                 message: 'No meta data file found for page: ' + fileName
             } );

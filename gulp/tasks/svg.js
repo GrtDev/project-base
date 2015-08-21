@@ -38,21 +38,21 @@ gulp.task( 'svg', function () {
         },
 
         svgListPartial:{
-            dest: config.source.getPath( 'markupPartials', 'debug'),
-            fileName: '_svgList.hbs'
+            dest: config.source.getPath( 'markupPartials', 'base/debug'),
+            fileName: 'svgList.ejs'
         }
 
     };
 
 
     // Creates a SVG list partial for all the svg files, used in the styleguide
-    var svgListPartial = createSVGFileList( options.source, config.source.getPath( 'svg' ), 'handlebars' );
+    var svgListPartial = createSVGFileList( options.source, config.source.getPath( 'svg' ) );
 
     try {
 
         // Make sure the directory exists
-        //mkdirp.sync( options.svgListPartial.dest );
-        //fileSystem.writeFileSync( options.svgListPartial.dest + path.sep + options.svgListPartial.fileName, svgListPartial );
+        mkdirp.sync( options.svgListPartial.dest );
+        fileSystem.writeFileSync( options.svgListPartial.dest + path.sep + options.svgListPartial.fileName, svgListPartial );
 
     } catch ( error ) {
 

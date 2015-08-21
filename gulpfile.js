@@ -11,7 +11,6 @@ var processArguments            = require('./gulp/util/processArguments');
 config.gulp.debug               = false;
 
 config.debug                    = true;
-config.verbose                  = false;
 config.notifyErrors             = true;
 
 config.minify                   = false;
@@ -20,12 +19,7 @@ config.cleanCSS                 = false; // removes unused CSS, requires 'gulp-u
 config.prettyHTML               = false;
 
 
-// Assign process arguments.
-// To use process arguments add '--[key] [value]' to the command.
-// If the value is omitted, the value true will be assigned to the key.
-if( processArguments.has( 'verbose' ) )      config.verbose     = processArguments.get( 'verbose' );
-if( processArguments.has( 'debug' ) )        config.debug       = processArguments.get( 'debug' );
-if( processArguments.has( 'gulp-debug' ) )   config.gulp.debug  = processArguments.get( 'gulp-debug' );
+
 
 
 // Register files that need to be copied from the bower components here.
@@ -145,19 +139,29 @@ function registerMainTasks(){
 
 
 
- //--------------     I N I T     --------------
+//--------------     I N I T     --------------
+
+// initialization code, no need to touch this.
 
 var startTime               = process.hrtime();
 var log                     = require('./gulp/util/log');
 var gulp;
 var runSequence;
 
+
+// Assign process arguments.
+// To use process arguments add '--[key] [value]' to the command.
+// If the value is omitted, the value true will be assigned to the key.
+if( processArguments.has( 'verbose' ) )      config.verbose     = processArguments.get( 'verbose' );
+if( processArguments.has( 'debug' ) )        config.gulp.debug  = processArguments.get( 'debug' );
+
+
 // Load / Index all the plugins for faster task loading.
-require('./gulp/util/loadPlugins')(prepare, true, global);
+require('./gulp/util/loadPlugins')(init, true, global);
 
-function prepare() {
+function init() {
 
-    require('./gulp/util/loadTasks')(); // load tasks
+    require('./gulp/util/loadTasks')(); // loads all tasks ( if lazy loading is turned off ).
 
     var requireCachedModule = require('./gulp/util/requireCachedModule');
     var gulpDecorator       = require('./gulp/util/gulpDecorator');
@@ -168,7 +172,6 @@ function prepare() {
     gulpDecorator.decorate(gulp); // Decorate gulp with extra functionality for better debugging and error handling.
 
     log.time( { sender: 'gulpfile', message: 'init - ', time: process.hrtime( startTime ) } );
-
 
     registerMainTasks();
 

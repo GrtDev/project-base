@@ -171,7 +171,7 @@ function decorateStart () {
             if( typeof arguments[ i ] !== 'string' ) {
 
                 // this is probably not an error but just a given callback ('function')
-                if( config.verbose ) log.warn( { sender: 'gulpDecorator', message: 'Can not load a function.' } );
+                if( config.gulp.verbose ) log.warn( { sender: 'gulpDecorator', message: 'Can not load a function.' } );
                 continue;
             }
 

@@ -5,10 +5,7 @@ var log                         = require('./log');
 var requireCachedModule         = require('./requireCachedModule');
 var glob                        = requireCachedModule('glob');
 
-var PARTIAL_TYPE_HANDLEBARS     = 'handlebars';
-var PARTIAL_TYPE_FILEINCLUDE    = 'fileinclude';
-
-var SVG_HANDLEBARS_HELPER       = 'svg';
+var SVG_HELPER                   = 'svg';
 var SVG_CONTAINER_CLASS         = 'project-svg__container';
 var thisFilePath                = __filename.replace(process.cwd(), '')
 
@@ -43,7 +40,7 @@ function getSVGList ( source, root ) {
 
     // make sure there is a trailing slash
     if( root.slice( -1 ) !== path.sep ) root += path.sep;
-    
+
     // Strip the root of the file path
     for ( var i = 0, leni = svgList.length; i < leni; i++ ) {
 
@@ -61,10 +58,9 @@ function getSVGList ( source, root ) {
  * @see gulp/tasks/handlebars.js
  * @name: createHTMLSVGList
  * @param svgCollection {Array}
- * @param partialType {string}
  * @returns {string}
  */
-function createHTMLSVGList ( svgCollection, partialType ) {
+function createHTMLSVGList ( svgCollection ) {
 
     if( !svgCollection ) return '';
 
@@ -88,15 +84,9 @@ function createHTMLSVGList ( svgCollection, partialType ) {
         html += indent + '<li title="' + svgFile + '">\n';
         html += indent + indent + '<div class="' + SVG_CONTAINER_CLASS + '">\n';
 
-        if( partialType === PARTIAL_TYPE_HANDLEBARS ) {
 
-            html += indent + indent + indent + '{{{ ' + SVG_HANDLEBARS_HELPER + ' \'' + svgFile + '\' }}}\n';
+        html += indent + indent + indent + '<%- ' + SVG_HELPER + '( \'' + svgFile + '\' ); %>';
 
-        } else if( partialType === PARTIAL_TYPE_FILEINCLUDE ) {
-
-            html += indent + indent + indent + '{{{ ' + SVG_HANDLEBARS_HELPER + ' \'' + svgFile + '\' }}}\n';
-
-        }
 
         html += indent + indent + '</div>\n';
         html += indent + indent + '<h4>' + svgFile + '</h4>\n';
@@ -114,23 +104,11 @@ function createHTMLSVGList ( svgCollection, partialType ) {
  * Creates an HTML list with all the file links.
  * @param source {string|Array} source config for the html compilation.
  * @param svgRootPath {string} the optimized svg root
- * @param type {string} type of the partials, valid values are: 'handlebars' and 'fileInclude'.
  */
-function createSVGFileList ( source, svgRootPath, partialType ) {
-
-    partialType = partialType.toLowerCase();
-
-    if( partialType !== PARTIAL_TYPE_FILEINCLUDE && partialType !== PARTIAL_TYPE_HANDLEBARS ) {
-
-        log.error( {
-            sender: 'createSVGFileList',
-            message: 'invalid partial type given! partialType: \'' + partialType + '\', valid values are: \'' + PARTIAL_TYPE_FILEINCLUDE + '\' and \'' + PARTIAL_TYPE_HANDLEBARS + '\''
-        } );
-        return;
-    }
+function createSVGFileList ( source, svgRootPath ) {
 
     var svgList = getSVGList( source, svgRootPath );
-    var svgListPartial = createHTMLSVGList( svgList, partialType );
+    var svgListPartial = createHTMLSVGList( svgList );
 
     return svgListPartial;
 

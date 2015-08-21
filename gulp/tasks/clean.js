@@ -31,7 +31,7 @@ gulp.task( 'clean', function ( callback ) {
         ],
 
         // log deleted files
-        verbose: config.verbose
+        verbose: config.gulp.verbose
 
     };
 

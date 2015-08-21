@@ -25,7 +25,6 @@ config.version          = packageJSON.version;
 
 config.ignorePrefix     = '_';      // ignore files and folders with this prefix.
 config.debug            = true;
-config.verbose          = false;
 config.notifyError      = true;
 config.throwError       = false;    // Actually throws an (native) error when one occurs, useful for bamboo.
 
@@ -36,9 +35,11 @@ config.prettyHTML       = false;
 config.minifyHTML       = false;    // requires 'gulp-htmlmin' installation.
 
 config.gulp             = {
-    debug: false,   // if true, gulp will output a lot of extra information for debugging purposes.
-    lazy: true      // will only load the tasks in the 'gulp/tasks' folder, just before they are used.
+    debug: false,       // if true, gulp will output a lot of extra information for debugging purposes.
+    lazy: true,         // will only load the tasks in the 'gulp/tasks' folder, just before they are used.
+    verbose: false      // Output extra information during the process.
 };
+
 
 /**
  *  Defines source folders layout.

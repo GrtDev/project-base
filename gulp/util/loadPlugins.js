@@ -23,7 +23,7 @@ function loadPlugins ( callback, lazy, opt_global ) {
 
     this.options = {
 
-        verbose: config.verbose,
+        verbose: config.gulp.verbose,
 
         load: {
             pattern: [ '*' ], // ALL your plugins belong to me!
