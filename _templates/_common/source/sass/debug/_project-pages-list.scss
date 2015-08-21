@@ -1,0 +1,93 @@
+div.project-pages-list
+{
+    position: relative;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px 50px !important;
+    font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    letter-spacing: .012em !important;
+
+    .project-pages-list__disclaimer
+    {
+        margin: 20px 0 !important;
+        color: #bbaea5;
+        font-size: .7em;
+    }
+
+    ul
+    {
+        margin: 0 0 0 40px !important;
+        padding: 0 !important;
+    }
+
+    > ul
+    {
+        display: inline-block;
+        text-align: left;
+        margin: 0 !important;
+        list-style: none !important;
+    }
+
+    a
+    {
+        position: relative;
+        padding: 4px 10px !important;
+        margin: 0 !important;
+        color: #EDE0CE;
+        text-decoration: none !important;
+        z-index: 2;
+        transition-property: color;
+
+        &, &:before
+        {
+            transition: 250ms cubic-bezier(0.250, 0.460, 0.450, 0.940); // ease out quad
+        }
+
+        &:before
+        {
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+            transition-property: background-color, left, right;
+            content: ' ';
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #2B2A27;
+            z-index: -1;
+        }
+
+        &:hover
+        {
+            color: #2B2A27;
+
+            &:before
+            {
+                background-color: #EDE0CE;
+                left: -3px;
+                right: -3px;
+            }
+        }
+    }
+
+    li
+    {
+        position: relative;
+        height: 30px;
+        margin: 0 0 7px 0 !important;
+        padding: 0 !important;
+        list-style: none !important;
+
+        &.pages-list__folder
+        {
+            margin: 0 0 7px 6px !important;
+            font-size: .8em;
+            line-height: 1.4em;
+            padding: 5px 0 0 0 !important;
+            height: auto;
+        }
+    }
+}

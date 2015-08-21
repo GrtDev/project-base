@@ -5,7 +5,7 @@
 
 //  Place your all your font imports here
 
-@import url(http://fonts.googleapis.com/css?family=Montserrat:400,700);
+@import url(http://fonts.googleapis.com/css?family=Titillium+Web);
 
 
 
@@ -14,15 +14,15 @@
 html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: $primary-font-stack;
-    font-size: $html-font-size;
+    font-family: $font-stack-primary;
+    font-size: $font-size-root;
     color: $color-text;
 }
 
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: $body-font-size;
+    font-size: $font-size-body;
 }
 
 strong, b

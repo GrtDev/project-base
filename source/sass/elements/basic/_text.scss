@@ -6,8 +6,14 @@
 
 */
 
+p {
+    margin-bottom: 20px;
+}
+
 [class^="text"],
 [class=" text"] {
+
+    // in this case text is a base tag, so it should not contain any styles
 
     &[class*="--date"] {
 
@@ -18,7 +24,6 @@
         font-weight: bold;
 
     }
-
 
     &[class*="--intro"] {
 

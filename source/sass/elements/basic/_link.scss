@@ -2,8 +2,8 @@
 @import "../../variables/colors";
 @import "../../variables/eases";
 
-$link-animation-time: 150ms;
-$link-animation-ease: $ease-out-quad;
+$link-animation-time: 200ms;
+$link-animation-ease: $ease-out-sine;
 
 // most basic link style
 a {
@@ -18,19 +18,18 @@ a {
 
     @extend a;
 
+    color: $color-primary;
     padding-bottom: 0px;
-    border-bottom: 2px solid transparent;
+    border-bottom: 2px solid rgba($color-primary,0 );
     transition-duration: $link-animation-time;
     transition-timing-function: $link-animation-ease;
-    transition-property: border-bottom-color, padding-bottom;
+    transition-property: border-bottom-color;
 
     &:hover {
-        padding-bottom: 1px;
-        border-bottom-color: $color-primary;
+        border-bottom-color: rgba($color-primary,1);
     }
 
     &:active {
-        padding-bottom: 1px;
         border-bottom-color: darken($color-primary, 10%);
     }
 
@@ -51,11 +50,11 @@ p a {
 
     &[class*="--underline"] {
 
-        padding-bottom: 2px;
+        padding-bottom: 1px;
         border-bottom: 2px solid $color-primary;
 
         &:hover, &:active {
-            padding-bottom: 2px;
+            padding-bottom: 1px;
         }
 
     }

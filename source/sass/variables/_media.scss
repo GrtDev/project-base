@@ -1,27 +1,27 @@
-/* @formatter:off
+// @formatter:off
+//
+//NOTE:
+//    Do not place any actual styles in here!
+//    Otherwise you risk the chance of it being added to your css in multiple places.
+//
+//
+//    Place your media queries here.
+//
+//    example usage:
+//    -------------
+//
+//    div {
+//
+//        display: block;
+//
+//        @media #{$screen-small-and-down} {
+//
+//            display: none;
+//
+//        }
+//
+//    }
 
-NOTE:
-    Do not place any actual styles in here!
-    Otherwise you risk the chance of it being added to your css in multiple places.
-
-
-    Place your media queries here.
-
-    example usage:
-    -------------
-
-    div {
-
-        display: block;
-
-        @media #{$screen-small-and-down} {
-
-            display: none;
-
-        }
-
-    }
-*/
 
 // breakpoints
 $viewport-small:            320px;

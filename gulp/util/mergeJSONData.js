@@ -42,14 +42,22 @@ function mergeJSONData ( root, source ) {
         for ( var j = 0, lenj = dataPath.length; j < lenj; j++ ) {
 
             var key = dataPath[ j ];
-            if( !key.length ) continue;
-            currentNode[ key ] = currentNode[ key ] || {};
 
-            currentNode = currentNode[ key ];
+            if( !key.length ) continue;
+
+            if( j === lenj - 1 ) {
+
+                // assign the data on the last node
+                currentNode[ key ] = fileData;
+
+            } else {
+
+                currentNode[ key ] = currentNode[ key ] || {};
+                currentNode = currentNode[ key ];
+
+            }
 
         }
-
-        currentNode[ key ] = fileData;
 
     }
 

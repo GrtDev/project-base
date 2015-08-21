@@ -1,21 +1,27 @@
 /**
- * @author Geert Fokke - geert@sector22.com
- * @www www.sector22.com
+ * @author  Geert Fokke
+ * @mail    geert@tamtam.nl
+ * @www     www.tamtam.nl
  */
 
-// Fix console.log for < IE10
-if(!global.console) global.console = {};
-if(!global.console.log) global.console.log = function () {};
-
+// @formatter:off
 
 // Import needed files here
-                          require('./src/cookie/cookieNotification');
-var ExampleClass        = require('./src/ExampleClass');
+                              require('./src/polyfill/polyfill' ).apply();
+var cookieNotification      = require('./src/cookie/cookieNotification');
+var ExampleClass            = require('./src/ExampleClass');
 
 
-console.log("main.js initiated!");
+// @formatter:on
+
+
+console.log( 'main.js initiated!' );
+
+cookieNotification.check();
 
 
 var example1 = new ExampleClass();
+var example2 = new ExampleClass( 'custom message' );
 
 example1.test();
+example2.test();

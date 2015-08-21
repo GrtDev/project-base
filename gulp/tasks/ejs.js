@@ -61,9 +61,13 @@ gulp.task( 'ejs', function () {
                                     // version of -%> line slurping for all scriptlet tags (it does not strip new lines of tags in the middle of a line).
 
             // Data for the templates
-            title: 'default title',
+            project: {
+                name: packageJSON.name,
+                version: packageJSON.version
+            },
             svg: svgHelper,
             data: debugHelper,
+            title: 'default title',
             test: 'TEST',
             process: 'PROCESS'
         },
@@ -102,7 +106,6 @@ gulp.task( 'ejs', function () {
         message: 'You should not use both prettifyHTML and minifyHTML at the same time in your config...'
     } );
 
-    // Assign a context property to itself so we can log the data if needed.
 
     var markupData = {};// mergeJSONData( options.ejs.contextData.root, options.ejs.contextData.source );
 
@@ -118,6 +121,7 @@ gulp.task( 'ejs', function () {
 
     }
 
+    // Assign a context property to itself so we can log the data if needed.
     options.ejs.context.context = options.ejs.context;
 
 

@@ -26,36 +26,20 @@ module.exports = function debug ( object ) {
 
     // exclude these properties from the 'file' property
     var filter = [ 'cache', 'filename', 'context', 'compileDebug', 'client', 'delimiter', 'debug', '_with', 'rmWhitespace' ];
-    var mergedContext = {};
+    var filteredContext = {};
 
 
     for ( var key in object ) {
 
         var value = object[ key ];
 
-        if( key === 'file' ) {
+        if(filter.indexOf(key) === -1) filteredContext[ key ] = value;
 
-            mergedContext[ 'file' ] = {};
-
-            // Filter contents of the 'file' property since its polluted by gulp/node
-            // But it is used by FrontMatter so we do include it.
-            for ( var fileKey in value[ 'file' ] ) {
-
-                if( filter.indexOf( fileKey ) >= 0 ) continue; // skip
-
-                mergedContext[ 'file' ][ fileKey ] = value[ 'file' ][ fileKey ];
-
-            }
-
-        } else {
-
-            mergedContext[ key ] = value;
-
-        }
     }
+    
+    console.log(filteredContext);
 
-    return '<div class="' + DEBUG_CLASS_NAME + '"><pre>' + syntaxHighlight( mergedContext ) + '</pre></div>';
-    ;
+    return '<div class="' + DEBUG_CLASS_NAME + '"><pre>' + syntaxHighlight( filteredContext ) + '</pre></div>';
 
 };
 
@@ -68,11 +52,8 @@ module.exports = function debug ( object ) {
 function syntaxHighlight ( json ) {
 
     for ( var key in json ) {
-        if(key === 'context') continue;
         var value = json[ key ];
-        if( typeof value === 'function' ) json[ key ] = 'function';
-        console.log( key + ': ' );
-
+        if( typeof value === 'function' ) json[ key ] = '[ Function ]';
     }
 
     if( typeof json !== 'string' )  json = JSON.stringify( json, undefined, 2 );
@@ -84,7 +65,8 @@ function syntaxHighlight ( json ) {
         var spanClass = 'number';
         if( /^"/.test( match ) ) {
 
-            if( /:$/.test( match ) )    spanClass = 'key';
+            if(/\[\sFunction\s\]/.test(match)) spanClass = 'function';
+            else if( /:$/.test( match ) )    spanClass = 'key';
             else                        spanClass = 'string';
 
         } else if( /true|false/.test( match ) )     spanClass = 'boolean';

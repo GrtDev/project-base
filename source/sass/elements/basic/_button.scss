@@ -6,8 +6,7 @@ $button-animation-ease: $ease-inout-quad;
 
 // ----------------- Button styling ---------------
 
-%button-base
-{
+%button-base {
     position: relative;
     display: inline-block;
     cursor: pointer;
@@ -22,16 +21,14 @@ $button-animation-ease: $ease-inout-quad;
     transition-timing-function: $button-animation-ease;
     transition-property: background-color;
 
-    &:hover
-    {
+    &:hover {
         background-color: darken($color-primary, 10%);
     }
 
 }
 
 [class^="button"],
-[class*=" button"]
-{
+[class*=" button"] {
     @extend %button-base;
 
     // -------------- START button sizes ---------------
@@ -41,59 +38,55 @@ $button-animation-ease: $ease-inout-quad;
     font-size: 1.6rem;
     line-height: 1.6rem;
 
-    &[class*="--small"]
-    {
-        padding: 15px 30px 11px 35px;
-        font-size: 1.5rem;
-        line-height: 1.5rem;
-    }
+    /*     &[class*="--small"]
+         {
+             padding: 15px 30px 11px 35px;
+             font-size: 1.5rem;
+             line-height: 1.5rem;
+         }
 
 
-    &[class*="--medium"]
-    {
-        padding: 15px 30px 11px 35px;
-        font-size: 2rem;
-        line-height: 2rem;
+         &[class*="--medium"]
+         {
+             padding: 15px 30px 11px 35px;
+             font-size: 2rem;
+             line-height: 2rem;
 
-    }
+         }
 
-    &[class*="--large"]
-    {
-        padding: 15px 30px 11px 35px;
-        font-size: 2.5rem;
-        line-height: 2.5rem;
+         &[class*="--large"]
+         {
+             padding: 15px 30px 11px 35px;
+             font-size: 2.5rem;
+             line-height: 2.5rem;
 
-    }
+         }
 
-    // -------------- END - button sizes ---------------
-
-
-
-    &[class*="--transparent"]
-    {
-        background-color: rgba(0,0,0,0);
-        border: 1px solid $color-white;
-
-        &:hover {
-            background-color: rgba(0,0,0,.2);
-        }
-    }
+         // -------------- END - button sizes ---------------
 
 
-    &[class*="--close"]
-    {
+
+         &[class*="--transparent"]
+         {
+             background-color: rgba(0,0,0,0);
+             border: 1px solid $color-white;
+
+             &:hover {
+                 background-color: rgba(0,0,0,.2);
+             }
+         }*/
+
+    &[class*="--close"] {
         position: relative;
-        padding-right: 55px;
-        font-size: 1.8rem;
-        white-space: nowrap;
+        //        padding-right: 55px;
+        //        font-size: 1.8rem;
+        //        white-space: nowrap;
 
-        // Pseudo: Cross element
-        &:after, &:before
-        {
+        &:after, &:before {
+            content: '';
             position: absolute;
             top: 18px;
             right: 30px;
-            content: ' ';
             height: 20px;
             width: 3px;
             background-color: $color-white;
@@ -103,19 +96,17 @@ $button-animation-ease: $ease-inout-quad;
             transition-property: height, top;
         }
 
-        &:after
-        {
+        &:after {
             transform: rotate(-45deg);
         }
 
-        &:hover
-        {
-            &:after, &:before
-            {
-                height: 26px;
-                top: 15px;
-            }
-        }
+                &:hover {
+                    &:after, &:before {
+                        height: 26px;
+                        top: 15px;
+                    }
+                }
+
     }
 
 }

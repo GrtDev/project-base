@@ -47,7 +47,7 @@ gulp.task('sass', function () {
         // @see: https://github.com/postcss/autoprefixer-core
         autoprefixer: {
             browsers: ['last 3 versions'],
-            remove: true // By default, Autoprefixer will not only add new prefixes, but also remove outdated.
+            remove: true // By default, Autoprefixer will not only add new prefixes, but also remove outdated ones.
         },
 
         // Clean CSS is responsible for minifying the CSS
@@ -95,7 +95,7 @@ gulp.task('sass', function () {
 
 
     return gulp.src( options.source )
-        //
+
         .pipe( gulpIf( options.sourcemaps, sourcemaps.init() ) )
         // sass
         .pipe( sass( options.sass ) )
@@ -103,10 +103,10 @@ gulp.task('sass', function () {
         .pipe( gulpIf( options.minify, sizeBefore ) )
         .pipe( gulpIf( options.removeUnused, uncss( options.uncss ) ) )
         .pipe( gulpIf( options.minify, gulpMinCss( options.cleanCSS ) ) )
-        //
+
         .pipe( autoprefixer( options.autoprefixer ) )
         .pipe( gulpIf( options.sourcemaps, sourcemaps.write( options.sourcemapsDest ) ) )
-        //
+
         .pipe( gulp.dest( options.dest ) )
         // exclude map files because somehow they break the browserSync flow/connection
         .pipe( gulpIgnore.exclude( '*.map' ) )

@@ -1,0 +1,28 @@
+// @formatter:off
+
+div.handlebars-debug
+{
+    width:      100%;
+    min-width:  600px;
+    max-height: 400px;
+    background-color: #2B2A27;
+    font-family: consolas, menlo, monaco, monospace;
+    font-size:  12px;
+    color:      #9a9286;
+    overflow:   scroll;
+    padding:    5px 10px;
+    z-index:    999;
+    text-align:left;
+
+
+    // json syntax highlighting
+
+    .function { color: #FF5D38; }
+    .string {   color: #26A6A6; }
+    .number {   color: #BCD42A; }
+    .boolean {  color: #FF5D38; }
+    .null {     color: #FF5D38; }
+    .key {      color: #EDE0CE; }
+
+    // @formatter:on
+}
