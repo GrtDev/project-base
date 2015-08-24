@@ -28,7 +28,7 @@
 
     &:after {
 
-        @include icon('arrow-down');
+//        @include icon('arrow-down');
 
         position: absolute;
         right: .8em;
@@ -42,7 +42,7 @@
 
     &:hover:after {
 
-        color: $color-brand-primary;
+        color: $color-primary;
 
     }
 

@@ -2,10 +2,11 @@
 <!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="60px" height="60px" viewBox="0 0 60 60" enable-background="new 0 0 60 60" xml:space="preserve">
+	 width="50px" height="50px" viewBox="0 0 50 50" enable-background="new 0 0 50 50" xml:space="preserve">
 <g>
-	<g id="add">
-		<path d="M57.75,33.964H33.964V57.75h-7.929V33.964H2.25v-7.929h23.786V2.25h7.929v23.786H57.75V33.964z"/>
+	<g id="favorite">
+		<path d="M25,48l-3.5-3.5C8.5,33,0,25.25,0,15.75C0,8,6,2,13.75,2C18,2,22.25,4,25,7.25C27.75,4,32,2,36.25,2C44,2,50,8,50,15.75
+			c0,9.5-8.5,17.25-21.5,28.75L25,48z"/>
 	</g>
 </g>
 </svg>

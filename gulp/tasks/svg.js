@@ -3,7 +3,7 @@
 var requireCachedModule     = require('../util/requireCachedModule');
 var config                  = require('../config');
 var log                     = require('../util/log');
-var createSVGFileList       = require('../util/createSVGFileList');
+var svgFileList             = require('../template/swig/partials/svgFileList');
 
 var fileSystem              = require('fs');
 var path                    = require('path');
@@ -39,14 +39,14 @@ gulp.task( 'svg', function () {
 
         svgListPartial:{
             dest: config.source.getPath( 'markupPartials', 'base/debug'),
-            fileName: 'svgList.ejs'
+            fileName: 'svgList.html'
         }
 
     };
 
 
     // Creates a SVG list partial for all the svg files, used in the styleguide
-    var svgListPartial = createSVGFileList( options.source, config.source.getPath( 'svg' ) );
+    var svgListPartial = svgFileList.create( options.source, config.source.getPath( 'svg' ) );
 
     try {
 

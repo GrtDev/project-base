@@ -27,7 +27,7 @@
 
 // ------------------ Base --------------------- //
 
-//@import "base/normalize";
+@import "base/normalize";
 @import "base/typography";
 @import "base/global";
 
@@ -36,27 +36,30 @@
 
 // basic
 @import "elements/basic/button";
-//@import "elements/basic/link";
-//@import "elements/basic/figure";
-//@import "elements/basic/list";
-//@import "elements/basic/quote";
-//@import "elements/basic/table";
-//@import "elements/basic/text";
+@import "elements/basic/link";
+@import "elements/basic/figure";
+@import "elements/basic/list";
+@import "elements/basic/quote";
+@import "elements/basic/table";
+@import "elements/basic/text";
+@import "elements/basic/svg";
+@import "elements/basic/heading";
 
 // form
-//@import "elements/form/form";
-//@import "elements/form/input";
+@import "elements/form/form";
+@import "elements/form/input";
+@import "elements/form/select";
 
 // other
-//@import "elements/background-image";
+@import "elements/background-image";
 
 
 // ------------- Modules / Components ----------- //
 
-//@import "modules/cookie";
-//@import "modules/rich-text";
+@import "modules/cookie";
+@import "modules/rich-text";
 
 
 // ------------------ Pages --------------------- //
 
-//@import "pages/home";
+@import "pages/home";

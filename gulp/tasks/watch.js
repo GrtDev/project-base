@@ -19,7 +19,8 @@ gulp.task('watch', ['watchify'], function (callback) {
 
     gulp.watch(config.source.getPath('images',  '**/*.{jpg|jpeg|gif|svg|png}'),     ['images']);
     gulp.watch(config.source.getPath('css',     '**/*.scss'),                       ['sass']);
-    gulp.watch(config.source.getPath('markup',  '**'),                              ['ejs']);
+    gulp.watch(config.source.getPath('markup',  '**'),                              ['swig']);
+    gulp.watch(config.source.getPath('data',    '**'),                              ['swig']);
     gulp.watch(config.dest.getPath('markup',    '**/*.html') ).on('change', onHTMLChange);
 
 });

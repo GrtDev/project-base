@@ -108,8 +108,7 @@ function decorateTask () {
                     } );
                 }
 
-                // only loading when task is run
-                // for ( var i = 0, leni = taskDependencies.length; i < leni; i++ ) lazyLoadTask( taskDependencies[ i ] );
+                for ( var i = 0, leni = taskDependencies.length; i < leni; i++ ) lazyLoadTask( taskDependencies[ i ] );
 
             }
 
@@ -237,15 +236,14 @@ function lazyLoadTask ( taskName ) {
         } catch ( error ) {
 
             _loadedTasks[ taskName ] = false;
-
+            
             // Some tasks won't be able to load if they are not in a separate file.
             // So if it fails it is not necessarily an error.
-            // EDIT: this should not be the case anymore, just leaving the comment here for testing purposes
-            // if( config.gulp.debug )
-            log.error( error );
-            log.error( {
+            if( config.gulp.debug )
+            log.warn( {
                 sender: 'gulpDecorator',
-                message: 'warning: Failed to lazy load task: ' + taskPath + '.js'
+                message: 'warning: Failed to lazy load task: ' + taskPath + '.js',
+                data: error
             } );
 
         }

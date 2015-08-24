@@ -18,7 +18,8 @@ var browserSync             = requireCachedModule('browser-sync');
 var prettify                = requireCachedModule('gulp-jsbeautifier');
 
 var swigSVGTag              = require('../template/swig/tags/svg');
-//var svgHelper               = require('./helpers/svg');
+var swigDebugTag            = require('../template/swig/tags/debug');
+var swigDebugFilter         = require('../template/swig/filters/debug');
 
 // If you change these names, make sure they aren't already in the reserved words list, AND update the name also in the createSVGFileList.js
 var dataHelperName          = 'debug';
@@ -62,6 +63,8 @@ gulp.task( 'swig', function () {
 
         setup: setupSwig,
         ext: '.html',
+        //load_json: true,
+        //json_path: config.source.getPath( 'markupData', 'pages/'),
 
         defaults: {
 
@@ -155,11 +158,12 @@ gulp.task( 'swig', function () {
 
     function setupSwig ( swig ) {
 
-        //swig.setDefaults({ cache: false });
-
         swig.setDefaults( { loader: swig.loaders.fs( config.source.getPath( 'markupPartials' ) ) } );
 
+        swig.setFilter('debug', swigDebugFilter);
+
         swig.setTag( 'svg', swigSVGTag.parse, swigSVGTag.compile, swigSVGTag.ends, swigSVGTag.blockLevel );
+        swig.setTag( 'debug', swigDebugTag.parse, swigDebugTag.compile, swigDebugTag.ends, swigDebugTag.blockLevel );
 
     }
 
