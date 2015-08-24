@@ -1,4 +1,7 @@
-<%- include('_partials/base/head', {rootClass:'debug'}); %>
+{% extends 'templates/debug.html' %}
+
+
+{% block content %}
 
 
 <article class="styleguide__styleblock">
@@ -68,14 +71,15 @@
 
     <div class="project-svg__collection">
 
-	    <%- include('_partials/base/debug/svgList'); %>
+	    {% include 'base/debug/svgList.html' %}
 
     </div>
 
 </article>
 
 
-<%- include('_partials/base/foot'); %>
+
+{% endblock %}
 
 
 

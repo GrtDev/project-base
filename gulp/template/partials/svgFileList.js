@@ -1,9 +1,10 @@
 // @formatter:off
 
 var path                        = require('path');
-var log                         = require('./log');
-var requireCachedModule         = require('./requireCachedModule');
+var log                         = require('./../../util/log');
+var requireCachedModule         = require('./../../util/requireCachedModule');
 var glob                        = requireCachedModule('glob');
+var svg                         = require('../utils/svg');
 
 var SVG_HELPER                   = 'svg';
 var SVG_CONTAINER_CLASS         = '_project-svg__container';
@@ -60,7 +61,7 @@ function getSVGList ( source, root ) {
  * @param svgCollection {Array}
  * @returns {string}
  */
-function createHTMLSVGList ( svgCollection ) {
+function createHTMLSVGList ( svgCollection, opt_svgHook ) {
 
     if( !svgCollection ) return '';
 
@@ -85,9 +86,17 @@ function createHTMLSVGList ( svgCollection ) {
         html += indent + indent + '<div class="' + SVG_CONTAINER_CLASS + '">\n';
 
 
-        html += indent + indent + indent + '<%- ' + SVG_HELPER + '( \'' + svgFile + '\' ); %>';
+        if( typeof opt_svgHook === 'function' ) {
+
+            html += indent + indent + indent + opt_svgHook( svgFile );
+
+        } else {
+
+            html += indent + indent + indent + svg( svgFile );
+        }
 
 
+        html += '\n';
         html += indent + indent + '</div>\n';
         html += indent + indent + '<h4>' + svgFile + '</h4>\n';
         html += indent + '</li>\n';
@@ -103,16 +112,18 @@ function createHTMLSVGList ( svgCollection ) {
 /**
  * Creates an HTML list with all the file links.
  * @param source {string|Array} source config for the html compilation.
- * @param svgRootPath {string} the optimized svg root
+ * @param root {string} the optimized svg root
+ * @param opt_svgHook {function=} hook for custom svg handling
  */
-function createSVGFileList ( source, svgRootPath ) {
+function createSVGFileList ( source, root, opt_svgHook ) {
 
-    var svgList = getSVGList( source, svgRootPath );
-    var svgListPartial = createHTMLSVGList( svgList );
+    var svgList = getSVGList( source, root );
+    var svgListPartial = createHTMLSVGList( svgList, opt_svgHook );
 
     return svgListPartial;
 
 }
 
+var svgFileList = { create: createSVGFileList };
 
-module.exports = createSVGFileList;
+module.exports = svgFileList;

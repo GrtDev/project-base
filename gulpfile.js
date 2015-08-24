@@ -75,7 +75,7 @@ function registerMainTasks(){
         runSequence(
             'clean',
             [ 'copyAssets', 'copyBower', 'images', 'svg' ],
-            [ 'ejs', 'browserify', 'sass' ],
+            [ 'swig', 'browserify', 'sass' ],
             callback
         );
 
@@ -127,7 +127,7 @@ function registerMainTasks(){
         runSequence(
             'clean',
             [ 'copyAssets', 'copyBower', 'images', 'svg' ],
-            [ 'ejs', 'browserify', 'sass' ],
+            [ 'swig', 'browserify', 'sass' ],
             callback
         );
 

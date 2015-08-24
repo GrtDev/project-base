@@ -1,8 +1,8 @@
 // @formatter:off
 
 var path                        = require('path');
-var log                         = require('./log');
-var requireCachedModule         = require('./requireCachedModule');
+var log                         = require('./../../util/log');
+var requireCachedModule         = require('./../../util/requireCachedModule');
 var glob                        = requireCachedModule('glob');
 
 var FILE_PROPERTY               = '_files';
@@ -151,13 +151,13 @@ function createHTMLFileTree ( fileTree ) {
 
 /**
  * Creates an HTML list with all the file links.
- * @param source {string|Array} source config for the html compilation.
- * @param markupRootPath {string} the markup destination
+ * @param source {string|Array} glob source config for the html compilation.
+ * @param root {string} the markup destination root
  */
-function createHTMLFileList ( source, markupRootPath ) {
+function createHTMLFileList ( source, root ) {
 
     var pagesList = getPagesList( source );
-    var pageTree = createFileTree( pagesList, markupRootPath, 'html' );
+    var pageTree = createFileTree( pagesList, root, 'html' );
     var htmlPageTree = createHTMLFileTree( pageTree );
 
     return htmlPageTree;
@@ -165,4 +165,7 @@ function createHTMLFileList ( source, markupRootPath ) {
 }
 
 
-module.exports = createHTMLFileList;
+var htmlFileList = { create: createHTMLFileList };
+
+
+module.exports = htmlFileList;

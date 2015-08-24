@@ -1,0 +1,23 @@
+<!-- name: {{ project.name }}, version: {{ project.version }} -->
+<!DOCTYPE html>
+<html lang="{{ global.meta.language }}" dir="{{ global.meta.direction }}">
+
+{% include "base/head.html" with {forceDebug:true} %}
+
+
+<body>
+
+
+
+
+    <!-- content will be injected in this block -->
+    {% block content %}{% endblock %}
+
+
+
+
+    <script src="/js/main.js" type="text/javascript"></script>
+
+</body>
+
+</html>

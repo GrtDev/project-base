@@ -19,12 +19,12 @@ var SVG_CLASS_PREFIX        = 'svg-';
 module.exports = function ( name ) {
 
     if( !name ) return '';
-
+    
     name = name.replace(/\.svg$/, '');
 
     var svg = '';
     var svgPath = SVG_FOLDER + '/' +  name + '.svg';
-
+    
     try {
 
         svg = fileSystem.readFileSync( svgPath );
