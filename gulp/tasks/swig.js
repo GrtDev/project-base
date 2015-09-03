@@ -44,7 +44,7 @@ gulp.task( 'swig', function () {
         dest: config.dest.getPath( 'markup' ),
 
         htmlPageListPartial: {
-            dest: config.source.getPath( 'markupPartials', 'base/debug' ),
+            dest: config.source.getPath( 'markupPartials', 'debug' ),
             fileName: 'pagesList.html'
         }
 

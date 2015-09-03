@@ -7,8 +7,6 @@ var debugFunction             = require( '../../utils/debug' );
 
 module.exports = function ( input ) {
 
-console.log( typeof input);
-
     return debugFunction( input );
 
 };

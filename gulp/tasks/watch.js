@@ -4,10 +4,13 @@ var requireCachedModule     = require('../util/requireCachedModule');
 var config                  = require('../config');
 
 var gulp                    = requireCachedModule('gulp');
+var watch                   = requireCachedModule('gulp-watch');
 var browserSync             = requireCachedModule('browser-sync');
 
 var reloadTimeout;
 var RELOAD_TIMEOUT_DELAY    = 200; // in milliseconds
+
+// @formatter:on
 
 
 /**
@@ -15,15 +18,31 @@ var RELOAD_TIMEOUT_DELAY    = 200; // in milliseconds
  * JavaScript is done via watchify instead for this task for optimized configuration.
  * @see https://www.npmjs.com/package/gulp-watch
  */
-gulp.task('watch', ['watchify'], function (callback) {
+gulp.task( 'watch', [ 'watchify' ], function ( callback ) {
 
-    gulp.watch(config.source.getPath('images',  '**/*.{jpg|jpeg|gif|svg|png}'),     ['images']);
-    gulp.watch(config.source.getPath('css',     '**/*.scss'),                       ['sass']);
-    gulp.watch(config.source.getPath('markup',  '**'),                              ['swig']);
-    gulp.watch(config.source.getPath('data',    '**'),                              ['swig']);
-    gulp.watch(config.dest.getPath('markup',    '**/*.html') ).on('change', onHTMLChange);
+    watch( config.source.getPath( 'images', '**/*.{jpg|jpeg|gif|svg|png}' ),
+        function ( events, done ) { gulp.start( 'images', done ); } );
 
-});
+    watch( config.source.getPath( 'css', '**/*.scss' ),
+        function ( events, done ) { gulp.start( 'sass' ); } );
+
+
+    watch( [ config.source.getPath( 'markup', '*' ), config.source.getPath( 'markupPartials', '!(debug)**' ) ],
+        function ( events, done ) { gulp.start( 'swig' ); } );
+
+    watch( config.source.getPath( 'data', '**' ),
+        function ( events, done ) { gulp.start( 'swig', done ); } );
+
+    watch( config.dest.getPath( 'markup', '**/*.html' ), onHTMLChange );
+
+
+    //gulp.watch(config.source.getPath('images',  '**/*.{jpg|jpeg|gif|svg|png}'),     ['images']);
+    //gulp.watch(config.source.getPath('css',     '**/*.scss'),                       ['sass']);
+    //gulp.watch(config.source.getPath('markup',  '**'),                              ['swig']);
+    //gulp.watch(config.source.getPath('data',    '**'),                              ['swig']);
+    //gulp.watch(config.dest.getPath('markup',    '**/*.html') ).on('change', onHTMLChange);
+
+} );
 
 // @formatter:on
 
@@ -31,10 +50,10 @@ gulp.task('watch', ['watchify'], function (callback) {
  *  A separate function to refresh the browser. This is to bypass a known bug in chrome.
  *  see: https://github.com/BrowserSync/browser-sync/issues/155
  */
-function onHTMLChange() {
+function onHTMLChange ( events, done ) {
 
-    if(reloadTimeout) clearTimeout(reloadTimeout);
-    reloadTimeout = setTimeout(browserSync.reload, RELOAD_TIMEOUT_DELAY);
+    if( reloadTimeout ) clearTimeout( reloadTimeout );
+    reloadTimeout = setTimeout( browserSync.reload, RELOAD_TIMEOUT_DELAY );
 
 }
 
