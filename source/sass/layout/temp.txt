@@ -1,3 +1,0 @@
-Just a file to keep the folder in git.
-
-Safe to delete.

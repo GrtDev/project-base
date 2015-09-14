@@ -39,7 +39,7 @@ gulp.task( 'svg', function () {
 
         svgListPartial:{
             dest: config.source.getPath( 'markupPartials', 'debug'),
-            fileName: 'svgList.html'
+            fileName: 'svgList.swig'
         }
 
     };

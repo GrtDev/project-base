@@ -2,73 +2,76 @@
 @import "../../variables/colors";
 @import "../../variables/eases";
 
-.select__wrap {
 
-    @include vertical-center-dib( 'select' );
+%select-reset {
+
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+
+    border: none;
+    background-color: $color-white;
+    outline: none;
+    border-radius: 0;
+    border: 1px solid $color-grey;
+
+    &::-ms-expand {
+        display: none;
+    }
+
+    font-size: inherit;
+    font-family: $font-stack-body;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+
+}
+
+
+[class^="select"],
+[class*=" select"] {
 
     display: inline-block;
     position: relative;
-    font-size: 2rem;
-    background-color: #fff;
+    vertical-align: middle;
+
     overflow: hidden;
-    border: 1px solid rgba(64, 58, 58, .43);
-    border-radius: 9px;
+//    border: 1px solid rgba(64, 58, 58, .43);
+    background-color: $color-white;
 
-    @media #{$screen-small-and-down}{
 
-        font-size: 15px;
 
-    }
-
-    &, &:before {
-
-        min-height: 42px;
-
-    }
-
-    &:after {
-
-//        @include icon('arrow-down');
+    svg {
 
         position: absolute;
-        right: .8em;
-        font-size: 1em;
-        top: 53%;
+        right: .7em;
+        top: 50%;
         transform: translateY(-50%);
-        color: $color-primary;
-
-        transition: color 200ms ease;
-    }
-
-    &:hover:after {
-
-        color: $color-primary;
 
     }
 
     select {
 
+        @extend %select-reset;
+
+        background-color: transparent; // transparent so we can show svg images underneath the select without it affecting the click area
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+
         z-index: 2;
         cursor: pointer;
-        position: relative;
+        padding: .97em 2.5em .97em 1em;
 
-        appearance: none;
-        -moz-appearance: none;
-        -webkit-appearance: none;
 
-        font-size: inherit;
-        font-family: $font-stack-header;
-        text-overflow: ellipsis;
-        text-transform: capitalize;
+        transition: border-color $form-animation-time $form-animation-ease;
 
-        border: 0;
-        background-color: transparent;
-        padding: 6px 2.4em 6px 1em;
-        outline: none;
+        &:focus {
 
-        &::-ms-expand {
-            display: none;
+            border-color: $form-focus-color;
+
         }
+
 
     }
 

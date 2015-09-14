@@ -10,25 +10,38 @@ var DEBUG_CLASS_NAME = '_debug-data-log';
  */
 module.exports = function debug ( object ) {
 
-    // if the value does not exist or is the helper itself, set it to the context
-    if( !object || object.name && object.name === 'debug' ) object = this;
-
     // exclude these properties from the 'file' property
-    var filter = [ 'cache', 'filename', 'context', 'compileDebug', 'client', 'delimiter', 'debug', '_with', 'rmWhitespace' ];
-    var filteredContext = {};
+    //var filter = [ 'cache', 'filename', 'context', 'compileDebug', 'client', 'delimiter', 'debug', '_with', 'rmWhitespace' ];
+    //var filteredContext = {};
+    //
+    //for ( var key in object ) {
+    //
+    //    var value = object[ key ];
+    //
+    //    if(filter.indexOf(key) === -1) filteredContext[ key ] = value;
+    //
+    //}
+    //
+    //console.log(filteredContext);
+    //object = filteredContext;
 
+    var html;
 
-    for ( var key in object ) {
-
-        var value = object[ key ];
-
-        if(filter.indexOf(key) === -1) filteredContext[ key ] = value;
-
+    if( typeof object === 'undefined' || object == null ) {
+        html = '<span class="null">' + object + '</span>';
+    } else if( typeof object === 'string' ) {
+        html = '<span class="string">\"' + object + '\"</span>';
+    } else if( typeof object === 'number' ) {
+        html = '<span class="number">' + object + '</span>';
+    } else if( typeof object === 'boolean' ) {
+        html = '<span class="boolean">' + object + '</span>';
+    } else if( typeof object === 'function' ) {
+        html = '<span class="function">' + object + '</span>';
+    } else {
+        html = syntaxHighlight( object );
     }
-    
-    console.log(filteredContext);
 
-    return '<div class="' + DEBUG_CLASS_NAME + '"><pre>' + syntaxHighlight( filteredContext ) + '</pre></div>';
+    return '<div class="' + DEBUG_CLASS_NAME + '"><pre>' + html + '</pre></div>';
 
 };
 
@@ -39,6 +52,7 @@ module.exports = function debug ( object ) {
  * @returns {string}
  */
 function syntaxHighlight ( json ) {
+
 
     for ( var key in json ) {
         var value = json[ key ];
@@ -54,7 +68,7 @@ function syntaxHighlight ( json ) {
         var spanClass = 'number';
         if( /^"/.test( match ) ) {
 
-            if(/\[\sFunction\s\]/.test(match)) spanClass = 'function';
+            if( /\[\sFunction\s\]/.test( match ) ) spanClass = 'function';
             else if( /:$/.test( match ) )    spanClass = 'key';
             else                        spanClass = 'string';
 

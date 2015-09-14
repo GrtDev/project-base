@@ -1,32 +1,72 @@
 @import "../../variables/colors";
 @import "../../variables/eases";
 
-$form-placeholder-color: rgba(0, 0, 0, 0.26);
+
+$form-placeholder-color:    #939393;
+$form-animation-time:       200ms;
+$form-animation-ease:       $ease-inout-quad;
+$form-focus-color:          $color-blue;
 
 
 
 input[type="text"] {
 
-    color: $color-text;
+    @include placeholder($form-placeholder-color);
+
+    padding: .85em 1em;
+    background-color: $color-white;
+    font-size: inherit;
+    border: 1px solid transparent;
+
+    transition: border-color $form-animation-time $form-animation-ease;
 
     &:focus {
 
+        border-color: $form-focus-color;
+
     }
 
-    ::-webkit-input-placeholder
-    {
-        color: $form-placeholder-color;
+
+}
+
+
+[class^="input"],
+[class*=" input"] {
+
+    display: inline-block;
+    position: relative;
+
+
+    input {
+        display: block;
+        width: 100%;
+        height: 100%;
     }
-    :-moz-placeholder // Firefox 18-
-    {
-        color: $form-placeholder-color;
+
+
+    &[class*="--search"] {
+
+        input {
+            padding-right: 2em;
+        }
+
+        svg {
+            position: absolute;
+            right: .8em;
+            height: 1em;
+            width: 1em;
+            top: 50%;
+            transform: translateY(-50%);
+
+            path {
+                fill: $form-placeholder-color;
+            }
+        }
+
     }
-    ::-moz-placeholder // Firefox 19+
-    {
-        color: $form-placeholder-color;
+
+    &[class*="--large"]{
+        font-size: 1.8rem;
     }
-    :-ms-input-placeholder
-    {
-        color: $form-placeholder-color;
-    }
+
 }

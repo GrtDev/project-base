@@ -1,0 +1,40 @@
+@import "../variables/media";
+
+
+/* @formatter:off
+
+    A collection of some helper classes for tweaking the layout of the elements.
+
+
+    .margin-top-xs      - .margin-top-lg
+    .margin-right-xs    - .margin-right-lg
+    .margin-bottom-xs   - .margin-bottom-lg
+    .margin-left-xs     - .margin-left-lg
+
+*/
+
+$visibility-breakpoints: (
+                     'lg': $screen-extra-large-only,
+                     'md': $screen-medium-only,
+                     'sm': $screen-small-only,
+                     'xs': $screen-small-and-down
+                  );
+
+
+@each $visibility-modifier, $visibility-media in $visibility-breakpoints {
+
+    .visible-#{$visibility-modifier}-block,
+    .visible-#{$visibility-modifier}-inline-block,
+    .visible-#{$visibility-modifier}-inline             {      display: none !important; }
+
+
+    @media #{$visibility-media} {
+
+        .visible-#{$visibility-modifier}-block          {      display: block           !important; }
+        .visible-#{$visibility-modifier}-inline-block   {      display: inline-block    !important; }
+        .visible-#{$visibility-modifier}-inline         {      display: inline          !important; }
+        .hidden-#{$visibility-modifier}                 {      display: none            !important; }
+
+    }
+
+}

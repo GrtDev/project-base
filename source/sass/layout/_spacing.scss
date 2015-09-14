@@ -1,0 +1,27 @@
+/* @formatter:off
+
+    A collection of some helper classes for tweaking the layout of the elements.
+
+
+    .margin-top-xs      - .margin-top-lg
+    .margin-right-xs    - .margin-right-lg
+    .margin-bottom-xs   - .margin-bottom-lg
+    .margin-left-xs     - .margin-left-lg
+
+*/
+
+$spacing-margins: (
+                     'lg': 100px,
+                     'md': 50px,
+                     'sm': 20px,
+                     'xs': 10px
+                  );
+
+@each $spacing-modifier, $spacing-margin in $spacing-margins {
+
+    .margin-top-#{$spacing-modifier}    {   margin-top: $spacing-margin     !important; }
+    .margin-right-#{$spacing-modifier}  {   margin-right: $spacing-margin   !important; }
+    .margin-bottom-#{$spacing-modifier} {   margin-bottom: $spacing-margin  !important; }
+    .margin-left-#{$spacing-modifier}   {   margin-left: $spacing-margin    !important; }
+
+}

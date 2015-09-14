@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="9px" height="19px" viewBox="0 0 9 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.1 (12002) - http://www.bohemiancoding.com/sketch -->
+    <title>Fill 19 Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Afvalscheidingswijzer" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="ASW---4---Toon-info" sketch:type="MSArtboardGroup" transform="translate(-829.000000, -994.000000)" fill="#80AC16">
+            <path d="M842.211873,1006.52058 L834.013979,999.686331 C833.864314,999.562666 833.681983,999.5 833.499652,999.5 C833.317321,999.5 833.13499,999.562666 832.986659,999.686331 L824.787431,1006.52058 C824.447769,1006.80324 824.402103,1007.3099 824.686099,1007.64823 C824.969762,1007.98956 825.473755,1008.03489 825.813418,1007.75123 L833.499652,1001.34364 L841.184553,1007.75123 C841.525548,1008.03389 842.029542,1007.98822 842.313205,1007.64823 C842.597201,1007.3099 842.551535,1006.80324 842.211873,1006.52058 L842.211873,1006.52058 Z" id="Fill-19-Copy" sketch:type="MSShapeGroup" transform="translate(833.499652, 1003.718697) rotate(90.000000) translate(-833.499652, -1003.718697) "></path>
+        </g>
+    </g>
+</svg>

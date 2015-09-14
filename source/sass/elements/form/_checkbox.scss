@@ -1,0 +1,205 @@
+@import "../../variables/typography";
+@import "../../variables/colors";
+@import "../../variables/eases";
+
+
+$checkbox-animation-time: 250ms;
+$checkbox-animation-ease: $ease-inout-quad;
+
+%checkbox-reset {
+
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+
+    border: none;
+    background-color: transparent;
+    outline: none;
+
+    font-size: inherit;
+    font-family: $font-stack-body;
+    text-overflow: ellipsis;
+    text-transform: capitalize;
+
+}
+
+
+/*
+    Custom checkbox style. Wrap the checkbox you wish to style inside a container with this class.
+    @see: http://stackoverflow.com/questions/4148499/how-to-style-checkbox-using-css
+    e.g.:
+
+    <span class="checkbox">
+        <input id="checkbox-1" type="checkbox"/>
+        <span><svg>..check..</svg></span>
+    </span>
+
+*/
+.checkbox {
+
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    cursor: pointer;
+    overflow: hidden;
+
+    input[type="checkbox"] {
+
+        @extend %checkbox-reset;
+
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        opacity: 0;
+        cursor: pointer;
+
+        &:focus {
+            & + span {
+                border-color: $color-blue;
+            }
+        }
+
+    }
+
+    > span {
+
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        line-height: 3.6rem;
+        z-index: 1; // force inner content to be above the :before
+        border: 1px solid $color-grey;
+        transition: border-color $checkbox-animation-time $checkbox-animation-ease;
+    }
+
+    svg {
+
+        position: absolute;
+
+    }
+
+    //-------------------- modifiers ------------------------
+
+}
+
+
+[class^="checkbox--label"],
+[class*=" checkbox--label"]{
+
+    @extend .checkbox;
+
+    font-size: 1.8rem;
+    width: 2.22em;
+    height: 2.22em;
+    overflow: visible;
+    cursor: pointer;
+
+    .checkbox__text {
+
+        border: 3px solid $color-grey;
+        border-radius: 50%;
+
+        &:before {
+            display: inline-block;
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: $color-grey;
+            border-radius: 50%;
+            overflow: hidden;
+            transform: scale(0.1);
+            opacity: 0;
+            z-index: -1;
+            transition: $checkbox-animation-time $checkbox-animation-ease;
+            transition-property: transform, opacity;
+        }
+
+    }
+
+    // the check icon
+   .checkbox__check {
+        z-index: 2;
+        top: -.5em;
+        right: -.5em;
+
+        position: absolute;
+        display: block;
+        background-color: $color-grey;
+        width: 1.11em;
+        height: 1.11em;
+        border-radius: 50%;
+        overflow: hidden;
+        opacity: 0;
+        transform: scale(2);
+        border: 0;
+
+        transition: $checkbox-animation-time $checkbox-animation-ease;
+        transition-property: transform, opacity;
+
+        svg {
+            height: 50%;
+            width: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+        }
+
+    }
+
+    input[type="checkbox"]:focus {
+
+        & + span {
+
+            border-color: $color-blue;
+
+        }
+
+    }
+
+    input[type="checkbox"]:checked {
+
+        // NOTE: double adjacent selectors will be buggy in (mobile) safari
+        & + span {
+
+            color: $color-white;
+            font-weight: 600;
+
+            &:before {
+
+                opacity: 1;
+                transform: scale(1.01);
+            }
+
+            .checkbox__check {
+
+                opacity: 1;
+                transform: scale(1);
+
+            }
+        }
+
+
+    }
+
+    // @formatter:off
+    @each $label, $label-color in $environment-labels {
+
+        &[class*="--#{$label}"] {
+
+            .checkbox__text {          border-color:       $label-color };
+            .checkbox__text:before {   background-color:   $label-color; }
+            .checkbox__check {         background-color:   $label-color; }
+
+        }
+
+    }
+
+
+}

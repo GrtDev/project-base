@@ -5,11 +5,19 @@
 html {
 
     background-color: $color-background;
+    min-height: 100%;
 
 }
 
 html, body {
 
-    min-width: $viewport-small;
+    min-width: 320px;
+    min-height: 100%;
 
+}
+
+html.noscroll {
+    position: fixed;
+    overflow-y: scroll;
+    width: 100%;
 }

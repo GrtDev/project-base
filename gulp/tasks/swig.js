@@ -4,7 +4,7 @@ var requireCachedModule     = require('../util/requireCachedModule');
 var config                  = require('../config');
 var log                     = require('../util/log');
 var mergeJSONData           = require('../util/mergeJSONData');
-var packageJSON             = require(process.cwd() + '/package.json');
+var packageJSON             = require('../../package.json');
 var htmlFileList            = require('../template/partials/htmlFileList');
 
 var fileSystem              = require( 'fs' );
@@ -40,12 +40,12 @@ gulp.task( 'swig', function () {
 
     var options = {
 
-        source: config.source.getPath( 'markup', '!(' + config.ignorePrefix + ')*.html' ),
+        source: config.source.getPath( 'markup', '!(' + config.ignorePrefix + ')*.swig' ),
         dest: config.dest.getPath( 'markup' ),
 
         htmlPageListPartial: {
             dest: config.source.getPath( 'markupPartials', 'debug' ),
-            fileName: 'pagesList.html'
+            fileName: 'pagesList.swig'
         }
 
     };
@@ -53,7 +53,7 @@ gulp.task( 'swig', function () {
     // data that will be loaded and added to the context. Root path is needed to define under what property name the data will be available in.
     options.jsonData = {
 
-        source: config.source.getPath( 'markupData', '**/*.json' ),
+        source: config.source.getPath( 'markupData', '!(pages)**.json' ),
         root: config.source.getPath( 'markupData' )
 
     };
@@ -63,8 +63,8 @@ gulp.task( 'swig', function () {
 
         setup: setupSwig,
         ext: '.html',
-        //load_json: true,
-        //json_path: config.source.getPath( 'markupData', 'pages/'),
+        load_json: true,
+        json_path: config.source.getPath( 'markupData', 'pages/'),
 
         defaults: {
 
@@ -95,9 +95,6 @@ gulp.task( 'swig', function () {
         }
 
     };
-
-    //options.swig.defaults.locals[ svgHelperName ] = svgHelper;
-    //options.swig.defaults.locals[ dataHelperName ] = debugHelper;
 
 
     options.minify = config.minifyHTML;

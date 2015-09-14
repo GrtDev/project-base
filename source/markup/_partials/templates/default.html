@@ -4,6 +4,15 @@
 
 {% include "base/head.html" %}
 
+<!-- You can use open graph tags to customize link previews.
+  Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
+<meta property="og:url"           content="http://www.your-domain.com/your-page.html" />
+<meta property="og:type"          content="website" />
+<meta property="og:title"         content="{{ global.title }}" />
+<meta property="og:description"   content="{{ project.description }}" />
+<meta property="og:image"         content="http://www.your-domain.com/path/image.jpg" />
+
+
 
 <body>
     <!-- Google Tag Manager  @formatter:off -->
@@ -12,6 +21,14 @@
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer', '{{ global['GTM-id'] }}');</script>
     <!-- End Google Tag Manager  @formatter:on -->
+
+
+    {% if project.debug %}
+    <!-- set DEBUG to true when the project is compiled in debug mode. -->
+    <script>
+        var DEBUG = true;
+    </script>
+    {% endif %}
 
 
 
