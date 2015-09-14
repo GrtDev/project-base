@@ -24,9 +24,6 @@ gulp.task( 'svg', function () {
 
     var options = {
 
-        source: config.source.getPath( 'svg', '**/*.svg' ),
-        dest: config.dest.getPath( 'svg' ),
-
         config: {
             js2svg: {
                 pretty: false // pretty printed svg
@@ -60,10 +57,10 @@ gulp.task( 'svg', function () {
 
     }
 
-    return gulp.src( options.source )
+    return gulp.src( config.source.getFiles( 'svg' ) )
 
-        .pipe( changed( options.dest ) )        // Ignore unchanged files
+        .pipe( changed( config.dest.getPath( 'svg' ) ) )        // Ignore unchanged files
         .pipe( svgmin( options.config ) )       // Optimize
-        .pipe( gulp.dest( options.dest ) )      // Export
+        .pipe( gulp.dest( config.dest.getPath( 'svg' ) ) )      // Export
 
 } );

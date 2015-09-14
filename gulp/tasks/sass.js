@@ -28,13 +28,6 @@ gulp.task('sass', function () {
     
     var options = {
 
-        source: config.source.getPath('css', '!(' + config.ignorePrefix + ')*.scss'),
-        dest: config.dest.getPath('css'),
-
-        sourcemaps: config.sourcemaps,
-        sourcemapsDest: config.dest.getPath('sourcemaps'),
-
-
         sass: {
             // indentedSyntax: true,     // Enable .sass syntax!
             // imagePath: 'images'       // Used by the image-url helper
@@ -70,22 +63,12 @@ gulp.task('sass', function () {
             html: [config.dest.getPath('markup', '*.html')],
             // Provide a list of selectors that should not be removed by UnCSS. For example, styles added by user interaction with the page (hover, click),
             // Both literal names and regex patterns are recognized.
-            ignore: [ /\.modal.*/, /\.panel.*/, /\.popup.*/ ]
+            ignore: [ /\.modal.*/, /\.panel.*/, /\.popup.*/, /.*\.is-.*/ ]
             //timeout: 0 //  Specify how long to wait for the JS to be loaded.
         }
 
     };
 
-     // convert to a relative path used by sourcemaps
-    options.sourcemapsDest = path.relative(options.dest, options.sourcemapsDest);
-
-    // Push RegExp ignore matches here to prevent Array syntax problems
-    options.uncss.ignore.push(/.*\.active/);        // .active
-    options.uncss.ignore.push(/.*\.selected/);      // .selected
-    options.uncss.ignore.push(/.*\.open[ed]?/);     // .open OR .opened
-    options.uncss.ignore.push(/.*\.close[d]?/);     // .close OR .closed
-    options.uncss.ignore.push(/.*\.show/);          // .show
-    options.uncss.ignore.push(/.*\.hid[e|den]?/);   // .hide OR .hidden
 
     //@formatter:on
 
@@ -94,9 +77,9 @@ gulp.task('sass', function () {
     var sizeAfter = gulpSize( { showFiles: true } );
 
 
-    return gulp.src( options.source )
+    return gulp.src( config.source.getFiles('css') )
 
-        .pipe( gulpIf( options.sourcemaps, sourcemaps.init() ) )
+        .pipe( gulpIf( config.sourcemaps, sourcemaps.init() ) )
         // sass
         .pipe( sass( options.sass ) )
         // start optimizing...
@@ -105,9 +88,11 @@ gulp.task('sass', function () {
         .pipe( gulpIf( options.minify, gulpMinCss( options.cleanCSS ) ) )
 
         .pipe( autoprefixer( options.autoprefixer ) )
-        .pipe( gulpIf( options.sourcemaps, sourcemaps.write( options.sourcemapsDest ) ) )
 
-        .pipe( gulp.dest( options.dest ) )
+        // sourcemaps need a relative path from the output folder
+        .pipe( gulpIf( config.sourcemaps, sourcemaps.write( path.relative( config.dest.getPath( 'css' ), config.dest.getPath( 'sourcemaps' ) ) ) ) )
+
+        .pipe( gulp.dest( config.dest.getPath('css') ) )
         // exclude map files because somehow they break the browserSync flow/connection
         .pipe( gulpIgnore.exclude( '*.map' ) )
         .pipe( gulpIf( options.minify, sizeAfter ) )

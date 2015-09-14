@@ -20,12 +20,11 @@ var RELOAD_TIMEOUT_DELAY    = 200; // in milliseconds
  */
 gulp.task( 'watch', [ 'watchify' ], function ( callback ) {
 
-    watch( config.source.getPath( 'images', '**/*.{jpg|jpeg|gif|svg|png}' ),
+    watch( config.source.getFiles( 'images' ),
         function ( events, done ) { gulp.start( 'images', done ); } );
 
     watch( config.source.getPath( 'css', '**/*.scss' ),
         function ( events, done ) { gulp.start( 'sass' ); } );
-
 
     watch( [ config.source.getPath( 'markup', '*' ), config.source.getPath( 'markupPartials', '!(debug)**' ) ],
         function ( events, done ) { gulp.start( 'swig' ); } );
@@ -34,13 +33,6 @@ gulp.task( 'watch', [ 'watchify' ], function ( callback ) {
         function ( events, done ) { gulp.start( 'swig', done ); } );
 
     watch( config.dest.getPath( 'markup', '**/*.html' ), onHTMLChange );
-
-
-    //gulp.watch(config.source.getPath('images',  '**/*.{jpg|jpeg|gif|svg|png}'),     ['images']);
-    //gulp.watch(config.source.getPath('css',     '**/*.scss'),                       ['sass']);
-    //gulp.watch(config.source.getPath('markup',  '**'),                              ['swig']);
-    //gulp.watch(config.source.getPath('data',    '**'),                              ['swig']);
-    //gulp.watch(config.dest.getPath('markup',    '**/*.html') ).on('change', onHTMLChange);
 
 } );
 

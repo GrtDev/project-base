@@ -1,4 +1,4 @@
-{% extends 'templates/debug.html' %}
+{% extends 'templates/debug.swig' %}
 
 
 {% block content %}
@@ -30,13 +30,15 @@
         </div>
 
         <div>
-            <p><a href="#" >Regular link</a></p>
+            <p><a href="#">Regular link</a></p>
             <p><a href="#" class="link--underline">Underline link</a></p>
             <br/>
             <p>Donec id elit non mi <a href="#">regular link</a> at eget metus. Maecenas faucibus mollis interdum. Duis
                 mollis, est non
                 commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Donec id elit non mi porta
                 gravida at eget metus. Morbi leo risus, porta ac <a href="#">consectetur</a> ac, vestibulum at eros.</p>
+
+            {% include 'elements/button.swig' with { text: 'Toon resultaat', classNames:'button--arrow'} %}
 
         </div>
 
@@ -50,13 +52,17 @@
 
         <div>
             <p class="text--date">March 29th, Date text</p>
-            <p class="text--intro">Intro text, Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut
+            <p class="text--intro">Intro text, Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh,
+                ut
                 fermentum
                 massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla. Aenean lacinia bibendum
-                nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Morbi leo risus,
+                nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Morbi leo
+                risus,
                 porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Regular text, Curabitur blandit tempus porttitor. Etiam porta sem malesuada magna mollis euismod. Curabitur blandit tempus
-                porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nulla vitae elit libero, a pharetra augue.
+            <p>Regular text, Curabitur blandit tempus porttitor. Etiam porta sem malesuada magna mollis euismod.
+                Curabitur blandit tempus
+                porttitor. Nullam quis risus eget urna mollis ornare vel eu leo. Nulla vitae elit libero, a pharetra
+                augue.
                 Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
         </div>
 
@@ -71,7 +77,7 @@
 
         <div class="_project-svg__collection">
 
-            {% include 'base/debug/svgList.html' %}
+            {% include 'debug/svgList.swig' %}
 
         </div>
 

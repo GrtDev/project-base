@@ -17,12 +17,14 @@
 
 // ----------- Mixins & Placeholders ----------- //
 
-@import "mixins/placeholders/placeholder";
-@import "mixins/placeholders/clearfix";
-
 @import "mixins/vertical-center-dib";
 @import "mixins/conversion";
 @import "mixins/triangle";
+@import "mixins/placeholder";
+
+@import "placeholders/clearfix";
+@import "placeholders/placeholder";
+@import "placeholders/spaceless";
 
 
 // ------------------ Base --------------------- //

@@ -34,9 +34,6 @@ function createBundleConfigs () {
     // Set your default options here
     var options = {
 
-        source: config.source.getPath( 'javascript', '!(' + config.ignorePrefix + ')*.js' ),
-        dest: config.dest.getPath( 'javascript' ),
-
         sourcemaps: config.sourcemaps,
         sourcemapsDest: config.dest.getPath('sourcemaps'),
 
@@ -58,14 +55,14 @@ function createBundleConfigs () {
     }
 
     // convert to a relative path used by sourcemaps
-    options.sourcemapsDest = path.relative(options.dest, options.sourcemapsDest);
+    //options.sourcemapsDest = path.relative(options.dest, options.sourcemapsDest);
 
     options.browserifyOptions = {
         debug: options.sourcemaps // enables sourcemap creation of browserify itself
     };
 
 
-    var fileEntries = glob.sync( options.source );
+    var fileEntries = glob.sync( config.source.getFiles('javascript') );
     var bundleConfigs = [];
 
     for ( var i = 0, leni = fileEntries.length; i < leni; i++ ) {
@@ -174,7 +171,7 @@ function createBundle ( bundleConfig, opt_watch ) {
 
             // convert from streaming to buffer object for uglify
             .pipe( buffer() )
-            .pipe( sourcemaps.init( { loadMaps: true } ) )
+            .pipe( gulpIf( config.sourcemaps, sourcemaps.init( { loadMaps: true } ) ) )
 
             .pipe(gulpIf(bundleConfig.minify,   sizeBefore))
 
@@ -187,8 +184,10 @@ function createBundle ( bundleConfig, opt_watch ) {
 
             .pipe( gulpIf( bundleConfig.minify, uglify( bundleConfig.uglifyOptions ) ) )
 
-            .pipe( sourcemaps.write( bundleConfig.sourcemapsDest ) )
-            .pipe( gulp.dest( bundleConfig.dest ) )
+            // sourcemaps need a relative path from the output folder
+            .pipe( gulpIf( config.sourcemaps, sourcemaps.write( path.relative( config.dest.getPath( 'css' ), config.dest.getPath( 'sourcemaps' ) ) ) ) )
+
+            .pipe( gulp.dest( config.dest.getPath( 'javascript' ) ) )
 
 
             // log the end of the bundle task and calculate the task time.

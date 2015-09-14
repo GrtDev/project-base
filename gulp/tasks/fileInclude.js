@@ -24,12 +24,7 @@ var prettify                = requireCachedModule('gulp-jsbeautifier');
 gulp.task( 'fileInclude', function () {
 
 
-    var options = {
-
-        source: config.source.getPath( 'markup', '!(' + config.ignorePrefix + ')*.html' ),
-        dest: config.dest.getPath( 'markup' )
-
-    }
+    var options = {};
 
     // @formatter:off
     options.fileInclude = {
@@ -77,14 +72,14 @@ gulp.task( 'fileInclude', function () {
 
 
 
-    return gulp.src( options.source )
+    return gulp.src( config.source.getFiles('markup') )
 
         .pipe( fileInclude( options.fileInclude ) )
 
         .pipe( gulpif( options.pretty, prettify( options.prettyConfig ) ) )
         .pipe( gulpif( options.minify, htmlmin( options.htmlmin ) ) )
 
-        .pipe( gulp.dest( options.dest ) );
+        .pipe( gulp.dest( config.dest.getPath('markup')) );
 
     // Browser Sync is reloaded from the watch task for HTML files to bypass a chrome bug.
     // See the watch task for more info.

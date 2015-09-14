@@ -29,6 +29,7 @@ config.notifyError      = true;
 config.throwError       = false;    // Actually throws an (native) error when one occurs, useful for bamboo.
 
 config.minify           = false;
+config.optimizeImages   = true;
 config.sourcemaps       = true;
 config.cleanCSS         = false;    // removes unused CSS, requires 'gulp-uncss' installation.
 config.prettyHTML       = false;
@@ -41,52 +42,43 @@ config.gulp             = {
 };
 
 
+
+
+
 /**
- *  Defines source folders layout.
+ *  Defines source & destination folders layout and source files.
  *  Creates an object that parses lo-dash templates on itself.
  *  To retrieve a path use the 'getPath' method.
+ *  To retrieve a file glob use the 'getFileGlob' method.
  *
  *  for example: The following script returns the path for the source location of the css (sass) files.
  *
  *  config.dest.getPath('css');
  */
+
+var ignore = '!(' + config.ignorePrefix + ')';      // will negate any matches started with a ignore prefix
+
 var source = config.source  = new PathConfig('./source');
-source.bower                = './bower_components'
-source.assets               = '<%= root %>/assets'
-source.markup               = '<%= root %>/markup';
-source.markupPartials       = '<%= markup %>/' + config.ignorePrefix + 'partials';
-source.markupHelpers        = '<%= markup %>/' + config.ignorePrefix + 'helpers';   // for handlebars
-source.markupData           = '<%= root %>/data';      // for handlebars
-source.css                  = '<%= root %>/sass';
-source.javascript           = '<%= root %>/javascript';
-source.images               = '<%= assets %>/images';
-source.fonts                = '<%= assets %>/fonts';
-source.videos               = '<%= assets %>/videos';
-source.data                 = '<%= assets %>/data';
-source.svg                  = '<%= assets %>/svg';
+source.bower                = { path: './bower_components' };
+source.markup               = { path: '<%= root %>/markup',                     files: ignore + '*.swig' };
+source.markupData           = { path: '<%= root %>/data',		                files: '!(pages)**.json' };
+source.css                  = { path: '<%= root %>/sass',		                files: ignore + '*.scss' };
+source.javascript           = { path: '<%= root %>/javascript',	                files: ignore + '*.js' };
+source.assets               = { path: '<%= root %>/assets',		                files: ignore + '**' };
+source.images               = { path: '<%= assets %>/images',	                files: ignore + '**' };
+source.svg                  = { path: '<%= assets %>/svg',		                files: ignore + '*/**.svg' };
+source.markupPartials       = { path: '<%= markup %>/' + config.ignorePrefix + 'partials'};
 
-/**
- *  Defines destination folders layout.
- *  Creates an object that parses lo-dash templates on itself.
- *  To retrieve a path use the 'getPath' method.
- *
- *  for example: The following script returns the path for the output destination of the javascript files.
- *
- *  config.dest.getPath('javascript');
- */
+
 var dest = config.dest      = new PathConfig('./build');
-dest.markup                 = '<%= root %>';
-dest.assets                 = '<%= root %>'
-dest.css                    = '<%= assets %>/css';
-dest.javascript             = '<%= assets %>/js';
-dest.images                 = '<%= assets %>/images';
-dest.fonts                  = '<%= assets %>/fonts';
-dest.videos                 = '<%= assets %>/videos';
-dest.data                   = '<%= assets %>/data';
-dest.svg                    = '<%= assets %>/svg';
-dest.sourcemaps             = '<%= assets %>/sourcemaps';
-
-
+dest.markup                 = { path: '<%= root %>' };
+dest.css                    = { path: '<%= assets %>/css' };
+dest.javascript             = { path: '<%= assets %>/js' };
+dest.assets                 = { path: '<%= root %>' };
+dest.images                 = { path: '<%= assets %>/images' };
+dest.fonts                  = { path: '<%= assets %>/fonts' };
+dest.svg                    = { path: '<%= assets %>/svg' };
+dest.sourcemaps             = { path: '<%= assets %>/sourcemaps' };
 
 
 

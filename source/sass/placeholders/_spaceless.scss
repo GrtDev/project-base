@@ -1,0 +1,18 @@
+/**
+
+    Kills all the whitespace within a container
+
+*/
+
+%spaceless {
+
+    font-family: monospace;
+    letter-spacing: -.65em;
+
+    > * {
+        vertical-align: top;
+        font-family: $font-stack-body; // reset font settings
+        letter-spacing: normal;
+    }
+
+}

@@ -40,9 +40,6 @@ gulp.task( 'swig', function () {
 
     var options = {
 
-        source: config.source.getPath( 'markup', '!(' + config.ignorePrefix + ')*.swig' ),
-        dest: config.dest.getPath( 'markup' ),
-
         htmlPageListPartial: {
             dest: config.source.getPath( 'markupPartials', 'debug' ),
             fileName: 'pagesList.swig'
@@ -181,14 +178,14 @@ gulp.task( 'swig', function () {
     }
 
 
-    return gulp.src( options.source )
+    return gulp.src( config.source.getFiles('markup') )
 
         .pipe( swig( options.swig ) )
 
         .pipe( gulpif( options.pretty, prettify( options.prettyConfig ) ) )
         .pipe( gulpif( options.minify, htmlmin( options.htmlmin ) ) )
 
-        .pipe( gulp.dest( options.dest ) );
+        .pipe( gulp.dest( config.dest.getPath('markup') ) );
 
     // Browser Sync is reloaded from the watch task for HTML files to bypass a chrome bug.
     // See the watch task for more info.

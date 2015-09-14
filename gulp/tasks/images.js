@@ -5,8 +5,10 @@ var config                  = require('../config');
 
 var changed                 = requireCachedModule('gulp-changed');
 var gulp                    = requireCachedModule('gulp');
+var gulpIf                  = requireCachedModule('gulp-if');
 var imagemin                = requireCachedModule('gulp-imagemin');
 
+// @formatter:on
 
 /**
  * Task for optimizing images (size).
@@ -15,9 +17,6 @@ var imagemin                = requireCachedModule('gulp-imagemin');
 gulp.task('images', function () {
 
     var options = {
-
-        source: config.source.getPath('images', '**/*(*.jpg|*.jpeg|*.gif|*.svg|*.png)'),
-        dest: config.dest.getPath('images'),
 
         config: {
             optimizationLevel: 3,   // default 3
@@ -28,10 +27,10 @@ gulp.task('images', function () {
 
     };
 
-    return gulp.src(options.source)
+    return gulp.src( config.source.getFiles( 'images' ) )
 
-        .pipe(changed(options.dest))        // Ignore unchanged files
-        .pipe(imagemin())                   // Optimize
-        .pipe(gulp.dest(options.dest));     // Export
+        .pipe( changed( config.dest.getPath( 'images' ) ) )                     // Ignore unchanged files
+        .pipe( gulpIf( config.optimizeImages, imagemin( options.config ) ) )    // Optimize
+        .pipe( gulp.dest( config.dest.getPath( 'images' ) ) );                  // Export
 
-});
+} );

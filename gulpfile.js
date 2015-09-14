@@ -72,6 +72,8 @@ function registerMainTasks(){
      */
     gulp.task( 'build', function ( callback ) {
 
+        if(config.debug) config.optimizeImages = false;
+
         runSequence(
             'clean',
             [ 'copyAssets', 'copyBower', 'images', 'svg' ],
@@ -94,13 +96,6 @@ function registerMainTasks(){
         config.prettyHTML       = true;
 
         //var backendPath = '../backend';
-        //
-        //config.dest.markup      = backendPath + '/html';
-        //config.dest.javascript  = backendPath + '/js';
-        //config.dest.css         = backendPath + '/css';
-        //config.dest.fonts       = backendPath + '/fonts';
-        //config.dest.images      = backendPath + '/images';
-        //config.dest.svg         = backendPath + '/svg';
 
         runSequence(
             'build',
@@ -116,13 +111,13 @@ function registerMainTasks(){
      */
     gulp.task( 'build:bamboo', function ( callback ) {
 
-        config.debug            = false;
-        config.throwError       = true;
-        config.minify           = true;
-        config.sourcemaps       = false;
-        config.prettyHTML       = true;
+        config.debug                = false;
+        config.throwError           = true;
+        config.minify               = true;
+        config.sourcemaps           = false;
+        config.prettyHTML           = true;
 
-        config.dest.markup      = '<%= root %>/html';
+        config.dest.markup.path     = '<%= root %>/html';
 
         runSequence(
             'clean',
