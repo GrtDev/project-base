@@ -6,44 +6,56 @@ var log                     = require('../util/log');
 
 var gulp                    = requireCachedModule('gulp');
 var changed                 = requireCachedModule('gulp-changed');
+var mergeStream             = requireCachedModule('merge-stream');
 
 // @formatter:on
 
 /**
- *  Gulp task for copying assets to the destination folder.
- *  Removes all the files from the stream that are defined in the ignore option.
+ *  Gulp task for copying Bower assets to the destination folder.
  *  @see: https://www.npmjs.com/package/del
  */
 gulp.task('copyAssets', function () {
 
 
-    var options = {
+    var files = config.assets && typeof config.assets === 'function' ? config.assets() : null;
+    var streams = [];
 
-        // log copied files ?
-        source: [
-            config.source.getPath('assets', '!(' + config.ignorePrefix + ')*'),
-            config.source.getPath('assets', '!(' + config.ignorePrefix + ')/**/!(' + config.ignorePrefix + ')*')
-        ],
-        // remove these files from the stream
-        ignore: [
-            config.source.getPath('images'),        // images are copied to the assets via the 'images' task.
-            config.source.getPath('images', '**'),  // need a separate ignore for both the folder and all its files.
-            config.source.getPath('svg'),
-            config.source.getPath('svg', '**')
-        ],
-        dest: config.dest.getPath('assets')
-
-    };
-
-    // Prefix ignore match
-    for (var i = 0, leni = options.ignore.length; i < leni; i++) options.ignore[i] = '!' + options.ignore[i];
+    if(!files || !files.length) return null;
 
 
-    return gulp.src(options.source.concat(options.ignore))
+    for (var i = 0, leni = files.length; i < leni; i++)
+    {
+        var source = files[i].source;
+        var dest = files[i].dest;
 
-        .pipe(changed(options.dest))        // Ignore unchanged files
-        // Push the files straight to their destination
-        .pipe(gulp.dest(options.dest));     // Export
+        if(!source)
+        {
+            log.error({
+                message: 'assets config needs to have a \'source\' property!',
+                sender: 'copyAssets'
+            });
+            continue;
+        }
 
+        if(!dest)
+        {
+            log.error({
+                message: 'assets config needs to have a \'dest\' property!',
+                sender: 'copyAssets'
+            });
+            continue;
+        }
+
+        streams.push(
+            gulp.src(source)
+
+                .pipe(changed(dest))            // Ignore unchanged files
+                .pipe(gulp.dest(dest))          // Push the files straight to their destination
+        );
+
+    }
+
+
+    return mergeStream(streams);
 
 });

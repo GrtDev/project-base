@@ -5,3 +5,13 @@ NOTE:
     Otherwise you risk the chance of it being added to your css in multiple places.
 
 */
+
+
+$social-channels: (
+
+        'twitter'   : $color-social-twitter,
+        'facebook'  : $color-social-facebook,
+        'linkedin'  : $color-social-linkedin,
+        'youtube'   : $color-social-youtube
+
+);

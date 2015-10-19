@@ -23,6 +23,7 @@ var config              = {};
 config.name             = packageJSON.name;
 config.version          = packageJSON.version;
 
+config.cleanBuild       = false;
 config.ignorePrefix     = '_';      // ignore files and folders with this prefix.
 config.debug            = true;
 config.notifyError      = true;
@@ -61,11 +62,11 @@ var ignore = '!(' + config.ignorePrefix + ')';      // will negate any matches s
 var source = config.source  = new PathConfig('./source');
 source.bower                = { path: './bower_components' };
 source.markup               = { path: '<%= root %>/markup',                     files: ignore + '*.swig' };
-source.markupData           = { path: '<%= root %>/data',		                files: '!(pages)**.json' };
+source.data                 = { path: '<%= root %>/data',		                files: '!(pages)**.json' };
 source.css                  = { path: '<%= root %>/sass',		                files: ignore + '*.scss' };
 source.javascript           = { path: '<%= root %>/javascript',	                files: ignore + '*.js' };
 source.assets               = { path: '<%= root %>/assets',		                files: ignore + '**' };
-source.images               = { path: '<%= assets %>/images',	                files: ignore + '**' };
+source.images               = { path: '<%= assets %>/images',	                files: [ ignore + '*.{jpg,jpeg,png,gif}', '**/' + ignore + '*.{jpg,jpeg,png,gif}' ] };
 source.svg                  = { path: '<%= assets %>/svg',		                files: ignore + '*/**.svg' };
 source.markupPartials       = { path: '<%= markup %>/' + config.ignorePrefix + 'partials'};
 

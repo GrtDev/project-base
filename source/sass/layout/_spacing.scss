@@ -19,9 +19,9 @@ $spacing-margins: (
 
 @each $spacing-modifier, $spacing-margin in $spacing-margins {
 
-    .margin-top-#{$spacing-modifier}    {   margin-top: $spacing-margin     !important; }
-    .margin-right-#{$spacing-modifier}  {   margin-right: $spacing-margin   !important; }
-    .margin-bottom-#{$spacing-modifier} {   margin-bottom: $spacing-margin  !important; }
-    .margin-left-#{$spacing-modifier}   {   margin-left: $spacing-margin    !important; }
+    .margin-top--#{$spacing-modifier}    {   margin-top: $spacing-margin     !important; }
+    .margin-right--#{$spacing-modifier}  {   margin-right: $spacing-margin   !important; }
+    .margin-bottom--#{$spacing-modifier} {   margin-bottom: $spacing-margin  !important; }
+    .margin-left--#{$spacing-modifier}   {   margin-left: $spacing-margin    !important; }
 
 }

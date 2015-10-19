@@ -50,8 +50,10 @@ gulp.task( 'swig', function () {
     // data that will be loaded and added to the context. Root path is needed to define under what property name the data will be available in.
     options.jsonData = {
 
-        source: config.source.getPath( 'markupData', '!(pages)**.json' ),
-        root: config.source.getPath( 'markupData' )
+        // TODO: Fix this with the normal data filder
+
+        source: config.source.getPath( 'data', '!(pages)**.json' ),
+        root: config.source.getPath( 'data' )
 
     };
 
@@ -61,7 +63,7 @@ gulp.task( 'swig', function () {
         setup: setupSwig,
         ext: '.html',
         load_json: true,
-        json_path: config.source.getPath( 'markupData', 'pages/'),
+        json_path: config.source.getPath( 'data', 'pages/'),
 
         defaults: {
 
@@ -163,7 +165,7 @@ gulp.task( 'swig', function () {
 
 
     // Creates a HTML list of all the pages
-    var htmlFileTreeListPartial = htmlFileList.create( options.source, config.source.getPath( 'markup' ) );
+    var htmlFileTreeListPartial = htmlFileList.create( config.source.getFiles( 'markup' ), config.source.getPath( 'markup' ) );
 
     try {
 

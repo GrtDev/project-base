@@ -17,18 +17,19 @@ var del                     = requireCachedModule('del');
  */
 gulp.task( 'clean', function ( callback ) {
 
+    if( !config.cleanBuild ) {
+
+        if( typeof callback === 'function' ) callback.call( this );
+
+        return;
+
+    }
+
 
     var options = {
 
         // define file patterns to delete here
-        source: [
-            config.dest.getPath( 'root', '**' )
-            //config.dest.getPath('markup',       '**/*.html'),
-            //config.dest.getPath('assets',       '**'),
-            //config.dest.getPath('images',       '**'),
-            //config.dest.getPath('javascript',   '**'),
-            //config.dest.getPath('css',          '**'),
-        ],
+        source: config.dest.getPath( 'root', '**' ),
 
         // log deleted files
         verbose: config.gulp.verbose
@@ -36,31 +37,37 @@ gulp.task( 'clean', function ( callback ) {
     };
 
 
-    del( options.source, handleFilesDeleted );
+    var deletedFiles;
 
-    function handleFilesDeleted ( error, deletedFiles ) {
+    try {
 
-        if( error ) log.error( error );
+        deletedFiles = del.sync( options.source );
 
-        if( options.verbose && deletedFiles ) {
+    } catch ( error ) {
 
-            var filesDeletedString = '';
-            var currentWorkingDirectory = process.cwd();
-            for ( var i = 0, leni = deletedFiles.length; i < leni; i++ ) filesDeletedString += '\n\t\t' + deletedFiles[ i ];
-
-            // remove CWD path of the file names.
-            filesDeletedString = filesDeletedString.replace( new RegExp( currentWorkingDirectory, 'g' ), '' );
-
-            log.info( {
-                sender: 'clean task',
-                message: 'Files deleted during cleanup:',
-                data: [ gulpUtil.colors.yellow( filesDeletedString ) ]
-            } );
-
-        }
-
-        if( callback ) callback.call(this);
+        log.error( error );
 
     }
+
+
+    if( options.verbose && deletedFiles ) {
+
+        var filesDeletedString = '';
+        var currentWorkingDirectory = process.cwd();
+        for ( var i = 0, leni = deletedFiles.length; i < leni; i++ ) filesDeletedString += '\n\t\t' + deletedFiles[ i ];
+
+        // remove CWD path of the file names.
+        filesDeletedString = filesDeletedString.replace( new RegExp( currentWorkingDirectory, 'g' ), '' );
+
+        log.info( {
+            sender: 'clean task',
+            message: 'Files deleted during cleanup:',
+            data: [ gulpUtil.colors.yellow( filesDeletedString ) ]
+        } );
+
+    }
+
+    if( callback ) callback.call( this );
+
 
 } );

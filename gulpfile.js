@@ -22,20 +22,27 @@ config.prettyHTML               = false;
 
 
 
-// Register files that need to be copied from the bower components here.
-// NOTE:    It is better to use 'require("path_to_file")' for javascript files
-//          or to use '@import' in sass so it is compiled into the existing file.
-config.bowerDependencies = function () {
+// Define asset files here that need to be copied straight to the build folder.
+// SVG and image files will be optimized and pushed to the build folder automatically, do not define those here.
+config.assets = function () {
     return [
-        //{
-        //    source: ['jquery/dist/jquery.min.js'],
-        //    dest: config.dest.getPath('javascript')
-        //},
-        //{
-        //    source: ['bootstrap/fonts/**'],
-        //    dest: config.dest.getPath('fonts', 'bootstrap/')
-        //}
+        {   source: config.source.getPath('assets', '*.*'),                                 dest: config.dest.getPath('assets')  },
+        {   source: config.source.getPath('assets', 'fonts/**'),                            dest: config.dest.getPath('fonts')  }
+        //{   source: config.source.getPath('bower', 'materialize/dist/js/materialize.js'),   dest: config.dest.getPath('javascript') }
     ];
+}
+
+// Libraries that will be concatenated together.
+// Prevents 'require' problems from poorly implemented CommonJS style modules.
+config.javascriptLibs = function () {
+
+    return [
+
+        //config.source.getPath('bower', 'jquery/dist/jquery.js' ),
+        //config.source.getPath('bower', 'jquery.cookie/jquery.cookie.js' ),
+
+    ];
+
 }
 
 
@@ -76,7 +83,7 @@ function registerMainTasks(){
 
         runSequence(
             'clean',
-            [ 'copyAssets', 'copyBower', 'images', 'svg' ],
+            [ 'copyAssets', 'images', 'svg' ],
             [ 'swig', 'browserify', 'sass' ],
             callback
         );
@@ -121,7 +128,7 @@ function registerMainTasks(){
 
         runSequence(
             'clean',
-            [ 'copyAssets', 'copyBower', 'images', 'svg' ],
+            [ 'copyAssets', 'images', 'svg' ],
             [ 'swig', 'browserify', 'sass' ],
             callback
         );
@@ -147,9 +154,9 @@ var runSequence;
 // Assign process arguments.
 // To use process arguments add '--[key] [value]' to the command.
 // If the value is omitted, the value true will be assigned to the key.
+if( processArguments.has( 'clean' ) )        config.cleanBuild  = processArguments.get( 'clean' );
 if( processArguments.has( 'verbose' ) )      config.verbose     = processArguments.get( 'verbose' );
 if( processArguments.has( 'debug' ) )        config.gulp.debug  = processArguments.get( 'debug' );
-
 
 // Load / Index all the plugins for faster task loading.
 require('./gulp/util/loadPlugins')(init, true, global);

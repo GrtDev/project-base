@@ -95,6 +95,10 @@ gulp.task('sass', function () {
         .pipe( gulp.dest( config.dest.getPath('css') ) )
         // exclude map files because somehow they break the browserSync flow/connection
         .pipe( gulpIgnore.exclude( '*.map' ) )
+
+        .pipe( gulpBless() )
+        .pipe( gulp.dest( config.dest.getPath('css') ) )
+
         .pipe( gulpIf( options.minify, sizeAfter ) )
         .on( 'end', log.size( {
             sender: 'sass',

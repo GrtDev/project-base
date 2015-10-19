@@ -61,9 +61,26 @@ function createBundleConfigs () {
         debug: options.sourcemaps // enables sourcemap creation of browserify itself
     };
 
-
-    var fileEntries = glob.sync( config.source.getFiles('javascript') );
     var bundleConfigs = [];
+    var fileEntries = [];
+    var fileGlob = config.source.getFiles('javascript');
+
+
+    if( Array.isArray( fileGlob ) ) {
+
+        for ( var i = 0, leni = fileGlob.length; i < leni; i++ ) {
+
+            var files = glob.sync( fileGlob[ i ] );
+            fileEntries = fileEntries.concat( files );
+
+        }
+
+    } else {
+
+        fileEntries = glob.sync( fileGlob );
+
+    }
+
 
     for ( var i = 0, leni = fileEntries.length; i < leni; i++ ) {
 
@@ -99,6 +116,12 @@ function createBundleConfig ( fileName, filePath, options ) {
 
     bundleConfig.fileName = fileName;
     bundleConfig.source = filePath;
+
+    // define the destination base on the entry file
+    bundleConfig.dest = filePath;
+    bundleConfig.dest = bundleConfig.dest.replace(config.source.getPath('javascript'), '');
+    bundleConfig.dest = bundleConfig.dest.replace(fileName, '');
+    bundleConfig.dest = config.dest.getPath('javascript', bundleConfig.dest);
 
     return bundleConfig;
 }
@@ -185,9 +208,9 @@ function createBundle ( bundleConfig, opt_watch ) {
             .pipe( gulpIf( bundleConfig.minify, uglify( bundleConfig.uglifyOptions ) ) )
 
             // sourcemaps need a relative path from the output folder
-            .pipe( gulpIf( config.sourcemaps, sourcemaps.write( path.relative( config.dest.getPath( 'css' ), config.dest.getPath( 'sourcemaps' ) ) ) ) )
+            .pipe( gulpIf( config.sourcemaps, sourcemaps.write( path.relative( bundleConfig.dest, config.dest.getPath( 'sourcemaps' ) ) ) ) )
 
-            .pipe( gulp.dest( config.dest.getPath( 'javascript' ) ) )
+            .pipe( gulp.dest( bundleConfig.dest ) )
 
 
             // log the end of the bundle task and calculate the task time.
@@ -218,8 +241,16 @@ var browserifyTask = function ( opt_watch ) {
     var bundlesConfigs = createBundleConfigs();
     var streams = [];
 
-    for ( var i = 0, leni = bundlesConfigs.length; i < leni; i++ ) {
-        streams.push( createBundle( bundlesConfigs[ i ], opt_watch ) );
+    if(bundlesConfigs.length){
+
+        for ( var i = 0, leni = bundlesConfigs.length; i < leni; i++ ) {
+            streams.push( createBundle( bundlesConfigs[ i ], opt_watch ) );
+        }
+
+    } else {
+
+        log.warn( { sender: 'browserify', message: 'No JavaScript files were found as an entry point?' } );
+
     }
 
     return mergeStream( streams );
