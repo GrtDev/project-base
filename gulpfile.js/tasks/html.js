@@ -129,7 +129,7 @@ gulp.task( 'html', function () {
     environment.addExtension( 'DebugExtension', new DebugExtension() );
 
 
-    return gulp.src( config.source.getFiles( 'html' ) )
+    return gulp.src( config.source.getFiles( 'html' ), { base: config.source.getPath( 'html' ) } )
 
         .pipe( gulpData( getDataForFile ) )
         .pipe( gulpNunjucks() )
