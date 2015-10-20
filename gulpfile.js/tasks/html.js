@@ -27,9 +27,9 @@ var RESERVED_DATA_KEYWORDS  = [ 'project', 'ext' ];
 //@formatter:on
 
 /**
- *  Gulp task responsible for compiling the swig templates into normal HTML
- *  @see: http://paularmstrong.github.io/swig/
- *  @see: https://www.npmjs.com/package/gulp-swig
+ *  Gulp task responsible for compiling the templates into normal HTML using Mozilla nunjucks templates
+ *  @see: http://mozilla.github.io/nunjucks/api.html
+ *  @see: https://www.npmjs.com/package/gulp-nunjucks-render
  */
 gulp.task( 'html', function () {
 
@@ -62,7 +62,6 @@ gulp.task( 'html', function () {
     };
 
 
-
     options.nunjuck = {
 
         watch: false
@@ -70,16 +69,23 @@ gulp.task( 'html', function () {
     }
 
 
-    var data = mergeJSONData( config.source.getPath( 'data' ), config.source.getFiles( 'data' ) );
+    var jsonData = mergeJSONData( config.source.getPath( 'data' ), config.source.getFiles( 'data' ) );
+    var contextData = {};
 
     // merge retrieved data into the context object
-    for ( var key in data ) {
+    for ( var key in jsonData ) {
 
         if( RESERVED_DATA_KEYWORDS.indexOf( key ) >= 0 ) {
+
             log.error( {
                 sender: 'html',
                 message: 'A data object has been given a reserved keyword as a name, please update the file name : ' + key + '.\nReserved keywords: ' + RESERVED_DATA_KEYWORDS
             } );
+
+        } else {
+
+            contextData[ key ] = jsonData[ key ];
+
         }
 
     }
@@ -87,7 +93,7 @@ gulp.task( 'html', function () {
     var pagesList = fileUtils.getList( config.source.getFiles( 'html' ), config.source.getPath( 'html' ) );
     var svgList = fileUtils.getList( config.source.getFiles( 'svg' ), config.source.getPath( 'svg' ), true );
 
-    data.project = {
+    contextData.project = {
         name: packageJSON.name,
         description: packageJSON.description,
         author: packageJSON.author,
@@ -98,20 +104,17 @@ gulp.task( 'html', function () {
     }
 
 
-
     function getDataForFile ( file ) {
 
-        return data;
+        return contextData;
 
     }
-
 
 
     var environment = gulpNunjucks.nunjucks.configure( [ config.source.getPath( 'html' ) ], options.nunjuck );
 
     environment.addExtension( 'SVGExtension', new SvgExtension() );
     environment.addExtension( 'DebugExtension', new DebugExtension() );
-
 
 
     return gulp.src( config.source.getFiles( 'html' ) )
