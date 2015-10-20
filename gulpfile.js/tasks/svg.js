@@ -3,9 +3,7 @@
 var requireCachedModule     = require('../util/requireCachedModule');
 var config                  = require('../config');
 var log                     = require('../util/log');
-var svgFileList             = require('../template/swig/partials/svgFileList');
 
-var fileSystem              = require('fs');
 var path                    = require('path');
 var changed                 = requireCachedModule('gulp-changed');
 var gulp                    = requireCachedModule('gulp');
@@ -24,7 +22,7 @@ gulp.task( 'svg', function () {
 
     var options = {
 
-        config: {
+        svgmin: {
             js2svg: {
                 pretty: false // pretty printed svg
             },
@@ -32,35 +30,15 @@ gulp.task( 'svg', function () {
                 { removeTitle: true },
                 { removeComments: true }
             ]
-        },
-
-        svgListPartial:{
-            dest: config.source.getPath( 'markupPartials', 'debug'),
-            fileName: 'svgList.swig'
         }
 
     };
 
 
-    // Creates a SVG list partial for all the svg files, used in the styleguide
-    var svgListPartial = svgFileList.create( options.source, config.source.getPath( 'svg' ) );
-
-    try {
-
-        // Make sure the directory exists
-        mkdirp.sync( options.svgListPartial.dest );
-        fileSystem.writeFileSync( options.svgListPartial.dest + path.sep + options.svgListPartial.fileName, svgListPartial );
-
-    } catch ( error ) {
-
-        log.error( error );
-
-    }
-
     return gulp.src( config.source.getFiles( 'svg' ) )
 
         .pipe( changed( config.dest.getPath( 'svg' ) ) )        // Ignore unchanged files
-        .pipe( svgmin( options.config ) )       // Optimize
+        .pipe( svgmin( options.svgmin ) )                       // Optimize
         .pipe( gulp.dest( config.dest.getPath( 'svg' ) ) )      // Export
 
 } );
