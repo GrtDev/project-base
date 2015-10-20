@@ -1,0 +1,34 @@
+<head>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+
+    <meta name="lang" content="en">
+    <meta name="dir" content="ltr">
+
+    <meta name="author" content="{{ project.author }}">
+    <meta name="description" content="{{ project.description }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+
+    <!-- You can use open graph tags to customize link previews.
+   Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
+    <meta property="og:url"           content="http://www.your-domain.com/your-page.html" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="{{ global.title }}" />
+    <meta property="og:description"   content="{{ project.description }}" />
+    <meta property="og:image"         content="http://www.your-domain.com/path/image.jpg" />
+
+
+    <title>{{ global.title }}</title>
+
+    <!-- Style sheets -->
+    {% if project.debug %} <link rel="stylesheet" href="/css/debug.css"/> {% endif %}
+
+    <link rel="stylesheet" href="/css/main.css"/>
+
+
+    <!-- set DEBUG to true when the project is compiled in debug mode. -->
+    {% if project.debug %} <script> var DEBUG = true; </script> {% endif %}
+
+</head>

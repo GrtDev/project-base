@@ -2,7 +2,7 @@
 
 var fileSystem              = require( 'fs' );
 var path                    = require( 'path' );
-var config                  = require('../../../gulp/config');
+var config                  = require('../../../gulpfile.js/config');
 var SVG_FOLDER              = config.dest.getPath('svg');
 var SVG_CLASS_PREFIX        = 'svg-';
 

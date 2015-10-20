@@ -61,18 +61,18 @@ var ignore = '!(' + config.ignorePrefix + ')';      // will negate any matches s
 
 var source = config.source  = new PathConfig('./source');
 source.bower                = { path: './bower_components' };
-source.markup               = { path: '<%= root %>/markup',                     files: ignore + '*.swig' };
-source.data                 = { path: '<%= root %>/data',		                files: '!(pages)**.json' };
+source.html                 = { path: '<%= root %>/html',                       files: ignore + 'home.html' };
+source.data                 = { path: '<%= html %>/data',		                files: '**.json' };
 source.css                  = { path: '<%= root %>/sass',		                files: ignore + '*.scss' };
 source.javascript           = { path: '<%= root %>/javascript',	                files: ignore + '*.js' };
 source.assets               = { path: '<%= root %>/assets',		                files: ignore + '**' };
 source.images               = { path: '<%= assets %>/images',	                files: [ ignore + '*.{jpg,jpeg,png,gif}', '**/' + ignore + '*.{jpg,jpeg,png,gif}' ] };
 source.svg                  = { path: '<%= assets %>/svg',		                files: ignore + '*/**.svg' };
-source.markupPartials       = { path: '<%= markup %>/' + config.ignorePrefix + 'partials'};
+source.markupPartials       = { path: '<%= html %>/' + config.ignorePrefix + 'partials'};
 
 
 var dest = config.dest      = new PathConfig('./build');
-dest.markup                 = { path: '<%= root %>' };
+dest.html                   = { path: '<%= root %>' };
 dest.css                    = { path: '<%= assets %>/css' };
 dest.javascript             = { path: '<%= assets %>/js' };
 dest.assets                 = { path: '<%= root %>' };

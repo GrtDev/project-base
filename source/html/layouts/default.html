@@ -1,0 +1,37 @@
+<!-- name: {{ project.name }}, version: {{ project.version }} -->
+<!DOCTYPE html>
+<html lang="{{ global.meta.language }}" dir="{{ global.meta.direction }}">
+
+
+{% include "shared/head.html" %}
+
+
+<body>
+
+    {% include "shared/gtm.html" %}
+
+
+    {% include "shared/header.html" %}
+
+
+
+    <main role="main">
+
+        {% block content %}
+
+        <!-- content will be injected in this block -->
+
+        {% endblock %}
+
+    </main>
+
+
+
+    {% include "shared/footer.html" %}
+
+
+    <script src="/js/main.js" type="text/javascript"></script>
+
+</body>
+
+</html>

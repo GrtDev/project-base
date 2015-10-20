@@ -17,7 +17,7 @@ var mergeStream             = requireCachedModule('merge-stream');
 gulp.task('copy', function () {
 
 
-    var files = config.assets && typeof config.assets === 'function' ? config.assets() : null;
+    var files = config.copy && typeof config.copy === 'function' ? config.copy() : null;
     var streams = [];
 
     if(!files || !files.length) return null;

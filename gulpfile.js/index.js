@@ -21,7 +21,7 @@ config.prettyHTML               = false;
 
 // Define asset files here that need to be copied straight to the build folder.
 // SVG and image files will be optimized and pushed to the build folder automatically, do not define those here.
-config.assets = function () {
+config.copy = function () {
     return [
         {   source: config.source.getPath('assets', '*.*'),                                 dest: config.dest.getPath('assets')  },
         {   source: config.source.getPath('assets', 'fonts/**'),                            dest: config.dest.getPath('fonts')  }
