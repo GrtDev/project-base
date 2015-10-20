@@ -64,13 +64,25 @@ gulp.task( 'html', function () {
 
     options.nunjuck = {
 
+        // useful for Angular projects
+        //tags: {
+        //    blockStart: '<%',
+        //    blockEnd: '%>',
+        //    variableStart: '<$',
+        //    variableEnd: '$>',
+        //    commentStart: '<#',
+        //    commentEnd: '#>'
+        //},
+
         watch: false
+
+
 
     }
 
 
-    var jsonData = mergeJSONData( config.source.getPath( 'data' ), config.source.getFiles( 'data' ) );
     var contextData = {};
+    var jsonData = mergeJSONData( config.source.getPath( 'data' ), config.source.getFiles( 'data' ) );
 
     // merge retrieved data into the context object
     for ( var key in jsonData ) {
