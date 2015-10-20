@@ -14,7 +14,7 @@ var mergeStream             = requireCachedModule('merge-stream');
  *  Gulp task for copying Bower assets to the destination folder.
  *  @see: https://www.npmjs.com/package/del
  */
-gulp.task('copyAssets', function () {
+gulp.task('copy', function () {
 
 
     var files = config.assets && typeof config.assets === 'function' ? config.assets() : null;

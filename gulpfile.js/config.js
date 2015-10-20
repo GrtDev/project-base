@@ -83,4 +83,4 @@ dest.sourcemaps             = { path: '<%= assets %>/sourcemaps' };
 
 
 
-module.exports          = config;
+module.exports              = config;

@@ -3,20 +3,17 @@
 var config                      = require('./config');
 var processArguments            = require('./util/processArguments');
 
-//---------------      S E T T I N G S      ----------------
-
-// You can find all possible settings ( and more information ) in the 'gulp/config.js' file.
-// But -- PLEASE CREATE YOUR DEFAULT CONFIGURATION HERE, and NOT in the config file!
+//---------------      B A S I C    S E T T I N G S      ----------------
 
 config.gulp.debug               = false;
 
 config.debug                    = true;
-config.notifyErrors             = true;
-
-config.minify                   = false;
 config.sourcemaps               = true;
+config.notifyErrors             = true;
+config.minify                   = false;
 config.cleanCSS                 = false; // removes unused CSS, requires 'gulp-uncss' installation.
 config.prettyHTML               = false;
+
 
 
 
@@ -83,7 +80,7 @@ function registerMainTasks(){
 
         runSequence(
             'clean',
-            [ 'copyAssets', 'images', 'svg' ],
+            [ 'copy', 'images', 'svg' ],
             [ 'swig', 'browserify', 'sass' ],
             callback
         );
@@ -128,7 +125,7 @@ function registerMainTasks(){
 
         runSequence(
             'clean',
-            [ 'copyAssets', 'images', 'svg' ],
+            [ 'copy', 'images', 'svg' ],
             [ 'swig', 'browserify', 'sass' ],
             callback
         );
