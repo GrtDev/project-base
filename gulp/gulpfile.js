@@ -1,7 +1,7 @@
 // @formatter:off
 
-var config                      = require('./gulp/config');
-var processArguments            = require('./gulp/util/processArguments');
+var config                      = require('./config');
+var processArguments            = require('./util/processArguments');
 
 //---------------      S E T T I N G S      ----------------
 
@@ -146,7 +146,7 @@ function registerMainTasks(){
 // initialization code, no need to touch this.
 
 var startTime               = process.hrtime();
-var log                     = require('./gulp/util/log');
+var log                     = require('./util/log');
 var gulp;
 var runSequence;
 
@@ -159,14 +159,14 @@ if( processArguments.has( 'verbose' ) )      config.verbose     = processArgumen
 if( processArguments.has( 'debug' ) )        config.gulp.debug  = processArguments.get( 'debug' );
 
 // Load / Index all the plugins for faster task loading.
-require('./gulp/util/loadPlugins')(init, true, global);
+require('./util/loadPlugins')(init, true, global);
 
 function init() {
 
-    require('./gulp/util/loadTasks')(); // loads all tasks ( if lazy loading is turned off ).
+    require('./util/loadTasks')(); // loads all tasks ( if lazy loading is turned off ).
 
-    var requireCachedModule = require('./gulp/util/requireCachedModule');
-    var gulpDecorator       = require('./gulp/util/gulpDecorator');
+    var requireCachedModule = require('./util/requireCachedModule');
+    var gulpDecorator       = require('./util/gulpDecorator');
 
     gulp                    = requireCachedModule('gulp');
     runSequence             = requireCachedModule('run-sequence');

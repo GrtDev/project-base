@@ -96,7 +96,7 @@ gulp.task('sass', function () {
         // exclude map files because somehow they break the browserSync flow/connection
         .pipe( gulpIgnore.exclude( '*.map' ) )
 
-        .pipe( gulpBless() )
+        //.pipe( gulpBless() ) TODO: split css for IE9
         .pipe( gulp.dest( config.dest.getPath('css') ) )
 
         .pipe( gulpIf( options.minify, sizeAfter ) )

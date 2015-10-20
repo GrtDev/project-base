@@ -1,4 +1,4 @@
-{% extends 'templates/default.html' %}
+{% extends 'templates/default.swig' %}
 
 
 

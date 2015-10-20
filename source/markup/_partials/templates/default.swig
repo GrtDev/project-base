@@ -7,8 +7,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 
-    <meta name="lang" content="{{ global.meta.language}}">
-    <meta name="dir" content="{{ global.meta.direction }}">
+    <meta name="lang" content="en">
+    <meta name="dir" content="ltr">
 
     <meta name="author" content="{{ project.author }}">
     <meta name="description" content="{{ project.description }}">
@@ -27,8 +27,9 @@
     <title>{{ global.title }}</title>
 
     <!-- Style sheets -->
-    {% if project.debug %}<link rel="stylesheet" href="/css/{{ project.prefix }}/debug.css"/>{% endif %}
-    <link rel="stylesheet" href="/css/{{ project.prefix }}/main.css"/>
+    {% if project.debug %} <link rel="stylesheet" href="/css/debug.css"/> {% endif %}
+
+    <link rel="stylesheet" href="/css/main.css"/>
 
 </head>
 
@@ -42,11 +43,9 @@
     <!-- End Google Tag Manager  @formatter:on -->
 
 
+    <!-- set DEBUG to true when the project is compiled in debug mode. -->
     {% if project.debug %}
-        <!-- set DEBUG to true when the project is compiled in debug mode. -->
-        <script>
-            var DEBUG = true;
-        </script>
+        <script> var DEBUG = true; </script>
     {% endif %}
 
 
