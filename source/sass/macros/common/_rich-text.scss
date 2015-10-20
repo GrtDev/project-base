@@ -1,0 +1,11 @@
+@import "../../variables/config";
+
+.richt-text {
+
+    a {
+        @extend %regular-link;
+    }
+
+    // styles specific for rich text content
+
+}

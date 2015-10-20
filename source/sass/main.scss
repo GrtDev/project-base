@@ -22,9 +22,9 @@
 @import "mixins/triangle";
 @import "mixins/placeholder";
 
-@import "placeholders/clearfix";
-@import "placeholders/placeholder";
-@import "placeholders/spaceless";
+@import "mixins/placeholders/clearfix";
+@import "mixins/placeholders/placeholder";
+@import "mixins/placeholders/spaceless";
 
 
 // ------------------ Base --------------------- //
@@ -52,16 +52,20 @@
 @import "elements/form/input";
 @import "elements/form/select";
 
-// other
-@import "elements/background-image";
 
 
-// ------------- Modules / Components ----------- //
+// ------------- Partials ----------- //
 
-@import "modules/cookie";
-@import "modules/rich-text";
+@import "partials/background-image";
 
 
-// ------------------ Pages --------------------- //
 
-@import "pages/home";
+
+// -------------- Macros ------------ //
+
+@import "macros/base/footer";
+@import "macros/base/header";
+
+@import "macros/common/common-macro";
+
+@import "macros/home/home-macro";
