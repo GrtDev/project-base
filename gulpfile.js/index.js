@@ -11,36 +11,33 @@ config.debug                    = true;
 config.sourcemaps               = true;
 config.notifyErrors             = true;
 config.minify                   = false;
+config.prettyHTML               = true;
 config.cleanCSS                 = false; // removes unused CSS, requires 'gulp-uncss' installation.
-config.prettyHTML               = false;
-
-
-//config.source.html.files        = ['index.html', 'home.html'];
 
 
 
 // Define asset files here that need to be copied straight to the build folder.
 // SVG and image files will be optimized and pushed to the build folder automatically, do not define those here.
 config.copy = function () {
+
     return [
         {   source: config.source.getPath('assets', '*.*'),                                 dest: config.dest.getPath('assets')  },
         {   source: config.source.getPath('assets', 'fonts/**'),                            dest: config.dest.getPath('fonts')  }
-        //{   source: config.source.getPath('bower', 'materialize/dist/js/materialize.js'),   dest: config.dest.getPath('javascript') }
     ];
+
 }
 
-// Libraries that will be concatenated together.
-// Prevents 'require' problems from poorly implemented CommonJS style modules.
+// Libraries that will be concatenated together. Prevents 'require' problems from poorly implemented CommonJS style modules.
 config.libs = function () {
 
     return [
-
         //config.source.getPath('bower', 'jquery/dist/jquery.js' ),
         //config.source.getPath('bower', 'jquery.cookie/jquery.cookie.js' ),
-
     ];
 
 }
+
+
 
 
 //--------------     M A I N   T A S K S    L I S T     --------------

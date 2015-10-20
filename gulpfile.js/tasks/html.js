@@ -6,11 +6,9 @@ var log                     = require('../util/log');
 var mergeJSONData           = require('../util/mergeJSONData');
 var fileUtils               = require('../util/fileUtils');
 var packageJSON             = require('../../package.json');
-var htmlFileList            = require('../template/partials/htmlFileList');
 var SvgExtension            = require('../template/nunjucks/SvgExtension');
 var DebugExtension          = require('../template/nunjucks/DebugExtension');
 
-var fileSystem              = require( 'fs' );
 var path                    = require('path');
 var mkdirp                  = requireCachedModule('mkdirp');
 var gulp                    = requireCachedModule('gulp');
@@ -22,16 +20,8 @@ var browserSync             = requireCachedModule('browser-sync');
 var prettify                = requireCachedModule('gulp-jsbeautifier');
 var glob                    = requireCachedModule('glob');
 
-var swigSVGTag              = require('../template/swig/tags/svg');
-var swigDebugTag            = require('../template/swig/tags/debug');
-var swigDebugFilter         = require('../template/swig/filters/debug');
 
-// If you change these names, make sure they aren't already in the reserved words list, AND update the name also in the createSVGFileList.js
-var dataHelperName          = 'debug';
-var svgHelperName           = 'svg';
-var RESERVED_KEYWORDS       = [ dataHelperName, svgHelperName, 'project' ];
-
-
+var RESERVED_DATA_KEYWORDS  = [ 'project', 'ext' ];
 
 
 //@formatter:on
@@ -85,10 +75,10 @@ gulp.task( 'html', function () {
     // merge retrieved data into the context object
     for ( var key in data ) {
 
-        if( RESERVED_KEYWORDS.indexOf( key ) >= 0 ) {
+        if( RESERVED_DATA_KEYWORDS.indexOf( key ) >= 0 ) {
             log.error( {
                 sender: 'html',
-                message: 'A data object has been given a reserved keyword as a name, please update the file name : ' + key + '.\nReserved keywords: ' + RESERVED_KEYWORDS
+                message: 'A data object has been given a reserved keyword as a name, please update the file name : ' + key + '.\nReserved keywords: ' + RESERVED_DATA_KEYWORDS
             } );
         }
 
