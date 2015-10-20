@@ -1,17 +1,17 @@
-{% extends 'templates/debug.html' %}
-
+{% extends 'layouts/debug.html' %}
 
 
 {% block content %}
 
 
-    <div class="_project-pages-list">
+    {% debug 'project' %}
 
-        {% include 'debug/pagesList.html' %}
+    {% svg 'social/facebook' %}
 
-    </div>
+    {% include 'shared/pagesList.html' %}
 
-    {% debug %}
+    {#{% include 'shared/svgList.html' %}#}
+
 
 {% endblock %}
 

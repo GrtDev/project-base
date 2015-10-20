@@ -12,7 +12,7 @@ var log                 = require('./log');
  * @param root {string} automatically sets the root property for the config.
  * @constructor
  */
-function PathConfig(root) {
+function PathConfig ( root ) {
 
     var _this = this;
     var _context;
@@ -35,7 +35,7 @@ function PathConfig(root) {
      * @param opt_pathExtension {=string}       optional path extension to be appended to the path.
      * @return {string}                         fully rendered (file) path.
      */
-    _this.getPath = function(name, opt_pathExtension) {
+    _this.getPath = function ( name, opt_pathExtension ) {
 
         if( !_context ) createContext();
 
@@ -45,19 +45,18 @@ function PathConfig(root) {
         }
 
         var path = _this[ name ][ 'path' ];
-        
-        var loopNum = 0, maxRecursion = 10;
-        while (_loDashTemplateRegExp.test(path) && loopNum <= maxRecursion)
-        {
-            path = template( path );
-            path = path( _context);
 
-            if(loopNum++ > maxRecursion) gulpUtil.log(gulpUtil.colors.red('Error: Maximum recursion (' + maxRecursion + ') reached or failed to compile path template for name: \'' + name + '\'. Compiled path: \'' + path + '\''));
+        var loopNum = 0, maxRecursion = 10;
+        while ( _loDashTemplateRegExp.test( path ) && loopNum <= maxRecursion ) {
+            path = template( path );
+            path = path( _context );
+
+            if( loopNum++ > maxRecursion ) gulpUtil.log( gulpUtil.colors.red( 'Error: Maximum recursion (' + maxRecursion + ') reached or failed to compile path template for name: \'' + name + '\'. Compiled path: \'' + path + '\'' ) );
         }
 
         var path = opt_pathExtension ? path + '/' + opt_pathExtension : path;
 
-        return pathUtil.normalize(path);
+        return pathUtil.normalize( path );
     }
 
     /**
@@ -65,7 +64,7 @@ function PathConfig(root) {
      * @param name
      * @returns {string|Array}
      */
-    _this.getFiles = function  ( name ) {
+    _this.getFiles = function ( name ) {
 
         if( !_context ) createContext();
 
@@ -74,8 +73,8 @@ function PathConfig(root) {
             return '';
         }
 
-        var pathData = _this[name];
-        var filesGlob =  pathData[ 'files' ];
+        var pathData = _this[ name ];
+        var filesGlob = pathData[ 'files' ];
         var filePathsGlob;
 
         if( filesGlob === undefined ) return log.error( {
@@ -84,7 +83,7 @@ function PathConfig(root) {
         } );
 
 
-        if(Array.isArray(filesGlob)){
+        if( Array.isArray( filesGlob ) ) {
 
             filePathsGlob = [];
 
@@ -96,7 +95,7 @@ function PathConfig(root) {
 
         } else {
 
-            filePathsGlob =  _this.getPath( name, filesGlob );
+            filePathsGlob = _this.getPath( name, filesGlob );
 
         }
 
@@ -129,11 +128,10 @@ function PathConfig(root) {
      * @function dump
      */
     _this.dump = function () {
-        console.info('Path config dump:');
-        for (var property in _this)
-        {
-            if(!_this.hasOwnProperty(property) || typeof _this[property] !== 'object') continue;
-            console.info('\t' + property + ( property.length >= 7 ? ':\t\'' : ':\t\t\'') + _this.getPath( property ) + '\'');
+        console.info( 'Path config dump:' );
+        for ( var property in _this ) {
+            if( !_this.hasOwnProperty( property ) || typeof _this[ property ] !== 'object' ) continue;
+            console.info( '\t' + property + ( property.length >= 7 ? ':\t\'' : ':\t\t\'') + _this.getPath( property ) + '\'' );
         }
     }
 }

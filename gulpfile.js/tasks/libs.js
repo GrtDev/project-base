@@ -16,7 +16,7 @@ var sourcemaps              = requireCachedModule('gulp-sourcemaps');
  * Task for optimizing images (size).
  * @see https://www.npmjs.com/package/gulp-imagemin
  */
-gulp.task('concat', function () {
+gulp.task('libs', function () {
 
     var options = {
 
@@ -27,7 +27,7 @@ gulp.task('concat', function () {
 
     };
 
-    var libs = (typeof config.javascriptLibs === 'function') ? config.javascriptLibs() : null;
+    var libs = (typeof config.libs === 'function') ? config.libs() : null;
 
     if(!libs || !libs.length) return null;
 

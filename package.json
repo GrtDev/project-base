@@ -54,6 +54,6 @@
   "scripts": {
     "preinstall": "git submodule sync && git submodule update --init",
     "postinstall": "bower install --config.interactive=false",
-    "bamboo": "gulp build:dist"
+    "bamboo": "gulp bamboo"
   }
 }

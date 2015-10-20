@@ -10,21 +10,6 @@ var DEBUG_CLASS_NAME = '_debug-data-log';
  */
 module.exports = function debug ( object ) {
 
-    // exclude these properties from the 'file' property
-    //var filter = [ 'cache', 'filename', 'context', 'compileDebug', 'client', 'delimiter', 'debug', '_with', 'rmWhitespace' ];
-    //var filteredContext = {};
-    //
-    //for ( var key in object ) {
-    //
-    //    var value = object[ key ];
-    //
-    //    if(filter.indexOf(key) === -1) filteredContext[ key ] = value;
-    //
-    //}
-    //
-    //console.log(filteredContext);
-    //object = filteredContext;
-
     var html;
 
     if( typeof object === 'undefined' || object == null ) {

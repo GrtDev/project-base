@@ -1,0 +1,14 @@
+<div class="_project-svg__collection">
+    <ul>
+        {% for svg in project.svgs %}
+            <li title={{ svg }}>
+                <div class="_project-svg__container">
+
+                    {% svg svg %}
+
+                </div>
+                <h4>{{ svg }}</h4>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

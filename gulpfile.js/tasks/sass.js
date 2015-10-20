@@ -60,7 +60,7 @@ gulp.task('sass', function () {
         // @see: https://github.com/giakki/uncss
         removeUnused: config.cleanCSS,
         uncss: {
-            html: [config.dest.getPath('markup', '*.html')],
+            html: [config.dest.getPath('html', '*.html')],
             // Provide a list of selectors that should not be removed by UnCSS. For example, styles added by user interaction with the page (hover, click),
             // Both literal names and regex patterns are recognized.
             ignore: [ /\.modal.*/, /\.panel.*/, /\.popup.*/, /.*\.is-.*/ ]

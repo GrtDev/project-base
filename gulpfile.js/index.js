@@ -15,7 +15,7 @@ config.cleanCSS                 = false; // removes unused CSS, requires 'gulp-u
 config.prettyHTML               = false;
 
 
-
+//config.source.html.files        = ['index.html', 'home.html'];
 
 
 
@@ -31,7 +31,7 @@ config.copy = function () {
 
 // Libraries that will be concatenated together.
 // Prevents 'require' problems from poorly implemented CommonJS style modules.
-config.javascriptLibs = function () {
+config.libs = function () {
 
     return [
 
@@ -81,7 +81,7 @@ function registerMainTasks(){
         runSequence(
             'clean',
             [ 'copy', 'images', 'svg' ],
-            [ 'swig', 'browserify', 'sass' ],
+            [ 'html', 'libs', 'browserify', 'sass' ],
             callback
         );
 
@@ -90,7 +90,7 @@ function registerMainTasks(){
 
     /**
      * @task build:dist
-     * Builds the project in distribution mode and possible pushes the files to the backend folder if needed.
+     * Builds the project in distribution mode pushes the files to the backend folder
      */
     gulp.task( 'dist', function ( callback ) {
 
@@ -99,7 +99,8 @@ function registerMainTasks(){
         config.sourcemaps       = false;
         config.prettyHTML       = true;
 
-        //var backendPath = '../backend';
+        var backendPath         = '../backend';
+        config.dest.root.path   = backendPath;
 
         runSequence(
             'build',
@@ -113,12 +114,12 @@ function registerMainTasks(){
      * @task build:bamboo
      * Builds the project for bamboo.
      */
-    gulp.task( 'build:bamboo', function ( callback ) {
+    gulp.task( 'bamboo', function ( callback ) {
 
         config.debug                = false;
+        config.sourcemaps           = false;
         config.throwError           = true;
         config.minify               = true;
-        config.sourcemaps           = false;
         config.prettyHTML           = true;
 
         config.dest.markup.path     = '<%= root %>/html';
@@ -126,7 +127,7 @@ function registerMainTasks(){
         runSequence(
             'clean',
             [ 'copy', 'images', 'svg' ],
-            [ 'swig', 'browserify', 'sass' ],
+            [ 'html', 'libs', 'browserify', 'sass' ],
             callback
         );
 

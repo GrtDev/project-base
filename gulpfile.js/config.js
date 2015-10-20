@@ -61,7 +61,7 @@ var ignore = '!(' + config.ignorePrefix + ')';      // will negate any matches s
 
 var source = config.source  = new PathConfig('./source');
 source.bower                = { path: './bower_components' };
-source.html                 = { path: '<%= root %>/html',                       files: ignore + 'home.html' };
+source.html                 = { path: '<%= root %>/html',                       files: ignore + '*.html' };
 source.data                 = { path: '<%= html %>/data',		                files: '**.json' };
 source.css                  = { path: '<%= root %>/sass',		                files: ignore + '*.scss' };
 source.javascript           = { path: '<%= root %>/javascript',	                files: ignore + '*.js' };

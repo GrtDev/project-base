@@ -26,13 +26,13 @@ gulp.task( 'watch', [ 'watchify' ], function ( callback ) {
     watch( config.source.getPath( 'css', '**/*.scss' ),
         function ( events, done ) { gulp.start( 'sass' ); } );
 
-    watch( [ config.source.getPath( 'markup', '*' ), config.source.getPath( 'markupPartials', '!(debug)**' ) ],
-        function ( events, done ) { gulp.start( 'swig' ); } );
+    watch( config.source.getPath( 'html', '**' ),
+        function ( events, done ) { gulp.start( 'html' ); } );
 
-    watch( config.source.getPath( 'data', '**' ),
-        function ( events, done ) { gulp.start( 'swig', done ); } );
+    //watch( config.source.getPath( 'data', '**' ),
+    //    function ( events, done ) { gulp.start( 'html', done ); } );
 
-    watch( config.dest.getPath( 'markup', '**/*.html' ), onHTMLChange );
+    watch( config.dest.getPath( 'html', '**/*.html' ), onHTMLChange );
 
 } );
 
