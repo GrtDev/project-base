@@ -4,6 +4,7 @@ var log                     = require('./log');
 var config                  = require('../config');
 var path                    = require('path');
 var requireCachedModule     = require('../util/requireCachedModule');
+var fileUtils               = require('../util/fileUtils');
 var glob                    = requireCachedModule('glob');
 
 var jsonFileRegExp          = /.json$/i;
@@ -20,7 +21,8 @@ function mergeJSONData ( root, source ) {
     if( root.slice( -1 ) !== path.sep ) root += path.sep; // force path separator as last character
 
     var data = {};
-    var files = glob.sync( source );
+
+    var files = fileUtils.getList( source );
 
     for ( var i = 0, leni = files.length; i < leni; i++ ) {
 

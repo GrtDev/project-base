@@ -1,0 +1,184 @@
+/*
+
+    Couple of mixins and variables to make it super easy working with the sprite data.
+
+    @see: https://www.liquidlight.co.uk/blog/article/creating-svg-sprites-using-gulp-and-sass/
+
+*/
+
+@import "./sprite";
+
+$ieSprite: '.lt-ie9' !default;              // declares the class needed for the ie sprite. If this is missing, then the IE PNG fallback won't be generated.
+$icon-prefix: 'icon-' !default;              // used as a prefix for auto generated icon classes
+
+// Gets an attribute from the sass map
+@function sprite-attr($icon, $attr) {
+    $newIcon: map-get($icons, $icon);
+    @if $newIcon == null {
+        @warn "Can't find an icon with the name #{$icon}";
+    }
+    @return map-get($newIcon, $attr);
+}
+
+
+@function icon-attr($icon) {
+    $attr: (
+            width: sprite-attr($icon, width),
+            height: sprite-attr($icon, height),
+            x: sprite-attr($icon, backgroundX),
+            y: sprite-attr($icon, backgroundY)
+    );
+
+    @return $attr;
+}
+
+
+// Sets background image and size with IE fallback
+%sprite {
+    display: inline-block;
+    background-image: url(map-get($sprite, svgPath));
+    background-size: em(map-get($sprite, width)) em(map-get($sprite, height));
+}
+%ie-sprite {
+    background-image: url(map-get($sprite, pngPath));
+}
+
+/*
+     Add a sprite PNG icon for browsers with the `$ieSprite` class with px for positioning
+     @param {string} $icon - The name of the icon
+     @param {string} $type [all] - The properties wanted (can be `all`, `size` or `bg`).
+     - `all` ensures the icon has the background, position and size.
+     - `size` is just for dimensions
+     - `bg` just  applies the backgrounds to an element
+     
+     @example scss - Usage
+     
+     .class {
+        @include ie-sprite(arrow);
+        &:hover {
+            @include ie-sprite(arrowDown, bg)
+        }
+     }
+    
+     @example css - Output
+     
+     .lt-ie9 .class {
+         background-image: url("..imgsprite.png");
+     }
+     .lt-ie9 .class {
+         width: 20px;
+         height: 20px;
+         background-position: -5px -5px;
+     }
+     .lt-ie9 .class:hover {
+         background-position: -36px -36px;
+     }
+ */
+@mixin ie-sprite($icon, $type: all) {
+    $iconMap: icon-attr($icon);
+
+    @if $ieSprite {
+        #{$ieSprite} & {
+            @if $type == all {
+                // Shares the PNG background
+                @extend %ie-sprite;
+            }
+            // Outputs dimensions of icon
+            @if $type == all or $type == size {
+                width: map-get($iconMap, width);
+                height: map-get($iconMap, height);
+            }
+            // Outputs background position
+            @if $type == all or $type == bg {
+                background-position: (map-get($iconMap, x) - 5) (map-get($iconMap, y) - 5);
+            }
+        }
+    }
+}
+
+/*
+     Add an SVG sprite icon using em positioning, with a PNG icon for browsers with the `$ieSprite` class using px positioning
+     @param {string} $icon - The name of the icon
+     @param {string} $type [all] - The properties wanted (can be `all`, `size` or `bg`).
+     - `all` ensures the icon has the background, position and size.
+     - `size` is just for dimensions
+     - `bg` just  applies the backgrounds to an element
+
+     @example scss - Usage
+
+     .class {
+        @include sprite(arrow);
+        &:hover {
+            @include sprite(arrowDown, bg)
+        }
+     }
+
+
+     @example css - Output
+
+     .class {
+        display: inline-block;
+        background-image: url("..imgsprite.svg");
+        background-size: 34.25em 32.1875em;
+     }
+
+     .lt-ie9 .class {
+        background-image: url("..imgsprite.png");
+     }
+
+     .class {
+        width: 1.3125em;
+        height: 1.3125em;
+        background-position: -0.3125em -0.3125em;
+     }
+     .lt-ie9 .class {
+        width: 20px;
+        height: 20px;
+        background-position: -5px -5px;
+     }
+     .class:hover {
+        background-position: -2.25em -2.25em;
+     }
+     .lt-ie9 .class:hover {
+        background-position: -36px -36px;
+     }
+ */
+@mixin sprite($icon, $type: all) {
+
+    @if $type == all {
+        // Shares the backgrounds
+        @extend %sprite;
+    }
+
+    $iconMap: icon-attr($icon);
+
+    // Outputs dimensions in em
+    @if $type == all or $type == size {
+        width: em(map-get($iconMap, width) + 1);
+        height: em(map-get($iconMap, height) + 1);
+    }
+
+    // Outputs background position in em
+    @if $type == all or $type == bg {
+        background-position: em(map-get($iconMap, x)) em(map-get($iconMap, y));
+    }
+
+    // Add ie fallback
+    @include ie-sprite($icon, $type);
+
+}
+
+/*
+
+    Auto generate icon classes for each icon
+
+*/
+@each $icon-name, $icon-info in $icons {
+
+    .#{$icon-prefix}#{$icon-name} {
+
+        @include sprite(#{$icon-name});
+
+    }
+
+}

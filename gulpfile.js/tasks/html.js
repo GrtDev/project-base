@@ -65,14 +65,14 @@ gulp.task( 'html', function () {
     options.nunjuck = {
 
         // useful for Angular projects
-        //tags: {
-        //    blockStart: '<%',
-        //    blockEnd: '%>',
-        //    variableStart: '<$',
-        //    variableEnd: '$>',
-        //    commentStart: '<#',
-        //    commentEnd: '#>'
-        //},
+        tags: {
+            blockStart: '<%',
+            blockEnd: '%>',
+            variableStart: '<$',
+            variableEnd: '$>',
+            commentStart: '<#',
+            commentEnd: '#>'
+        },
 
         watch: false
 

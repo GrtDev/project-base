@@ -78,7 +78,7 @@ function registerMainTasks(){
         runSequence(
             'clean',
             [ 'copy', 'images', 'svg' ],
-            [ 'html', 'libs', 'browserify', 'sass' ],
+            [ 'html', 'libs', 'browserify', 'css' ],
             callback
         );
 
@@ -124,7 +124,7 @@ function registerMainTasks(){
         runSequence(
             'clean',
             [ 'copy', 'images', 'svg' ],
-            [ 'html', 'libs', 'browserify', 'sass' ],
+            [ 'html', 'libs', 'browserify', 'css' ],
             callback
         );
 

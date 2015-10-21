@@ -1,0 +1,12 @@
+/*
+
+	WARNING:    This SASS file is auto generated from the svg sprite task.
+                To edit this file you should edit the mustache template instead!
+
+*/
+$path-images: '/images' !default;
+$sprite: (width: {{spriteWidth}}px, height: {{spriteHeight}}px, pngPath: '#{$path-images}/sprite.png', svgPath: '#{$path-images}/sprite.svg');
+$icons: (
+	{{#shapes}}
+	{{base}}: (width: {{width.inner}}px, height: {{height.inner}}px, backgroundX: {{position.absolute.x}}px, backgroundY: {{position.absolute.y}}px),
+{{/shapes}});

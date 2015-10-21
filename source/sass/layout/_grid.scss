@@ -23,7 +23,7 @@ $grid-breakpoints:              (
 
 // calculate the maximum width that can be applied without cutting into the grid margins
 // set in rem, so it is converted into 16px font size calculation. Because media queries ignore the actual font size that is set on the HTML.
-$grid-margin-breakpoint:        (($grid-max-width + $grid-gutter + $grid-margin * 2) - .1rem) * ( $grid-root-font-size / 16 );
+$grid-margin-breakpoint:        (($grid-max-width + $grid-gutter + $grid-margin * 2) - .1rem * ( $grid-root-font-size / 16 ));
 $grid-small-margin-breakpoint:  $screen-medium-and-down;
 
 
@@ -80,11 +80,10 @@ $grid-small-margin-breakpoint:  $screen-medium-and-down;
 
 // @formatter:off
 
-.grid,
-[class^="grid--"],
-[class*=" grid--"] {
 
-    // removes all whitespace
+%grid-base {
+
+      // removes all whitespace
     font-family: monospace;
     letter-spacing: -.65em;
 
@@ -107,25 +106,38 @@ $grid-small-margin-breakpoint:  $screen-medium-and-down;
     }
 
 
-    &[class*="--embed"]{
 
+}
+
+.grid {
+
+    @extend %grid-base;
+
+    &--embed {
+
+        @extend %grid-base;
         margin-left: 0;
         margin-right: 0;
 
     }
 
+    &--center {
 
-}
+        @extend %grid-base;
+        text-align: center;
 
-[class^="grid"],
-[class*=" grid"]{
+    }
 
-    // enable modifiers for both grid & grid-bounds
+    &--right {
 
-    &[class*="--center"] { text-align: center; }
-    &[class*="--right"]  { text-align: right; }
+        @extend %grid-base;
+        text-align: right;
 
-    &[class*="--fill-height"] {
+    }
+
+    &--fill-height {
+
+        @extend %grid-base;
         min-height: 100%;
 
         [class^="#{$grid-column-class}-"],

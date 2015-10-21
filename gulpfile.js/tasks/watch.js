@@ -24,13 +24,13 @@ gulp.task( 'watch', [ 'watchify' ], function ( callback ) {
         function ( events, done ) { gulp.start( 'images', done ); } );
 
     watch( config.source.getPath( 'css', '**/*.scss' ),
-        function ( events, done ) { gulp.start( 'sass' ); } );
+        function ( events, done ) { gulp.start( 'css' ); } );
 
     watch( config.source.getPath( 'html', '**' ),
         function ( events, done ) { gulp.start( 'html' ); } );
 
-    //watch( config.source.getPath( 'data', '**' ),
-    //    function ( events, done ) { gulp.start( 'html', done ); } );
+    watch( config.source.getFiles( 'data' ),
+        function ( events, done ) { gulp.start( 'html', done ); } );
 
     watch( config.dest.getPath( 'html', '**/*.html' ), onHTMLChange );
 

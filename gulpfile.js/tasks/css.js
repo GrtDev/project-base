@@ -24,7 +24,7 @@ var gulpIgnore                  = requireCachedModule('gulp-ignore');
  * @see http://libsass.org/
  * @see: https://github.com/sindresorhus/gulp-size
  */
-gulp.task('sass', function () {
+gulp.task('css', function () {
     
     var options = {
 
@@ -108,7 +108,8 @@ gulp.task('sass', function () {
             wrap: true,
             check: options.minify
         } ) )
-        .pipe( browserSync.reload( { stream: true } ) );
+        .pipe( browserSync.stream() );
+        //.pipe( browserSync.reload( { stream: true } ) );
 
 } );
 

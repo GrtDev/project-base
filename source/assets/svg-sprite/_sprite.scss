@@ -1,0 +1,17 @@
+/*
+
+	WARNING:    This SASS file is auto generated from the svg sprite task.
+                To edit this file you should edit the mustache template instead!
+
+*/
+$path-images: '/images' !default;
+$sprite: (width: 528px, height: 276px, pngPath: '#{$path-images}/sprite.png', svgPath: '#{$path-images}/sprite.svg');
+$icons: (
+	arrow-down: (width: 30px, height: 17px, backgroundX: 0px, backgroundY: 0px),
+	arrow-up: (width: 20px, height: 12px, backgroundX: -30px, backgroundY: -17px),
+	hbo-logo: (width: 77px, height: 32px, backgroundX: -50px, backgroundY: -29px),
+	search: (width: 35px, height: 36px, backgroundX: -127px, backgroundY: -61px),
+	setup-box: (width: 191px, height: 31px, backgroundX: -162px, backgroundY: -97px),
+	tablet-phone: (width: 60px, height: 76px, backgroundX: -353px, backgroundY: -128px),
+	tv: (width: 115px, height: 72px, backgroundX: -413px, backgroundY: -204px),
+);
