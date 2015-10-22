@@ -1,6 +1,6 @@
-{% set title='SVG Sprite' %}
+{% set title='SVG Shapes' %}
 
-{% extends './block.html' %}
+{% extends 'block.html' %}
 
 
 {% block content %}
@@ -11,10 +11,10 @@
             <li title="{{ svg }}">
                 <div class="_svg-collection__container">
 
-                    <span class="icon-<$ svg | replace('/', '--') $>"></span>
+                    {% svg svg %}
 
                 </div>
-                <h4>icon-{{ svg | replace('/', '--') }}</h4>
+                <h4>{{ svg }}</h4>
             </li>
             {% endfor %}
         </ul>

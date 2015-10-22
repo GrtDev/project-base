@@ -1,28 +1,35 @@
+/*
+
+    Styling for the debug log that prints out context data.
+    Can be injected anywhere so we use !important to make sure no style is overwritten.
+
+*/
+
 // @formatter:off
 
 div._debug-data-log
 {
-    width:      100%;
-    min-width:  600px;
-    max-height: 400px;
-    background-color: #2B2A27;
-    font-family: consolas, menlo, monaco, monospace;
-    font-size:  12px;
-    color:      #9a9286;
-    overflow:   scroll;
-    padding:    5px 10px;
-    z-index:    999;
-    text-align:left;
+    width:      100%        !important;
+    min-width:  600px       !important;
+    max-height: 400px       !important;
+    background-color: #2B2A27 !important;
+    font-family: consolas, menlo, monaco, monospace !important;
+    font-size:  12px        !important;
+    color:      #9a9286     !important;
+    overflow:   scroll      !important;
+    padding:    5px 10px    !important;
+    z-index:    999         !important;
+    text-align: left        !important;
 
 
     // json syntax highlighting
 
-    .function { color: #FF5D38; }
-    .string {   color: #26A6A6; }
-    .number {   color: #BCD42A; }
-    .boolean {  color: #FF5D38; }
-    .null {     color: #FF5D38; }
-    .key {      color: #EDE0CE; }
+    .function { color: #FF5D38 !important; }
+    .string {   color: #26A6A6 !important; }
+    .number {   color: #BCD42A !important; }
+    .boolean {  color: #FF5D38 !important; }
+    .null {     color: #FF5D38 !important; }
+    .key {      color: #EDE0CE !important; }
 
     // @formatter:on
 }

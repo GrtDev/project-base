@@ -5,10 +5,12 @@
     z-index: 10;
     width: 100%;
 
-    &.show {
+    &.is-shown {
+
         .cookie-notification__content {
             bottom: 0;
         }
+
     }
 }
 

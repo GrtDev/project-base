@@ -10,19 +10,14 @@
 @import "macros/debug/project-pages-list";
 @import "macros/debug/debug-data";
 
-@import "macros/styleguide/block";
-@import "macros/styleguide/block-fonts";
-@import "macros/styleguide/svg-collection";
+@import "macros/debug/styleguide/block";
+@import "macros/debug/styleguide/block-fonts";
+@import "macros/debug/styleguide/svg-collection";
 
 
 html
 {
     background-color: #ECECEC;
-}
-
-html.dark
-{
-    background-color: #333333;
 }
 
 
