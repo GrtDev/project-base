@@ -1,13 +1,28 @@
 @charset "UTF-8";
 
-@import "macros/base/debug/styleguide";
-@import "macros/base/debug/project-pages-list";
-@import "macros/base/debug/debug-data";
+@import "variables/colors";
+@import "variables/eases";
+@import "variables/shadows";
+@import "variables/media";
+@import "variables/typography";
+@import "variables/config";
+
+@import "macros/debug/project-pages-list";
+@import "macros/debug/debug-data";
+
+@import "macros/styleguide/block";
+@import "macros/styleguide/block-fonts";
+@import "macros/styleguide/svg-collection";
 
 
 html
 {
     background-color: #ECECEC;
+}
+
+html.dark
+{
+    background-color: #333333;
 }
 
 

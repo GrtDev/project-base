@@ -1,0 +1,24 @@
+{% set title='SVG Sprite' %}
+
+{% extends './block.html' %}
+
+
+{% block content %}
+
+    <div class="_styleguide__svg-collection">
+        <ul>
+            {% for svg in project.svgs %}
+            <li title="{{ svg }}">
+                <div class="_svg-collection__container">
+
+                    <span class="icon-<$ svg | replace('/', '--') $>"></span>
+
+                </div>
+                <h4>icon-{{ svg | replace('/', '--') }}</h4>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+{% endblock %}
+

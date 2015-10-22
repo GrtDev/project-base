@@ -10,8 +10,12 @@ NOTE:
 
 */
 
-$font-stack-header:     'Titillium Web', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-$font-stack-body:       'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-titillium-web:    'Titillium Web';
+$font-helvetica-neue:   'Helvetica Neue';
+
+$font-stack-header:     $font-titillium-web, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-stack-body:       $font-helvetica-neue, Helvetica, Arial, sans-serif;
+$font-stack-buttons:    $font-helvetica-neue, Helvetica, Arial, sans-serif;
 
 
 $font-size-root:        10px;       // The font size set on the root html element.

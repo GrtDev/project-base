@@ -4,7 +4,15 @@
 {% block content %}
 
 
-    {% include 'macros/base/debug/pagesList.html' %}
+    <div class="_project-pages-list">
+        <ul>
+            {% for page in project.pages %}
+            <li>
+                <a href="{{ page }}">{{ page | replace(".html", "") }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 
     {% debug %}
 

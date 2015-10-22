@@ -1,0 +1,38 @@
+
+._styleguide__styleblock {
+    max-width: 960px;
+    padding: 20px 40px;
+    margin: 40px auto;
+}
+
+
+._styleguide__header {
+    position: relative;
+    margin: 0px 0 20px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #cacaca;
+}
+
+
+._styleguide__title {
+    display: inline-block;
+    font-size: 2rem;
+    color: #333333;
+}
+
+
+._styleguide__disclaimer {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 20px;
+    font-size: 1rem;
+    color: #bbaea5;
+}
+
+.dark {
+
+    ._styleguide__title {
+        color: #efefef;
+    }
+
+}
