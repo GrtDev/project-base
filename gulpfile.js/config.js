@@ -67,7 +67,7 @@ source.css                  = { path: '<%= root %>/sass',		                files
 source.javascript           = { path: '<%= root %>/javascript',	                files: ignore + '*.js' };
 source.assets               = { path: '<%= root %>/assets',		                files: ignore + '**' };
 source.images               = { path: '<%= assets %>/images',	                files: [ ignore + '*.{jpg,jpeg,png,gif}', '**/' + ignore + '*.{jpg,jpeg,png,gif}' ] };
-source.svg                  = { path: '<%= assets %>/svg',		                files: ignore + '*/**.svg' };
+source.svg                  = { path: '<%= assets %>/svg',		                files: [ ignore + '*.svg', ignore + '*/**.svg' ] };
 source.markupPartials       = { path: '<%= html %>/' + config.ignorePrefix + 'partials'};
 
 

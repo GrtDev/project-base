@@ -1,0 +1,32 @@
+{
+    "codedoc": [
+        {
+            "code": "svg {name}",
+            "description": "Will inject the optimized svg contents in this place. SVG's can be added in the assets/svg folder. For an overview of which SVG's are available and their corresponding names: visit the <a href=\"/styleguide.html\" target=\"_self\">styleguide</a>.",
+            "sample": "<span class=\"tag\">{% svg</span> <span class=\"string\">&#39;social/facebook&#39;</span> <span class=\"tag\">%}</span>",
+            "caption": "Example use of the <code>svg</code> tag"
+        },
+        {
+            "code": "debug {property}",
+            "description": "Will output the property data in a debug block. Useful to see what data is available for you to use in the template. If a property is omitted it will print out the current context.",
+            "sample": "<span class=\"tag\">{% debug</span> <span class=\"tag\">%}</span> <span class=\"comment\"><br/>{# -- or -- #}<br/></span> <span class=\"tag\">{% debug</span> <span class=\"string\">&#39;project&#39;</span> <span class=\"tag\">%}</span>",
+            "caption": "Example use of the <code>debug</code> tag"
+        }
+    ],
+    "directories":{
+        "build": {
+            "info": "used to store the compiled project"
+        },
+        "source":{
+            "info": "contains everything needed to build the project from scratch",
+            "sub": {
+                "html":{
+                    "info":"html folder"
+                },
+                "javascript":{
+                    "info": "Java script folder"
+                }
+            }
+        }
+    }
+}

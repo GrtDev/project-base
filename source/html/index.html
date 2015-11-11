@@ -6,7 +6,30 @@
 
     {% include 'macros/debug/project-pages-list.html' %}
 
-    {% debug %}
+
+    <div class="_project-info">
+
+
+
+        <p>
+            This project uses <a href="https://mozilla.github.io/nunjucks/" target="_blank">Nunjucks templating engine</a>. Visit the <a href="https://mozilla.github.io/nunjucks/templating.html" target="_blank">documentation</a> for more info.
+        </p>
+
+        <!--
+            <p>
+                Add your own readme info here...
+            </p>
+        -->
+
+
+
+        <!-- TODO: Finish the directory information and styling. -->
+        {#{% include 'macros/debug/project/directories.html' %}#}
+
+        {% include 'macros/debug/project/codedoc.html' %}
+
+
+    </div>
 
 
 {% endblock %}

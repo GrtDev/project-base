@@ -2,6 +2,7 @@
 @import "../../variables/colors";
 @import "../../variables/eases";
 
+
 // Complete reset for the list element.
 %list-reset {
 
@@ -17,18 +18,13 @@
 
 }
 
-// BEM list styles
-[class^="list"],
-[class*=" list"] {
+
+%list--inline {
 
     @extend %list-reset;
 
-    &[class*="--links"] {
-
-        a {
-            @extend %regular-link;
-        }
-
+    & > li {
+        display: inline-block;
     }
 
 }

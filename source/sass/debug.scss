@@ -7,23 +7,28 @@
 @import "variables/typography";
 @import "variables/config";
 
-@import "macros/debug/project-pages-list";
-@import "macros/debug/debug-data";
 
-@import "macros/debug/styleguide/block";
-@import "macros/debug/styleguide/block-fonts";
-@import "macros/debug/styleguide/svg-collection";
+// Add an extra nested layer to try to make sure the debug style won't be compromised by the css of the project
+html._debug_page_ {
 
-
-html
-{
     background-color: #ECECEC;
+
+    @import "macros/debug/project/info";
+    @import "macros/debug/project/pages-list";
+    @import "macros/debug/project/directories";
+
+    @import "macros/debug/styleguide/block";
+    @import "macros/debug/styleguide/block-fonts";
+    @import "macros/debug/styleguide/svg-collection";
+
 }
 
+// the debug data panel should be able to be used everywhere
+@import "macros/debug/debug-data";
 
 
 // Move browserSync notification to the bottom right
-#__bs_notify__{
+#__bs_notify__ {
     top: auto !important;
     bottom: 0 !important;
     border-top-left-radius: 5px !important;

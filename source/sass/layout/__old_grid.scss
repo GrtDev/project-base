@@ -21,6 +21,12 @@ $grid-breakpoints:              (
                                     $viewport-small:    'sm'
                                 );
 
+// calculate the maximum width that can be applied without cutting into the grid margins
+// set in rem, so it is converted into 16px font size calculation. Because media queries ignore the actual font size that is set on the HTML.
+$grid-margin-breakpoint:        (($grid-max-width + $grid-gutter + $grid-margin * 2) - .1rem * ( $grid-root-font-size / 16 ));
+$grid-small-margin-breakpoint:  $screen-medium-and-down;
+
+
 // @formatter:on
 
 // Calculates the percentage width of a column
@@ -30,6 +36,46 @@ $grid-breakpoints:              (
 
 }
 
+
+[class^="grid-bounds"],
+[class*=" grid-bounds"] {
+
+    display: block;
+    max-width: $grid-max-width;
+    margin-left: auto;
+    margin-right: auto;
+
+    // switch to fixed margins when the auto margin drops below the margin that is set.
+    @media (max-width: #{$grid-margin-breakpoint}) {
+        max-width: none;
+        margin-left: $grid-margin;
+        margin-right: $grid-margin;
+    }
+
+    @media #{$grid-small-margin-breakpoint} {
+        margin-left: $grid-margin-small;
+        margin-right: $grid-margin-small;
+    }
+
+    // switches to full width with padding instead of margins.
+    &[class*="--break"] {
+
+        @media #{$screen-medium-and-down} {
+
+            max-width: none;
+            margin-left: 0;
+            margin-right: 0;
+
+            > * {
+                padding-left: $grid-margin-small;
+                padding-right: $grid-margin-small;
+            }
+
+        }
+
+    }
+
+}
 
 
 // @formatter:off
@@ -46,6 +92,20 @@ $grid-breakpoints:              (
     margin-left: auto;
     margin-right: auto;
     text-align: left;
+
+    // switch to fixed margins when the auto margin drops below the margin that is set.
+    @media (max-width: #{$grid-margin-breakpoint}) {
+        max-width: none;
+        margin-left:  #{$grid-margin - $grid-gutter/2};
+        margin-right: #{$grid-margin - $grid-gutter/2};
+    }
+
+    @media #{$grid-small-margin-breakpoint} {
+        margin-left:  #{$grid-margin-small - $grid-gutter/2};
+        margin-right: #{$grid-margin-small - $grid-gutter/2};
+    }
+
+
 
 }
 

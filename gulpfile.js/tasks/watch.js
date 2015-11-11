@@ -21,7 +21,7 @@ var RELOAD_TIMEOUT_DELAY    = 200; // in milliseconds
 gulp.task( 'watch', [ 'watchify' ], function ( callback ) {
 
     watch( config.source.getFiles( 'images' ),
-        function ( events, done ) { gulp.start( 'images', done ); } );
+        function ( events, done ) { gulp.start( 'images' ); } );
 
     watch( config.source.getPath( 'css', '**/*.scss' ),
         function ( events, done ) { gulp.start( 'css' ); } );
@@ -30,7 +30,7 @@ gulp.task( 'watch', [ 'watchify' ], function ( callback ) {
         function ( events, done ) { gulp.start( 'html' ); } );
 
     watch( config.source.getFiles( 'data' ),
-        function ( events, done ) { gulp.start( 'html', done ); } );
+        function ( events, done ) { gulp.start( 'html' ); } );
 
     watch( config.dest.getPath( 'html', '**/*.html' ), onHTMLChange );
 

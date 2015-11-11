@@ -1,0 +1,25 @@
+<br/>
+<br/>
+<p>There are 2 custom tags that have been added to Nunjucks: '<code>debug</code>' and '<code>svg</code>'.</p>
+
+{% for codedoc in readme.codedoc %}
+
+    <div class="_project-info__code-doc">
+
+        <div>
+            <code>{{ codedoc.code }}</code>
+        </div>
+        <div>
+            <p>{{ codedoc.description }}</p>
+        </div>
+
+    </div>
+
+    <div class="_project-info__code-samp">
+
+        <samp> {{ codedoc.sample }}</samp>
+
+        <p>{{ codedoc.caption }}</p>
+    </div>
+
+{% endfor %}

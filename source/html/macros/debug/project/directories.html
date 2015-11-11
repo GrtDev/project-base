@@ -1,0 +1,34 @@
+{% macro _render_directory( name, info ) %}
+
+    <span class="_directories__directory">{{ name }}</span>
+    {% if data.info %}
+        <span class="_directories__info">{{ info }}</span>
+    {% endif %}
+
+{% endmacro %}
+
+<ul class="_directories">
+
+    {% for name, data in readme.directories %}
+        <li>
+
+            <span class="_directories__directory">{{ name }}</span>
+            {% if data.info %} <span class="_directories__info">{{ data.info }}</span> {% endif %}
+
+            {% if data.sub  %}
+
+                <ul>
+                    {% for subname, subdata in data.sub %}
+                        <li>
+                            <span class="_directories__directory">{{ subname }}</span>
+                            {% if subdata.info %} <span class="_directories__info">{{ subdata.info }}</span> {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            {% endif %}
+
+        </li>
+    {% endfor %}
+</ul>
+

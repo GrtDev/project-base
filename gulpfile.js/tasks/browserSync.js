@@ -19,6 +19,10 @@ gulp.task('browserSync', function () {
 
     var options = {
 
+        // ghostMode: false,
+
+        // port: 3000,
+
         server: {
             // Serve up our build folder
             baseDir: config.dest.getPath('root'),
